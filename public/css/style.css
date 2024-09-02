@@ -1,0 +1,143 @@
+/*===========Colors=============*/
+:root{
+    --body: #f3f3f3;
+    --primary: #0E1133;
+    --secondary: #E3E3E3;
+    --shadow: #494949;
+    --disabled: #707070;
+    --danger: #FF5A5A;
+    --dangerLight: #FFC5C5;
+    --warning: #D86D00 ;
+    --warningLight: #F9A652 ;
+    --success: #25850E;
+    --successLight: #27CE00;
+}
+
+body{
+    background-color: var(--body);
+}
+
+.user-page{
+    padding: 10px 20px 10px 400px;
+}
+
+.brand{
+    display: flex;
+}
+
+.brand span{
+    font-family: 'Times New Roman', Times, serif;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.login-page{
+    padding: 10px 10px 10px 380px;
+}
+
+.login-container{
+    position: relative;
+    margin: auto;
+    top: 100px;
+    width: 700px;
+}
+
+.login-container .brand img{
+    width: 200px;
+    height: 200px;
+}
+
+.login-container .brand span{
+    color: var(--primary);
+    font-weight: bold;
+    font-size: 3rem;
+}
+
+.side-panel{
+    position: fixed;    
+    height: 100vh;
+    width: 380px;
+    background-color: var(--primary);
+    border-radius: 0 30px 30px 0;
+    padding: 30px;
+}
+
+.login-form{
+    position: absolute;
+    padding-top:30px;
+    width: 500px;
+    right: 0;
+}
+
+.btn-right{
+    position: absolute;
+    right: 0;
+}
+
+
+label{
+    color: var(--primary);
+    font-weight: bold;
+}
+
+input, select{
+    display: block;
+    width: 100%;
+    padding: 5px;
+    border-radius: 0;
+    border: 0;
+    border-left: 3px solid var(--primary);
+    box-shadow: 3px 3px 6px var(--disabled);
+    transition: .5s;
+}
+
+input:focus, select:focus{
+    border-left: 10px solid var(--primary);
+    box-shadow: 3px 3px 6px var(--shadow);
+    outline: 0;
+}
+
+.btn-simple{
+    border: 0;
+    text-decoration: none;
+    background-color: var(--primary);
+    color: var(--secondary);
+    padding: 5px 15px;
+}
+
+.sidenav{
+    position: fixed;    
+    height: 100vh;
+    width: 380px;
+    background-color: var(--primary);
+    border-radius: 0 30px 30px 0;
+    padding: 30px;
+}
+
+.sidenav .brand img{
+    width: 83px;
+}
+
+.sidenav .brand span{
+    font-size: 2rem;
+    color: var(--secondary);
+    line-height: 30px;
+}
+
+.sidenav .nav-links{
+    position: relative;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidenav .nav-links .nav-link{
+    color: var(--secondary);
+    font-size: 1.3rem;
+}
+
+.form-container{
+    position: relative;
+    max-width: 700px;
+    margin: auto;
+}
