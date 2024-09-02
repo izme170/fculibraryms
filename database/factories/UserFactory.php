@@ -22,7 +22,7 @@ class UserFactory extends Factory
             'last_name' => fake()->lastName(),
             'role_id' => 2,
             'email' => fake()->unique()->safeEmail(),
-            'contact_number' => fake()->randomDigit(),
+            'contact_number' => fake()->phoneNumber(),
             'username' => fake()->unique()->userName(),
             'password' => bcrypt('user'),
             'is_archived' => false

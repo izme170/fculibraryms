@@ -7,7 +7,7 @@
     <div class="nav-links">
         <a href="/admin/dashboard" class="nav-link">Dashboard</a>
         <a href="/admin/users" class="nav-link">Users</a>
-        <a href="#" class="nav-link">Books</a>
+        <a href="/admin/books" class="nav-link">Books</a>
         <a href="/admin/patrons" class="nav-link">Patrons</a>
         <a href="#" class="nav-link">Reports</a>
         <a href="#" class="nav-link">Activities</a>

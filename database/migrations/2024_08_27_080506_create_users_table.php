@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('last_name', 55);
             $table->unsignedBigInteger('role_id')->nullable();
             $table->string('email', 255);
-            $table->integer('contact_number');
+            $table->string('contact_number');
             $table->string('username', 55);
             $table->string('password', 255);
             $table->boolean('is_archived')->default(false);

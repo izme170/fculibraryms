@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BookController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
 use App\Http\Controllers\UserController;
@@ -41,5 +42,9 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/admin/patron/create', 'create');
         Route::post('/admin/patron/store', 'store');
         Route::get('/admin/patron/show/{id}', 'show');
+    });
+
+    Route::controller(BookController::class)->group(function (){
+        Route::get('/admin/books', 'index');
     });
 });
