@@ -23,7 +23,7 @@ class Patron extends Model
         'course_id',
         'year',
         'adviser_id',
-        'qrcode',
+        'library_id',
         'is_archived'
     ];
 }

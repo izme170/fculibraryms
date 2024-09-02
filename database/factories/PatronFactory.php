@@ -29,7 +29,7 @@ class PatronFactory extends Factory
             'course_id' => fake()->numberBetween(1, 3),
             'year' => fake()->numberBetween(1, 4),
             'adviser_id' => fake()->numberBetween(1,3),
-            'qrcode' => fake()->md5(),
+            'library_id' => fake()->md5(),
             'is_archived' => false
         ];
     }

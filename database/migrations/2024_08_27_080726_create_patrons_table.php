@@ -24,7 +24,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('course_id')->nullable();
             $table->integer('year');
             $table->unsignedBigInteger('adviser_id')->nullable();
-            $table->string('qrcode');
+            $table->string('library_id');
             $table->boolean('is_archived')->default(false);
             $table->timestamps();
 
