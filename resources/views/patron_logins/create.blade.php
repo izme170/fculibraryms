@@ -3,6 +3,7 @@
 
 <head>
     <title>Patron Login</title>
+    <link rel="stylesheet" href="{{asset('css/style.css')}}">
     <script src="{{ asset('js/instascan.min.js') }}"></script>
 </head>
 
@@ -40,7 +41,7 @@
         </div>
 
         <!-- Submit Button -->
-        <button id="submitBtn">Submit</button>
+        <button class="btn-simple" id="submitBtn">Submit</button>
     </div>
 
     <script>
