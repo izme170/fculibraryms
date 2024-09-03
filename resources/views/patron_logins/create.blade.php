@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Instascan</title>
+    <title>Patron Login</title>
     <script src="{{ asset('js/instascan.min.js') }}"></script>
 </head>
 
