@@ -5,6 +5,7 @@
 <table class="table">
     <thead class="thead-dark">
         <tr>
+            <th scope="col">Book Number</th>
             <th scope="col">Name</th>
             <th scope="col">Author</th>
             <th scope="col">Category</th>
@@ -15,6 +16,7 @@
     <tbody>
         @foreach ($books as $book)
             <tr onclick="window.location.href='/admin/book/show/{{$book->book_id}}';" style="cursor:pointer;">
+                <td>{{$book->book_number}}</td>
                 <td>{{$book->name}}</td>
                 <td>{{$book->author}}</td>
                 <td>{{$book->category_id}}</td>

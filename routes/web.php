@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
 use App\Http\Controllers\UserController;
@@ -46,5 +47,17 @@ Route::middleware('adminMiddleware')->group(function () {
 
     Route::controller(BookController::class)->group(function (){
         Route::get('/admin/books', 'index');
+        Route::get('/admin/book/create', 'create');
+        Route::post('/admin/book/store', 'store');
+    });
+});
+
+Route::middleware('auth')->group(function(){
+    Route::controller(BorrowBookController::class)->group(function(){
+        Route::get('/borrowed-books', 'index');
+        Route::get('/borrow-book', 'create');
+        Route::post('/borrow-book/process', 'store');
+        Route::get('/return-book', 'edit');
+        Route::put('/return-book/process', 'update');
     });
 });

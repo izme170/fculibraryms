@@ -21,8 +21,8 @@ class BookFactory extends Factory
             'name' => fake()->sentence(3),
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
-            'qty' => fake()->numberBetween(1, 10),
-            'available' => fake()->numberBetween(1, 10),
+            'qty' => 10,
+            'available' => 10,
             'is_archived' => false
         ];
     }
