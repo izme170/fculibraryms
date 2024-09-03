@@ -10,8 +10,9 @@
         <a href="/admin/books" class="nav-link">Books</a>
         <a href="/borrowed-books" class="nav-link">Borrowed Books</a>
         <a href="/admin/patrons" class="nav-link">Patrons</a>
+        <a href="/patron-logins" class="nav-link">Patron Logins</a>
         <a href="#" class="nav-link">Reports</a>
-        <a href="#" class="nav-link">Activities</a>
+        <a href="/admin/activities" class="nav-link">Activities</a>
         <a href="#" class="nav-link">Archives</a>
         <form action="/logout" method="post">
             @csrf

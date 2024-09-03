@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\PatronController;
@@ -50,6 +51,10 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/admin/book/create', 'create');
         Route::post('/admin/book/store', 'store');
     });
+
+    Route::controller(ActivityController::class)->group(function(){
+        Route::get('/admin/activities', 'index');
+    });
 });
 
 Route::middleware('auth')->group(function(){
@@ -59,5 +64,9 @@ Route::middleware('auth')->group(function(){
         Route::post('/borrow-book/process', 'store');
         Route::get('/return-book', 'edit');
         Route::put('/return-book/process', 'update');
+    });
+
+    Route::controller(PatronLoginController::class)->group(function(){
+        Route::get('/patron-logins', 'index');
     });
 });

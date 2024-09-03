@@ -10,6 +10,11 @@ use Illuminate\Http\Request;
 
 class PatronLoginController extends Controller
 {
+    public function index()
+    {
+        $patron_logins = PatronLogin::all();
+        return view('patron_logins.index', compact('patron_logins'));
+    }
     public function create()
     {
         $purposes = Purpose::all();
