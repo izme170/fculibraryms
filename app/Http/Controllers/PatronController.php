@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\SendPatronQRCode;
+use App\Models\Activity;
 use App\Models\Adviser;
 use App\Models\Course;
 use App\Models\Department;
@@ -11,6 +12,7 @@ use App\Models\PatronLogin;
 use App\Models\PatronType;
 use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class PatronController extends Controller
@@ -55,6 +57,14 @@ class PatronController extends Controller
 
         // Create the patron record
         $patron = Patron::create($validated);
+
+        // Record Activity
+        $data = [
+            'action' => 'Add Patron',
+            'patron_id' => $patron->patron_id,
+            'user_id' => Auth::id()
+        ];
+        Activity::create($data);
 
         // Return the view with the QR code and patron data
         return view('patrons.qrcode', compact('library_id', 'patron'));

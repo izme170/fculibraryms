@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -20,16 +21,30 @@ class UserController extends Controller
         if(Auth::attempt($credentials)){
             $request->session()->regenerate();
 
+            // Record Activity
+            $data = [
+                'action' => 'Login',
+                'user_id' => Auth::id()
+            ];
+            Activity::create($data);
+
             return redirect('/admin/dashboard');
         }
 
         return back()->withErrors([
             'username' => 'The provided credentials do not march our records.',
-        ])->onlyInput('email');
+        ])->onlyInput('username');
     }
 
     public function logout(Request $request): RedirectResponse
     {
+        // Record Activity
+        $data = [
+            'action' => 'Logout',
+            'user_id' => Auth::id()
+        ];
+        Activity::create($data);
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
