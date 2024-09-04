@@ -13,6 +13,7 @@ class PatronLogin extends Model
     protected $fillable = [
         'patron_id',
         'purpose_id',
-        'marketer_id'
+        'marketer_id',
+        'logout_at'
     ];
 }

@@ -36,12 +36,12 @@
                     <label class="form-label" for="contact_number">Contact Number</label>
                     <input type="text" id="contact_number" name="contact_number">
                 </div>
-            </div>
-            <div class="col">
                 <div class="mb-3">
                     <label class="form-label" for="address">Address</label>
                     <input type="text" id="address" name="address">
                 </div>
+            </div>
+            <div class="col">
                 <div class="mb-3">
                     <label class="form-label" for="school_id">School ID</label>
                     <input type="text" id="school_id" name="school_id">
@@ -76,6 +76,10 @@
                             <option value="{{$adviser->adviser_id}}">{{$adviser->adviser}}</option>
                         @endforeach
                     </select>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="library_id">RFID</label>
+                    <input type="text" id="library_id" name="library_id">
                 </div>
             </div>
         </div>

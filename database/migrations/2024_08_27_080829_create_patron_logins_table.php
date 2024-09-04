@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('patron_id')->nullable();
             $table->unsignedBigInteger('purpose_id')->nullable();
             $table->unsignedBigInteger('marketer_id')->nullable();
+            $table->dateTime('logout_at')->nullable();
             $table->timestamps();
 
             $table->foreign('patron_id')

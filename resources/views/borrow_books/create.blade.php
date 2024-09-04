@@ -28,4 +28,11 @@
         <button class="btn-simple btn-right" type="submit">Submit</button>
     </form>
 </div>
+
+<script>
+    document.addEventListener('keydown', function(event){
+        if(event.key === 'Enter')
+        event.preventDefault();
+    });
+</script>
 @endsection

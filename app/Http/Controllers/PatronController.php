@@ -10,7 +10,6 @@ use App\Models\Department;
 use App\Models\Patron;
 use App\Models\PatronLogin;
 use App\Models\PatronType;
-use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -48,12 +47,13 @@ class PatronController extends Controller
             'department_id' => ['required'],
             'course_id' => ['required'],
             'year' => ['required', 'numeric'],
+            'library_id' => ['required'],
             'adviser_id' => ['required']
         ]);
 
         // Generate the QR code
-        $library_id = ($request->type_id == 1 ? 'stud' : 'fclty') . $request->school_id . rand(1000, 9999) . time();
-        $validated['library_id'] = $library_id;
+        // $library_id = ($request->type_id == 1 ? 'stud' : 'fclty') . $request->school_id . rand(1000, 9999) . time();
+        // $validated['library_id'] = $library_id;
 
         // Create the patron record
         $patron = Patron::create($validated);
@@ -67,22 +67,21 @@ class PatronController extends Controller
         Activity::create($data);
 
         // Return the view with the QR code and patron data
-        return view('patrons.qrcode', compact('library_id', 'patron'));
+        // return view('patrons.qrcode', compact('library_id', 'patron'));
+        return redirect('/admin/patrons');
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $patron = Patron::find($id);
 
         return view('patrons.show', compact('patron'));
     }
 
 
-    public function getPatron($id)
+    public function getPatron($rfid)
     {
-        $patron = Patron::where('library_id', '=', $id)->first();
-
-        // Debugging output
-        // dd($patron);
+        $patron = Patron::where('library_id', '=', $rfid)->first();
 
         if ($patron) {
             return response()->json(['name' => $patron->first_name . ' ' . $patron->last_name, 'patron_id' => $patron->patron_id]);
@@ -91,14 +90,14 @@ class PatronController extends Controller
         }
     }
 
-    public function sendQRCodeToEmail(Request $request, $id)
-    {
-        $patron = Patron::find($id); // Assuming you pass the patron ID via a query parameter or route
-        $library_id = $patron->library_id;
+    // public function sendQRCodeToEmail(Request $request, $id)
+    // {
+    //     $patron = Patron::find($id);
+    //     $library_id = $patron->library_id;
 
-        Mail::to($patron->email)->send(new SendPatronQRCode($library_id));
+    //     Mail::to($patron->email)->send(new SendPatronQRCode($library_id));
 
-        return redirect('/admin/patron/create');
-    }
+    //     return redirect('/admin/patron/create');
+    // }
 
 }

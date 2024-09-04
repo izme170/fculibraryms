@@ -15,6 +15,9 @@
     <div class="user-page">
         @yield('user-content')
     </div>
+    <div class="patron-page">
+        @yield('patron-content');
+    </div>
 </body>
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
 

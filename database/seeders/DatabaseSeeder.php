@@ -85,5 +85,74 @@ class DatabaseSeeder extends Seeder
             'password' => bcrypt('admin'),
             'is_archived' => false
         ]);
+
+        // Seed Patron
+        Patron::create([
+            'first_name' => 'Jerico',
+            'middle_name' => 'De La Cruz',
+            'last_name' => 'Lopez',
+            'email' => 'jerico@gmail.com',
+            'contact_number' => '09123456789',
+            'type_id' => 1,
+            'address' => 'Capiz',
+            'school_id' => '21-C0000',
+            'department_id' => 1,
+            'course_id' => 1,
+            'year' => 4,
+            'adviser_id' => 1,
+            'library_id' => '3689864500',
+            'is_archived' => false
+        ]);
+
+        Patron::create([
+            'first_name' => 'Erlou Fall',
+            'middle_name' => '',
+            'last_name' => 'Lacorte',
+            'email' => 'fall@gmail.com',
+            'contact_number' => '09123456789',
+            'type_id' => 1,
+            'address' => 'Capiz',
+            'school_id' => '21-C0000',
+            'department_id' => 1,
+            'course_id' => 1,
+            'year' => 4,
+            'adviser_id' => 1,
+            'library_id' => '3745090404',
+            'is_archived' => false
+        ]);
+
+        Patron::create([
+            'first_name' => 'Antoinnete',
+            'middle_name' => '',
+            'last_name' => 'Aninang',
+            'email' => 'antoinette@gmail.com',
+            'contact_number' => '09123456789',
+            'type_id' => 1,
+            'address' => 'Capiz',
+            'school_id' => '21-C0000',
+            'department_id' => 1,
+            'course_id' => 1,
+            'year' => 4,
+            'adviser_id' => 1,
+            'library_id' => '3689369892',
+            'is_archived' => false
+        ]);
+
+        Patron::create([
+            'first_name' => 'Majomel',
+            'middle_name' => '',
+            'last_name' => 'Oleo',
+            'email' => 'majomel@gmail.com',
+            'contact_number' => '09123456789',
+            'type_id' => 1,
+            'address' => 'Capiz',
+            'school_id' => '21-C0000',
+            'department_id' => 1,
+            'course_id' => 1,
+            'year' => 4,
+            'adviser_id' => 1,
+            'library_id' => '3743148436',
+            'is_archived' => false
+        ]);
     }
 }
