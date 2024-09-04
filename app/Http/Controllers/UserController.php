@@ -28,7 +28,7 @@ class UserController extends Controller
             ];
             Activity::create($data);
 
-            return redirect('/admin/dashboard');
+            return redirect('/user/dashboard');
         }
 
         return back()->withErrors([

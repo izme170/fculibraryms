@@ -66,7 +66,7 @@ class BorrowBookController extends Controller
             $borrowed_book->save();
             $book->increment('available');
         } else {
-            return redirect()->back();
+            return redirect()->back()->with('message_error', 'Book is not found in the Borrowed List');
         }
         return redirect('/borrowed-books');
     }

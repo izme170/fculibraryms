@@ -9,12 +9,13 @@
         <div class="row">
             <div class="col">
                 <div class="mb-3">
-                    <label class="form-label" for="book_number">Book Number</label>
-                    <input type="text" id="book_number" name="book_number">
+                <h1>Please scan the book's RFID</h1>
+                    <!-- <label class="form-label" for="book_number">Please scan the book's RFID</label> -->
+                    <input type="text" id="book_number" name="book_number" autofocus>
                 </div>
             </div>
         </div>
-        <button class="btn-simple btn-right" type="submit">Submit</button>
+        <!-- <button class="btn-simple btn-right" type="submit">Submit</button> -->
     </form>
 </div>
 @endsection

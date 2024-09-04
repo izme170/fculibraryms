@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowBookController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
 use App\Http\Controllers\UserController;
@@ -27,12 +28,9 @@ Route::controller(PatronLoginController::class)->group(function () {
     Route::put('/patrons/logout/update', 'update');
 });
 
-Route::get('/admin/patron/qrcode/send-to-email/{id}', [PatronController::class, 'sendQRCodeToEmail']);
+// Route::get('/admin/patron/qrcode/send-to-email/{id}', [PatronController::class, 'sendQRCodeToEmail']);
 
 Route::middleware('adminMiddleware')->group(function () {
-    Route::get('/admin/dashboard', function () {
-        return view('admin.dashboard');
-    });
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/admin/users', 'index');
@@ -60,6 +58,10 @@ Route::middleware('adminMiddleware')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::controller(DashboardController::class)->group(function (){
+        Route::get('/user/dashboard', 'index');
+    });
+
     Route::controller(BorrowBookController::class)->group(function () {
         Route::get('/borrowed-books', 'index');
         Route::get('/borrow-book', 'create');

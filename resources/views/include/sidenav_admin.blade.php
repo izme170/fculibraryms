@@ -5,7 +5,7 @@
     </div>
 
     <div class="nav-links">
-        <a href="/admin/dashboard" class="nav-link">Dashboard</a>
+        <a href="/user/dashboard" class="nav-link">Dashboard</a>
         <a href="/admin/users" class="nav-link">Users</a>
         <a href="/admin/books" class="nav-link">Books</a>
         <a href="/borrowed-books" class="nav-link">Borrowed Books</a>
