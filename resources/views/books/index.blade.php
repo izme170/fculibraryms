@@ -6,7 +6,7 @@
     <thead class="thead-dark">
         <tr>
             <th scope="col">Book Number</th>
-            <th scope="col">Name</th>
+            <th scope="col">Title</th>
             <th scope="col">Author</th>
             <th scope="col">Category</th>
             <th scope="col">Qty</th>
@@ -19,7 +19,7 @@
                 <td>{{$book->book_number}}</td>
                 <td>{{$book->name}}</td>
                 <td>{{$book->author}}</td>
-                <td>{{$book->category_id}}</td>
+                <td>{{$book->category}}</td>
                 <td>{{$book->qty}}</td>
                 <td>{{$book->available}}</td>
             </tr>

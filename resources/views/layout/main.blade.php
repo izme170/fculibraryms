@@ -16,9 +16,10 @@
         @yield('user-content')
     </div>
     <div class="patron-page">
-        @yield('patron-content');
+        @yield('patron-content')
     </div>
 </body>
 <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
-
+<script src="{{asset('js/script.js')}}"></script>
+<script type="module" src="{{asset('js/chart.umd.js')}}"></script>
 </html>

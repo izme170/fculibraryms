@@ -4,6 +4,10 @@
 <a class="btn-simple" href="/borrow-book">Borrow Book</a>
 <a class="btn-simple" href="/return-book">Return Book</a>
 <div class="container">
+
+<script src="{{ asset('js/bargraph.js') }}"></script>
+<div style="width: 800px;"><canvas id="acquisitions"></canvas></div>
+
     <div class="mb-3">
         <h4>Daily Visits</h4>
         <div class="daily-visits">

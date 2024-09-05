@@ -19,3 +19,11 @@
 		{{ session('message_error') }}
 	</div>
 @endif
+
+@if (session()->has('message_success_xl'))
+	<h1 id="message">{{ session('message_success_xl') }}</h1>
+@endif
+
+@if (session()->has('message_error_xl'))
+	<h1 id="message">{{ session('message_error_xl') }}</h1>
+@endif

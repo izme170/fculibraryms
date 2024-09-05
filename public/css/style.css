@@ -97,6 +97,10 @@ input:focus, select:focus{
     outline: 0;
 }
 
+#rfid_input{
+    opacity: 0;
+}
+
 .btn-simple{
     border: 0;
     text-decoration: none;

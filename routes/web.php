@@ -24,8 +24,9 @@ Route::controller(PatronController::class)->group(function () {
 Route::controller(PatronLoginController::class)->group(function () {
     Route::get('/patrons/login', 'create');
     Route::post('/patrons/login/store', 'store');
-    Route::get('/patrons/logout', 'edit');
-    Route::put('/patrons/logout/update', 'update');
+    Route::post('/patrons/login/update', 'update');
+    Route::get('/patrons/logout', 'logout');
+    Route::put('/patrons/logout/process', 'logoutProcess');
 });
 
 // Route::get('/admin/patron/qrcode/send-to-email/{id}', [PatronController::class, 'sendQRCodeToEmail']);

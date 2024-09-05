@@ -15,7 +15,7 @@
         @foreach ($patrons as $patron)
             <tr onclick="window.location.href='/admin/patron/show/{{$patron->patron_id}}';" style="cursor:pointer;">
                 <td>{{$patron->first_name . ' ' . $patron->last_name}}</td>
-                <td>{{$patron->type_id}}</td>
+                <td>{{$patron->type}}</td>
                 <td>{{$patron->contact_number}}</td>
                 <td>{{$patron->email}}</td>
             </tr>

@@ -18,7 +18,9 @@ class PatronController extends Controller
 {
     public function index()
     {
-        $patrons = Patron::all();
+        $patrons = Patron::leftJoin('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')
+        ->orderBy('patrons.type_id')
+        ->orderBy('first_name')->get();
 
         return view('patrons.index', compact('patrons'));
     }

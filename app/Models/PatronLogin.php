@@ -14,6 +14,7 @@ class PatronLogin extends Model
         'patron_id',
         'purpose_id',
         'marketer_id',
+        'login_at',
         'logout_at'
     ];
 }

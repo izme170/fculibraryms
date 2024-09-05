@@ -13,6 +13,7 @@ use App\Models\Course;
 use App\Models\Department;
 use App\Models\Marketer;
 use App\Models\Purpose;
+use Database\Factories\BookFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -152,6 +153,26 @@ class DatabaseSeeder extends Seeder
             'year' => 4,
             'adviser_id' => 1,
             'library_id' => '3743148436',
+            'is_archived' => false
+        ]);
+
+        Book::create([
+            'book_number' => '3738229540',
+            'name' => fake()->sentence(3),
+            'author' => fake()->name(),
+            'category_id' => fake()->numberBetween(1, 4),
+            'qty' => 10,
+            'available' => 10,
+            'is_archived' => false
+        ]);
+
+        Book::create([
+            'book_number' => '3743346372',
+            'name' => fake()->sentence(3),
+            'author' => fake()->name(),
+            'category_id' => fake()->numberBetween(1, 4),
+            'qty' => 10,
+            'available' => 10,
             'is_archived' => false
         ]);
     }

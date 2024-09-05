@@ -52,7 +52,10 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::all();
+        $users = User::join('roles', 'users.role_id', '=', 'roles.role_id')
+        ->orderBy('first_name')
+        ->orderBy('users.role_id')
+        ->get();
 
         return view('users.index', compact('users'));
     }

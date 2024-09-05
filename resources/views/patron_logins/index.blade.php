@@ -14,10 +14,10 @@
     <tbody>
         @foreach ($patron_logins as $patron_login)
             <tr>
-                <td>{{$patron_login->patron_id}}</td>
-                <td>{{$patron_login->purpose_id}}</td>
-                <td>{{$patron_login->marketer_id}}</td>
-                <td>{{$patron_login->created_at}}</td>
+                <td>{{$patron_login->first_name. ' ' .$patron_login->last_name}}</td>
+                <td>{{$patron_login->purpose}}</td>
+                <td>{{$patron_login->marketer ?? 'None'}}</td>
+                <td>{{$patron_login->login_at}}</td>
                 <td>{{$patron_login->logout_at}}</td>
             </tr>
         @endforeach

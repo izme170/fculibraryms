@@ -1,7 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav_admin')
 @section('user-content')
-<a class="btn-simple" href="/admin/user/create">Add Patron</a>
+<a class="btn-simple" href="/admin/user/create">Add Users</a>
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -15,7 +15,7 @@
         @foreach ($users as $user)
             <tr onclick="window.location.href='/admin/user/show/{{$user->user_id}}';" style="cursor:pointer;">
                 <td>{{$user->first_name . ' ' . $user->last_name}}</td>
-                <td>{{$user->role_id}}</td>
+                <td>{{$user->role}}</td>
                 <td>{{$user->contact_number}}</td>
                 <td>{{$user->email}}</td>
             </tr>

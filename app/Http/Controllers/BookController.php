@@ -12,7 +12,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::all();
+        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->orderBy('name')->get();
 
         return view('books.index', compact('books'));
     }
