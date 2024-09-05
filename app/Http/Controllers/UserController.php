@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Role;
 use App\Models\User;
+use IcehouseVentures\LaravelChartjs\Facades\Chartjs;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -57,7 +58,7 @@ class UserController extends Controller
         ->orderBy('users.role_id')
         ->get();
 
-        return view('users.index', compact('users'));
+        return view('users.index', compact(['users']));
     }
 
     public function create(){

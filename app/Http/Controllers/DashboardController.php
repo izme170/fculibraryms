@@ -23,7 +23,7 @@ class DashboardController extends Controller
         // Format the data for the view
         $visits = [];
         for ($day = 1; $day <= 7; $day++) {
-            $visits[$day] = $dailyVisits->get($day, 0);  // Default to 0 if no visits for that day
+            $visits[] = $dailyVisits->get($day, 0);  // Default to 0 if no visits for that day
         }
 
         return view('users.dashboard', compact('visits'));
