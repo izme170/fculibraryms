@@ -8,11 +8,11 @@
         <div class="row">
             <div class="col">
                 <div class="mb-3">
-                    <label class="form-label" for="library_id">Patron Library Id</label>
+                    <label class="form-label" for="library_id">Patron RFID</label>
                     <input type="text" id="library_id" name="library_id">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="book_number">Book Number</label>
+                    <label class="form-label" for="book_number">Book RFID</label>
                     <input type="text" id="book_number" name="book_number">
                 </div>
                 <div class="mb-3">
@@ -20,7 +20,7 @@
                     <input type="datetime-local" id="due" name="due">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="fine">Fine</label>
+                    <label class="form-label" for="fine">Fee</label>
                     <input type="number" id="fine" name="fine" value="5">
                 </div>
             </div>

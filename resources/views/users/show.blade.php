@@ -5,8 +5,7 @@
 <p>{{$user->role_id}}</p>
 <p>Contact Number: {{$user->contact_number}}</p>
 <p>Email: {{$user->email}}</p>
-<p>Address: {{$user->address}}</p>
-<p>Department: {{$user->username}}</p>
+<p>username: {{$user->username}}</p>
 
 <a class="btn-simple" href="/admin/user/edit/{{$user->user_id}}">Update</a>
 <a class="btn-simple" href="/admin/user/archive/{{$user->user_id}}">Archive</a>
