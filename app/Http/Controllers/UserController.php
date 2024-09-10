@@ -25,7 +25,7 @@ class UserController extends Controller
             // Record Activity
             $data = [
                 'action' => 'Login',
-                'user_id' => Auth::id()
+                'initiator_id' => Auth::id()
             ];
             Activity::create($data);
 
@@ -42,7 +42,7 @@ class UserController extends Controller
         // Record Activity
         $data = [
             'action' => 'Logout',
-            'user_id' => Auth::id()
+            'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 
@@ -56,6 +56,7 @@ class UserController extends Controller
         $users = User::join('roles', 'users.role_id', '=', 'roles.role_id')
         ->orderBy('first_name')
         ->orderBy('users.role_id')
+        ->where('is_archived', false)
         ->get();
 
         return view('users.index', compact(['users']));
@@ -81,7 +82,15 @@ class UserController extends Controller
 
         $validated['password'] = bcrypt($request->password);
 
-        User::create($validated);
+        $id = User::create($validated);
+
+        // Record Activity
+        $data = [
+            'action' => 'Add user',
+            'user_id' => $id->user_id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
 
         return redirect('/users');
     }
@@ -112,6 +121,28 @@ class UserController extends Controller
 
         User::find($id)->update($validated);
 
+        // Record Activity
+        $data = [
+            'action' => 'Update user',
+            'user_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
         return redirect('/user/show/' . $id);
+    }
+
+    public function archive($id){
+        User::find($id)->update(['is_archived' => true]);
+
+        // Record Activity
+        $data = [
+            'action' => 'Archive user',
+            'user_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect('/users');
     }
 }

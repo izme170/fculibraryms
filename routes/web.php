@@ -37,7 +37,8 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::post('/user/store', 'store');
         Route::get('/user/show/{id}', 'show');
         Route::get('/user/edit/{id}', 'edit');
-        Route::post('/user/update/{id}', 'update');
+        Route::put('/user/update/{id}', 'update');
+        Route::put('/user/archive/{id}', 'archive');
     });
 
     Route::controller(PatronController::class)->group(function () {
@@ -56,12 +57,13 @@ Route::middleware('adminMiddleware')->group(function () {
     Route::controller(ActivityController::class)->group(function () {
         Route::get('/activities', 'index');
     });
-});
 
-Route::middleware('auth')->group(function () {
     Route::controller(DashboardController::class)->group(function (){
         Route::get('/user/dashboard', 'index');
     });
+});
+
+Route::middleware('auth')->group(function () {
 
     Route::controller(BorrowBookController::class)->group(function () {
         Route::get('/borrowed-books', 'index');

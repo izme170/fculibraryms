@@ -14,6 +14,7 @@ class Activity extends Model
         'action',
         'book_id',
         'patron_id',
-        'user_id'
+        'user_id',
+        'initiator_id'
     ];
 }

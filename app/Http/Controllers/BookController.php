@@ -40,9 +40,9 @@ class BookController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'Add Book',
+            'action' => 'Add book',
             'book_id' => $book->book_id,
-            'user_id' => Auth::id()
+            'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 

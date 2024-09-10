@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->unsignedBigInteger("book_id")->nullable();
             $table->unsignedBigInteger("patron_id")->nullable();
             $table->unsignedBigInteger("user_id")->nullable();
+            $table->unsignedBigInteger("initiator_id")->nullable();
             $table->timestamps();
 
             $table->foreign('book_id')
@@ -29,6 +30,11 @@ return new class extends Migration {
                 ->onUpdate('cascade')
                 ->onDelete('set null');
             $table->foreign('user_id')
+                ->references('user_id')
+                ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+            $table->foreign('initiator_id')
                 ->references('user_id')
                 ->on('users')
                 ->onUpdate('cascade')

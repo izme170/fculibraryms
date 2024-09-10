@@ -5,6 +5,7 @@
 <div class="form-container">
     <form action="/user/update/{{$user->user_id}}" method="post">
         @csrf
+        @method('PUT')
         <div class="row">
             <div class="col">
                 <div class="mb-3">

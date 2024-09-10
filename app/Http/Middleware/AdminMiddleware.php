@@ -17,7 +17,7 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if ($user && $user->role_id == 1) {
+        if ($user && $user->role_id == 1 && $user->is_archived == false) {
             return $next($request);
         }
         return back();
