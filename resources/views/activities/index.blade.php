@@ -15,8 +15,8 @@
             <tr>
                 <td>{{$activity->created_at}}</td>
                 <td>{{$activity->action}}</td>
-                <td>{{$activity->patron_id}}{{$activity->book_id}}</td>
-                <td>{{$activity->user_id}}</td>
+                <td>{{$activity->name}}{{$activity->patron_first_name}} {{$activity->patron_last_name}}</td>
+                <td>{{$activity->user_first_name}} {{$activity->user_last_name}}</td>
             </tr>
         @endforeach
     </tbody>
