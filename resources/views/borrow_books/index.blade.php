@@ -1,5 +1,5 @@
 @extends('layout.main')
-@include('include.sidenav_admin')
+@include('include.sidenav')
 @section('user-content')
 <a class="btn-simple" href="/borrow-book">Borrow Book</a>
 <a class="btn-simple" href="/return-book">Return Book</a>
@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         @foreach ($borrowed_books as $borrowed_book)
-            <tr onclick="window.location.href='/admin/borrowed_book/show/{{$borrowed_book->borrow_id}}';" style="cursor:pointer;">
+            <tr onclick="window.location.href='/borrowed_book/show/{{$borrowed_book->borrow_id}}';" style="cursor:pointer;">
                 <td>{{$borrowed_book->created_at}}</td>
                 <td>{{$borrowed_book->title}}</td>
                 <td>{{$borrowed_book->patron_first_name}} {{$borrowed_book->patron_last_name}}</td>

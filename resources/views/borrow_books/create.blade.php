@@ -1,5 +1,5 @@
 @extends('layout.main')
-@include('include.sidenav_admin')
+@include('include.sidenav')
 @section('user-content')
 @include('include.messages')
 <div class="form-container">

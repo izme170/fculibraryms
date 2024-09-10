@@ -46,6 +46,6 @@ class BookController extends Controller
         ];
         Activity::create($data);
 
-        return redirect('/admin/books');
+        return redirect('/books');
     }
 }

@@ -1,7 +1,7 @@
 @extends('layout.main')
-@include('include.sidenav_admin')
+@include('include.sidenav')
 @section('user-content')
-<a class="btn-simple" href="/admin/book/create">Add book</a>
+<a class="btn-simple" href="/book/create">Add book</a>
 <table class="table">
     <thead class="thead-dark">
         <tr>
@@ -15,7 +15,7 @@
     </thead>
     <tbody>
         @foreach ($books as $book)
-            <tr onclick="window.location.href='/admin/book/show/{{$book->book_id}}';" style="cursor:pointer;">
+            <tr onclick="window.location.href='/book/show/{{$book->book_id}}';" style="cursor:pointer;">
                 <td>{{$book->book_number}}</td>
                 <td>{{$book->name}}</td>
                 <td>{{$book->author}}</td>

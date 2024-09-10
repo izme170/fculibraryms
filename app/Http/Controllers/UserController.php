@@ -83,12 +83,35 @@ class UserController extends Controller
 
         User::create($validated);
 
-        return redirect('/admin/users');
+        return redirect('/users');
     }
 
     public function show($id){
-        $user = User::find($id);
+        $user = User::leftJoin('roles', 'users.role_id', '=', 'roles.role_id')->find($id);
 
         return view('users.show', compact('user'));
+    }
+
+    public function edit($id){
+        $user = User::find($id);
+        $roles = Role::all();
+
+        return view('users.edit', compact('user', 'roles'));
+    }
+
+    public function update(Request $request, $id){
+        $validated = $request->validate([
+            'role_id' => 'required',
+            'first_name' => 'required|string:55',
+            'middle_name' => 'nullable',
+            'last_name' => 'required|string:55',
+            'email' => 'required|email',
+            'contact_number' => 'required',
+            'username'=> 'required|unique:users,username,'.$id.',user_id'
+        ]);
+
+        User::find($id)->update($validated);
+
+        return redirect('/user/show/' . $id);
     }
 }

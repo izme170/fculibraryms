@@ -29,32 +29,32 @@ Route::controller(PatronLoginController::class)->group(function () {
     Route::put('/patrons/logout/process', 'logoutProcess');
 });
 
-// Route::get('/admin/patron/qrcode/send-to-email/{id}', [PatronController::class, 'sendQRCodeToEmail']);
-
 Route::middleware('adminMiddleware')->group(function () {
 
     Route::controller(UserController::class)->group(function () {
-        Route::get('/admin/users', 'index');
-        Route::get('/admin/user/create', 'create');
-        Route::post('/admin/user/store', 'store');
-        Route::get('/admin/user/show/{id}', 'show');
+        Route::get('/users', 'index');
+        Route::get('/user/create', 'create');
+        Route::post('/user/store', 'store');
+        Route::get('/user/show/{id}', 'show');
+        Route::get('/user/edit/{id}', 'edit');
+        Route::post('/user/update/{id}', 'update');
     });
 
     Route::controller(PatronController::class)->group(function () {
-        Route::get('/admin/patrons', 'index');
-        Route::get('/admin/patron/create', 'create');
-        Route::post('/admin/patron/store', 'store');
-        Route::get('/admin/patron/show/{id}', 'show');
+        Route::get('/patrons', 'index');
+        Route::get('/patron/create', 'create');
+        Route::post('/patron/store', 'store');
+        Route::get('/patron/show/{id}', 'show');
     });
 
     Route::controller(BookController::class)->group(function () {
-        Route::get('/admin/books', 'index');
-        Route::get('/admin/book/create', 'create');
-        Route::post('/admin/book/store', 'store');
+        Route::get('/books', 'index');
+        Route::get('/book/create', 'create');
+        Route::post('/book/store', 'store');
     });
 
     Route::controller(ActivityController::class)->group(function () {
-        Route::get('/admin/activities', 'index');
+        Route::get('/activities', 'index');
     });
 });
 

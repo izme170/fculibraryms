@@ -7,7 +7,6 @@ use App\Models\Patron;
 use App\Models\PatronLogin;
 use App\Models\Purpose;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class PatronLoginController extends Controller
 {

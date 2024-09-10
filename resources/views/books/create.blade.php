@@ -1,9 +1,9 @@
 @extends('layout.main')
-@include('include.sidenav_admin')
+@include('include.sidenav')
 @section('user-content')
 @include('include.messages')
 <div class="form-container">
-    <form action="/admin/book/store" method="post">
+    <form action="/book/store" method="post">
         @csrf
         <div class="row">
             <div class="col">

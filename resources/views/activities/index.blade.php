@@ -1,5 +1,5 @@
 @extends('layout.main')
-@include('include.sidenav_admin')
+@include('include.sidenav')
 @section('user-content')
 <table class="table">
     <thead class="thead-dark">

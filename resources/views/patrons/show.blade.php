@@ -1,5 +1,5 @@
 @extends('layout.main')
-@include('include.sidenav_admin')
+@include('include.sidenav')
 @section('user-content')
 <h1>{{$patron->first_name}} {{$patron->last_name}}</h1>
 <p>{{$patron->type_id}}</p>
@@ -10,7 +10,7 @@
 <p>Department: {{$patron->department_id}}</p>
 <p>Course: {{$patron->course_id}}</p>
 
-<a class="btn-simple" href="/admin/patron/edit/{{$patron->patron_id}}">Update</a>
-<a class="btn-simple" href="/admin/patron/archive/{{$patron->patron_id}}">Archive</a>
-<a class="btn-simple" href="/admin/patron/edit/{{$patron->patron_id}}">Assign new RFID</a>
+<a class="btn-simple" href="/patron/edit/{{$patron->patron_id}}">Update</a>
+<a class="btn-simple" href="/patron/archive/{{$patron->patron_id}}">Archive</a>
+<a class="btn-simple" href="/patron/edit/{{$patron->patron_id}}">Assign new RFID</a>
 @endsection
