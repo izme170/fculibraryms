@@ -24,7 +24,7 @@ class UserController extends Controller
 
             // Record Activity
             $data = [
-                'action' => 'Login',
+                'action' => 'A user has logged into the system.',
                 'initiator_id' => Auth::id()
             ];
             Activity::create($data);
@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         // Record Activity
         $data = [
-            'action' => 'Logout',
+            'action' => 'A user has logged out of the system.',
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
@@ -86,7 +86,7 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'Add user',
+            'action' => 'A new user account has been created.',
             'user_id' => $id->user_id,
             'initiator_id' => Auth::id()
         ];
@@ -97,15 +97,9 @@ class UserController extends Controller
 
     public function show($id){
         $user = User::leftJoin('roles', 'users.role_id', '=', 'roles.role_id')->find($id);
-
-        return view('users.show', compact('user'));
-    }
-
-    public function edit($id){
-        $user = User::find($id);
         $roles = Role::all();
 
-        return view('users.edit', compact('user', 'roles'));
+        return view('users.show', compact(['user', 'roles']));
     }
 
     public function update(Request $request, $id){
@@ -123,13 +117,13 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'Update user',
+            'action' => 'User details were updated.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 
-        return redirect('/user/show/' . $id);
+        return redirect('/user/show/' . $id)->with('message_success', 'The user\'s details have been updated!');
     }
 
     public function archive($id){
@@ -137,12 +131,30 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'Archive user',
+            'action' => 'A user has been archived in the system.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 
-        return redirect('/users');
+        return redirect('/users')->with('message_success', 'User has been archived!');
+    }
+
+    public function changePassword(Request $request, $id){
+        $validated = $request->validate([
+            'password' => 'required|confirmed'
+        ]);
+
+        // Record Activity
+        $data = [
+            'action' => 'User password was changed.',
+            'user_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        User::find($id)->update(['password' => bcrypt($validated['password'])]);
+
+        return redirect()->back()->with('message_success', 'Password successfully updated!');
     }
 }
