@@ -12,7 +12,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->orderBy('name')->get();
+        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->orderBy('title')->get();
 
         return view('books.index', compact('books'));
     }
@@ -27,7 +27,7 @@ class BookController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => ['required'],
+            'title' => ['required'],
             'author' => ['required'],
             'category_id' => ['required'],
             'qty' => ['required'],
@@ -40,7 +40,7 @@ class BookController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'Add book',
+            'action' => 'A new book has been added.',
             'book_id' => $book->book_id,
             'initiator_id' => Auth::id()
         ];

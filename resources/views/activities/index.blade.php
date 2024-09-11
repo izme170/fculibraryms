@@ -14,7 +14,7 @@
         @foreach ($activities as $activity)
             <tr>
                 <td>{{$activity->action}}</td>
-                <td>{{$activity->name}}{{$activity->patron_first_name}} {{$activity->patron_last_name}}{{$activity->user_first_name}} {{$activity->user_last_name}}</td>
+                <td>{{$activity->title}}{{$activity->patron_first_name}} {{$activity->patron_last_name}}{{$activity->user_first_name}} {{$activity->user_last_name}}</td>
                 <td>{{$activity->initiator_first_name}} {{$activity->initiator_last_name}}</td>
                 <td>{{$activity->created_at}}</td>
             </tr>

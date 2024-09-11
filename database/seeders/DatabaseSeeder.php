@@ -158,7 +158,7 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'book_number' => '3738229540',
-            'name' => fake()->sentence(3),
+            'title' => fake()->sentence(3),
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
             'qty' => 10,
@@ -168,7 +168,7 @@ class DatabaseSeeder extends Seeder
 
         Book::create([
             'book_number' => '3743346372',
-            'name' => fake()->sentence(3),
+            'title' => fake()->sentence(3),
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
             'qty' => 10,

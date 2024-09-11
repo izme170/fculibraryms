@@ -13,7 +13,7 @@ class ActivityController extends Controller
         ->leftJoin('users as initiators', 'activities.initiator_id', '=', 'initiators.user_id')
         ->select(
             'activities.*',
-            'books.name',
+            'books.title',
             'patrons.first_name as patron_first_name',
             'users.first_name as user_first_name',
             'patrons.last_name as patron_last_name',

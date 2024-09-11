@@ -19,7 +19,7 @@ class BorrowBookController extends Controller
             ->leftJoin('users', 'borrowed_books.user_id', '=', 'users.user_id')
             ->select(
                 'borrowed_books.*',
-                'books.name as title',
+                'books.title',
                 'patrons.first_name as patron_first_name',
                 'users.first_name as user_first_name',
                 'patrons.last_name as patron_last_name',

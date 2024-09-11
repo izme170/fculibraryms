@@ -17,7 +17,7 @@
         @foreach ($books as $book)
             <tr onclick="window.location.href='/book/show/{{$book->book_id}}';" style="cursor:pointer;">
                 <td>{{$book->book_number}}</td>
-                <td>{{$book->name}}</td>
+                <td>{{$book->title}}</td>
                 <td>{{$book->author}}</td>
                 <td>{{$book->category}}</td>
                 <td>{{$book->qty}}</td>
