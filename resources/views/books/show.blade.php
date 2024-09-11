@@ -3,19 +3,18 @@
 @section('user-content')
     <h1>{{$book->title}}</h1>
     <p>{{$book->author}}</p>
-    <p>Contact Number: {{ $user->contact_number }}</p>
-    <p>Email: {{ $user->email }}</p>
-    <p>username: {{ $user->username }}</p>
+    <p>Category: {{ $book->category }}</p>
+    <p>Quantity: {{ $book->qty }}</p>
+    <p>Available: {{ $book->available }}</p>
 
     <div class="mb-3">
-        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editUser">Update</button>
-        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#archiveUser">Archive</button>
-        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#changeUserPassword">Change
-            Password</button>
+        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editBook">Update</button>
+        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#archiveBook">Archive</button>
+        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#newBookRFID">Assign new RFID</button>
     </div>
-    @include('modals.user.edit')
-    @include('modals.user.archive')
-    @include('modals.user.change_password')
+    @include('modals.book.edit')
+    @include('modals.book.archive')
+    @include('modals.book.new_rfid')
 
     @include('include.messages')
 @endsection

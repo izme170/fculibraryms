@@ -52,6 +52,9 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/books', 'index');
         Route::get('/book/create', 'create');
         Route::post('/book/store', 'store');
+        Route::get('/book/show/{id}', 'show');
+        Route::put('/book/update/{id}', 'update');
+        Route::put('/book/new_rfid/{id}', 'newRFID');
     });
 
     Route::controller(ActivityController::class)->group(function () {
