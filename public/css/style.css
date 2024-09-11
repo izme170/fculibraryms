@@ -1,60 +1,60 @@
 /*===========Colors=============*/
-:root{
+:root {
     --body: #f3f3f3;
-    --primary: #0E1133;
-    --secondary: #E3E3E3;
+    --primary: #0e1133;
+    --secondary: #e3e3e3;
     --shadow: #494949;
     --disabled: #707070;
-    --danger: #FF5A5A;
-    --dangerLight: #FFC5C5;
-    --warning: #D86D00 ;
-    --warningLight: #F9A652 ;
-    --success: #25850E;
-    --successLight: #27CE00;
+    --danger: #ff5a5a;
+    --dangerLight: #ffc5c5;
+    --warning: #d86d00;
+    --warningLight: #f9a652;
+    --success: #25850e;
+    --successLight: #27ce00;
 }
 
-body{
+body {
     background-color: var(--body);
 }
 
-.user-page{
+.user-page {
     padding: 10px 20px 10px 400px;
 }
 
-.brand{
+.brand {
     display: flex;
 }
 
-.brand span{
-    font-family: 'Times New Roman', Times, serif;
+.brand span {
+    font-family: "Times New Roman", Times, serif !important;
     margin-left: 15px;
     vertical-align: middle;
 }
 
-.login-page{
+.login-page {
     padding: 10px 10px 10px 380px;
 }
 
-.login-container{
+.login-container {
     position: relative;
     margin: auto;
     top: 100px;
     width: 700px;
 }
 
-.login-container .brand img{
+.login-container .brand img {
     width: 200px;
     height: 200px;
 }
 
-.login-container .brand span{
+.login-container .brand span {
     color: var(--primary);
     font-weight: bold;
     font-size: 3rem;
 }
 
-.side-panel{
-    position: fixed;    
+.side-panel {
+    position: fixed;
     height: 100vh;
     width: 380px;
     background-color: var(--primary);
@@ -62,25 +62,25 @@ body{
     padding: 30px;
 }
 
-.login-form{
+.login-form {
     position: absolute;
-    padding-top:30px;
+    padding-top: 30px;
     width: 500px;
     right: 0;
 }
 
-.btn-right{
+.btn-right {
     position: absolute;
     right: 0;
 }
 
-
-label{
+label {
     color: var(--primary);
     font-weight: bold;
 }
 
-input, select{
+input,
+select {
     display: block;
     width: 100%;
     padding: 5px;
@@ -88,20 +88,21 @@ input, select{
     border: 0;
     border-left: 3px solid var(--primary);
     box-shadow: 3px 3px 6px var(--disabled);
-    transition: .5s;
+    transition: 0.5s;
 }
 
-input:focus, select:focus{
+input:focus,
+select:focus {
     border-left: 10px solid var(--primary);
     box-shadow: 3px 3px 6px var(--shadow);
     outline: 0;
 }
 
-#rfid_input{
+#rfid_input {
     opacity: 0;
 }
 
-.btn-simple{
+.btn-simple {
     border: 0;
     text-decoration: none;
     background-color: var(--primary);
@@ -109,8 +110,13 @@ input:focus, select:focus{
     padding: 5px 15px;
 }
 
-.sidenav{
-    position: fixed;    
+.bg-red {
+    background-color: var(--danger);
+    color: var(--secondary);
+}
+
+.sidenav {
+    position: fixed;
     height: 100vh;
     width: 380px;
     background-color: var(--primary);
@@ -118,29 +124,29 @@ input:focus, select:focus{
     padding: 30px;
 }
 
-.sidenav .brand img{
+.sidenav .brand img {
     width: 83px;
 }
 
-.sidenav .brand span{
+.sidenav .brand span {
     font-size: 2rem;
     color: var(--secondary);
     line-height: 30px;
 }
 
-.sidenav .nav-links{
+.sidenav .nav-links {
     position: relative;
     margin-top: 50px;
     display: flex;
     flex-direction: column;
 }
 
-.sidenav .nav-links .nav-link{
+.sidenav .nav-links .nav-link {
     color: var(--secondary);
     font-size: 1.3rem;
 }
 
-.form-container{
+.form-container {
     position: relative;
     max-width: 700px;
     margin: auto;
