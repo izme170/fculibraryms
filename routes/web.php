@@ -36,9 +36,9 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/user/create', 'create');
         Route::post('/user/store', 'store');
         Route::get('/user/show/{id}', 'show');
-        Route::get('/user/edit/{id}', 'edit');
         Route::put('/user/update/{id}', 'update');
         Route::put('/user/archive/{id}', 'archive');
+        Route::put('/user/change-password/{id}', 'changePassword');
     });
 
     Route::controller(PatronController::class)->group(function () {
