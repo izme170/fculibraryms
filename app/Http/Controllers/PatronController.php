@@ -55,7 +55,7 @@ class PatronController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'Add patron',
+            'action' => 'added a new patron profile',
             'patron_id' => $patron->patron_id,
             'initiator_id' => Auth::id()
         ];

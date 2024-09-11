@@ -24,7 +24,7 @@ class UserController extends Controller
 
             // Record Activity
             $data = [
-                'action' => 'A user has logged into the system.',
+                'action' => 'has logged into the system.',
                 'initiator_id' => Auth::id()
             ];
             Activity::create($data);
@@ -41,7 +41,7 @@ class UserController extends Controller
     {
         // Record Activity
         $data = [
-            'action' => 'A user has logged out of the system.',
+            'action' => 'has logged out of the system.',
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
@@ -86,7 +86,7 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'A new user account has been created.',
+            'action' => 'created a new user account.',
             'user_id' => $id->user_id,
             'initiator_id' => Auth::id()
         ];
@@ -117,7 +117,7 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'User details were updated.',
+            'action' => 'updated a user details.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
@@ -131,7 +131,7 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'A user has been archived in the system.',
+            'action' => 'archived a user in the system.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
