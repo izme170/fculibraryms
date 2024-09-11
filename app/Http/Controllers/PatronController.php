@@ -16,9 +16,10 @@ class PatronController extends Controller
 {
     public function index()
     {
-        $patrons = Patron::leftJoin('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')
-        ->orderBy('patrons.type_id')
-        ->orderBy('first_name')->get();
+        $patrons = Patron::where('is_archived', '=', false)
+            ->leftJoin('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')
+            ->orderBy('patrons.type_id')
+            ->orderBy('first_name')->get();
 
         return view('patrons.index', compact('patrons'));
     }
@@ -66,8 +67,79 @@ class PatronController extends Controller
 
     public function show($id)
     {
-        $patron = Patron::find($id);
+        $patron = Patron::leftJoin('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')->
+            leftJoin('departments', 'patrons.department_id', '=', 'departments.department_id')->
+            leftJoin('courses', 'patrons.course_id', '=', 'courses.course_id')->
+            leftJoin('advisers', 'patrons.adviser_id', '=', 'advisers.adviser_id')->
+            find($id);
+        $patron_types = PatronType::all();
+        $departments = Department::all();
+        $courses = Course::all();
+        $advisers = Adviser::all();
 
-        return view('patrons.show', compact('patron'));
+        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'courses', 'advisers'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
+            'email' => 'email|required',
+            'contact_number' => 'required',
+            'type_id' => 'required',
+            'address' => 'required',
+            'school_id' => 'required',
+            'department_id' => 'required',
+            'course_id' => 'required',
+            'year' => 'required|numeric',
+            'adviser_id' => 'required'
+        ]);
+
+        Patron::find($id)->update($validated);
+
+        // Record Activity
+        $data = [
+            'action' => 'updated a patron profile',
+            'patron_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'Success! The patron\'s profile has been updated.');
+    }
+
+    public function archive($id)
+    {
+        Patron::find($id)->update(['is_archived' => true]);
+
+        // Record Activity
+        $data = [
+            'action' => 'archives patron profile',
+            'patron_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect('/patrons')->with('message_success', 'The patron\'s profile has been archived.');
+    }
+
+    public function newRFID(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'library_id' => 'required|unique:patrons,library_id'
+        ]);
+
+        Patron::find($id)->update($validated);
+
+        // Record Activity
+        $data = [
+            'action' => 'assigned new RFID to the patron',
+            'patron_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+
+        return redirect()->back()->with('success_message', 'Patron\'s RFID updated.');
     }
 }

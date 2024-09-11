@@ -46,6 +46,9 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/patron/create', 'create');
         Route::post('/patron/store', 'store');
         Route::get('/patron/show/{id}', 'show');
+        Route::put('/patron/update/{id}', 'update');
+        Route::put('/patron/archive/{id}', 'archive');
+        Route::put('/patron/new_rfid/{id}', 'newRFID');
     });
 
     Route::controller(BookController::class)->group(function () {
@@ -54,6 +57,7 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::post('/book/store', 'store');
         Route::get('/book/show/{id}', 'show');
         Route::put('/book/update/{id}', 'update');
+        Route::put('/book/archive/{id}', 'archive');
         Route::put('/book/new_rfid/{id}', 'newRFID');
     });
 

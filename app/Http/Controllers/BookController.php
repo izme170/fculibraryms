@@ -12,7 +12,7 @@ class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->where('is_')->orderBy('title')->get();
+        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->where('is_archived','=', false)->orderBy('title')->get();
 
         return view('books.index', compact('books'));
     }
