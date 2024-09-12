@@ -15,9 +15,12 @@ class BorrowedBook extends Model
         'patron_id',
         'user_id',
         'due',
-        'is_returned',
         'fine',
-        'returned_date'
+        'returned'
+    ];
+
+    protected $casts = [
+        'returned' => 'datetime'
     ];
 
 }

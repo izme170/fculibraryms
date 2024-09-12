@@ -17,4 +17,9 @@ class PatronLogin extends Model
         'login_at',
         'logout_at'
     ];
+
+    protected $casts = [
+        'login_at' => 'datetime',
+        'logout_at' => 'datetime'
+    ];
 }
