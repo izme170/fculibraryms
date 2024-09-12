@@ -15,14 +15,14 @@ return new class extends Migration {
             $table->string('first_name', 55);
             $table->string('middle_name', 55)->nullable();
             $table->string('last_name', 55);
-            $table->string('email', 255);
-            $table->string('contact_number', 55);
+            $table->string('email', 255)->nullable();
+            $table->string('contact_number', 55)->nullable();
             $table->unsignedBigInteger('type_id')->nullable();
             $table->string('address', 255);
-            $table->string('school_id');
+            $table->string('school_id')->nullable();
             $table->unsignedBigInteger('department_id')->nullable();
             $table->unsignedBigInteger('course_id')->nullable();
-            $table->integer('year');
+            $table->integer('year')->nullable();
             $table->unsignedBigInteger('adviser_id')->nullable();
             $table->string('library_id');
             $table->boolean('is_archived')->default(false);

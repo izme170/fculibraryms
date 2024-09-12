@@ -70,14 +70,14 @@ class UserController extends Controller
 
     public function store(Request $request){
         $validated = $request->validate([
-            'first_name' => ['required'],
-            'middle_name' => ['nullable'],
-            'last_name' => ['required'],
-            'email' => ['email', 'required'],
-            'contact_number' => ['required'],
-            'role_id' => ['required'],
-            'username' => ['required'],
-            'password' => ['required']
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
+            'email' => 'email|nullable',
+            'contact_number' => 'required_without:email',
+            'role_id' => 'required',
+            'username' => 'required',
+            'password' => 'required|size:5'
         ]);
 
         $validated['password'] = bcrypt($request->password);
@@ -108,8 +108,8 @@ class UserController extends Controller
             'first_name' => 'required|string:55',
             'middle_name' => 'nullable',
             'last_name' => 'required|string:55',
-            'email' => 'required|email',
-            'contact_number' => 'required',
+            'email' => 'nullable|email',
+            'contact_number' => 'required_without:email',
             'username'=> 'required|unique:users,username,'.$id.',user_id'
         ]);
 
@@ -142,7 +142,7 @@ class UserController extends Controller
 
     public function changePassword(Request $request, $id){
         $validated = $request->validate([
-            'password' => 'required|confirmed'
+            'password' => 'required|confirmed|size:5'
         ]);
 
         // Record Activity

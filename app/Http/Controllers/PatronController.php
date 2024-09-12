@@ -37,19 +37,19 @@ class PatronController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'first_name' => ['required'],
-            'middle_name' => ['nullable'],
-            'last_name' => ['required'],
-            'email' => ['email', 'required'],
-            'contact_number' => ['required'],
-            'type_id' => ['required'],
-            'address' => ['required'],
-            'school_id' => ['required'],
-            'department_id' => ['required'],
-            'course_id' => ['required'],
-            'year' => ['required', 'numeric'],
-            'library_id' => ['required'],
-            'adviser_id' => ['required']
+            'first_name' => 'required',
+            'middle_name' => 'nullable',
+            'last_name' => 'required',
+            'email' => 'nullable|email',
+            'contact_number' => 'required_without:email',
+            'type_id' => 'required',
+            'address' => 'required',
+            'school_id' => 'nullable',
+            'department_id' => 'nullable',
+            'course_id' => 'nullable',
+            'year' => 'nullable|numeric',
+            'library_id' => 'nullable|unique:patrons,library_id',
+            'adviser_id' => 'nullable'
         ]);
 
         $patron = Patron::create($validated);
@@ -86,15 +86,15 @@ class PatronController extends Controller
             'first_name' => 'required',
             'middle_name' => 'nullable',
             'last_name' => 'required',
-            'email' => 'email|required',
-            'contact_number' => 'required',
+            'email' => 'nullable|email',
+            'contact_number' => 'required_without:email',
             'type_id' => 'required',
             'address' => 'required',
-            'school_id' => 'required',
-            'department_id' => 'required',
-            'course_id' => 'required',
-            'year' => 'required|numeric',
-            'adviser_id' => 'required'
+            'school_id' => 'nullable',
+            'department_id' => 'nullable',
+            'course_id' => 'nullable',
+            'year' => 'nullable|numeric',
+            'adviser_id' => 'nullable'
         ]);
 
         Patron::find($id)->update($validated);
