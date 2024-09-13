@@ -77,7 +77,7 @@ class UserController extends Controller
             'contact_number' => 'required_without:email',
             'role_id' => 'required',
             'username' => 'required',
-            'password' => 'required|size:5'
+            'password' => 'required|min:5'
         ]);
 
         $validated['password'] = bcrypt($request->password);
@@ -142,7 +142,7 @@ class UserController extends Controller
 
     public function changePassword(Request $request, $id){
         $validated = $request->validate([
-            'password' => 'required|confirmed|size:5'
+            'password' => 'required|confirmed|min:5'
         ]);
 
         // Record Activity
