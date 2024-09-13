@@ -147,7 +147,7 @@ class UserController extends Controller
 
         // Record Activity
         $data = [
-            'action' => 'User password was changed.',
+            'action' => 'changed the password of a user.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
