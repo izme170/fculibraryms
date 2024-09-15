@@ -108,6 +108,7 @@ select:focus {
     background-color: var(--primary);
     color: var(--secondary);
     padding: 5px 15px;
+    margin: 10px 0;
 }
 
 .bg-red {
@@ -150,4 +151,31 @@ select:focus {
     position: relative;
     max-width: 700px;
     margin: auto;
+}
+
+.tab-links{
+    background-color: var(--secondary);
+}
+
+.tab-link{
+    background: none;
+    border: none;
+    width: 100%;
+    padding: 30px;
+    transition: 0.5s;
+}
+
+.tab-link.active{
+    background-color: var(--body);
+    border-left: 10px solid var(--primary);
+}
+
+.tab-content{
+    padding-left: 30px;
+}
+
+.list-container{
+    height: 300px;
+    width: 400px;
+    overflow: scroll;
 }

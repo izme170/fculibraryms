@@ -51,16 +51,73 @@ class DatabaseSeeder extends Seeder
         Course::create(['course' => 'BSC']);
 
         // Seed Adviser
-        Adviser::factory(3)->create();
+        Adviser::factory(30)->create();
 
         // Seed Patrons
         Patron::factory(20)->create();
 
         // Seed Categories
-        Category::create(['category' => 'Fiction']);
-        Category::create(['category' => 'Non-Fiction']);
-        Category::create(['category' => 'Science']);
-        Category::create(['category' => 'Mathematics']);
+        $categories = [
+            'Filipiniana',
+            'Asiana',
+            'Rizaliana',
+            'Thesis',
+            'Biographies & Autobiographies',
+            'Memoirs',
+            'Self-Help',
+            'Health & Wellness',
+            'Cookbooks',
+            'Travel',
+            'True Crime',
+            'History',
+            'Politics',
+            'Business & Economics',
+            'Science',
+            'Philosophy',
+            'Religion & Spirituality',
+            'Psychology',
+            'Parenting & Relationships',
+            'Nature',
+            'Education & Teaching',
+            'Reference',
+            'Graphic Novels',
+            'Poetry',
+            'Plays & Drama',
+            'Literary Criticism',
+            'Anthologies & Collections',
+            'Humor',
+            'Arts & Photography',
+            'Technology & Computers',
+            'Sports & Outdoors',
+            'Gardening',
+            'Crafts & Hobbies',
+            'African Literature',
+            'Asian Literature',
+            'Latin American Literature',
+            'European Literature',
+            'Indigenous Literature',
+            'Literary Fiction',
+            'Historical Fiction',
+            'Science Fiction',
+            'Fantasy',
+            'Mystery',
+            'Thriller',
+            'Horror',
+            'Romance',
+            'Adventure',
+            'Dystopian',
+            'Young Adult',
+            'Children’s Fiction',
+            'Classic Fiction',
+        ];
+
+        foreach ($categories as $category) {
+            Category::create(['category' => $category]);
+        }
+        // Category::create(['category' => 'Fiction']);
+        // Category::create(['category' => 'Non-Fiction']);
+        // Category::create(['category' => 'Science']);
+        // Category::create(['category' => 'Mathematics']);
 
         // Seed Purposes
         Purpose::create(['purpose' => 'Read']);

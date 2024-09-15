@@ -4,6 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\OptionController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
 use App\Http\Controllers\UserController;
@@ -65,8 +66,12 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/activities', 'index');
     });
 
-    Route::controller(DashboardController::class)->group(function (){
+    Route::controller(DashboardController::class)->group(function () {
         Route::get('/user/dashboard', 'index');
+    });
+
+    Route::controller(OptionController::class)->group(function () {
+        Route::get('/options', 'index');
     });
 });
 

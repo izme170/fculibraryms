@@ -14,6 +14,8 @@
         <a href="#" class="nav-link">Reports</a>
         <a href="/activities" class="nav-link">Activities</a>
         <a href="#" class="nav-link">Archives</a>
+        <a href="#" class="nav-link">Roles</a>
+        <a href="/options" class="nav-link">Options</a>
         <form action="/logout" method="post">
             @csrf
             <button type="submit" class="nav-link">Logout</button>
