@@ -41,14 +41,55 @@ class DatabaseSeeder extends Seeder
         PatronType::create(['type' => 'Guest']);
 
         // Seed Department
-        Department::create(['department' => 'CCS']);
-        Department::create(['department' => 'CN']);
-        Department::create(['department' => 'CCJE']);
+        $departments = [
+            'College of Arts and Sciences',
+            'College of Business and Accountancy',
+            'College of Computer Studies',
+            'College of Criminal Justice Education',
+            'College of Engineering',
+            'College of Hospitality and Tourism Management',
+            'College of Nursing',
+            'College of Teacher Education',
+            'Graduate School',
+            'Pre-School',
+            'Elementary',
+            'Junior High School',
+            'Senior High School'
+        ];
+        foreach($departments as $department){
+            Department::create(['department' => $department]);
+        }
 
         // Seed Course
-        Course::create(['course' => 'BSIT']);
-        Course::create(['course' => 'BSN']);
-        Course::create(['course' => 'BSC']);
+        $courses = [
+            'Bachelor of Arts' => 1,
+            'Bachelor of Science in Biology' => 1,
+            'Bachelor of Science in Psychology' => 1,
+            'Bachelor of Science in Social Work' => 1,
+            'Bachelor of Science in Accountancy' => 2,
+            'Bachelor of Science in Business Administration' => 2,
+            'Bachelor of Science in Intrepreneurship' => 2,
+            'Bachelor of Science in Computer Science' => 3,
+            'Bachelor of Science in Information Technology' => 3,
+            'Bachelor of Science in Criminology' => 4,
+            'Bachelor of Science in Electronics Engineering' => 5,
+            'Bachelor of Science in Hospitality Management' => 6,
+            'Bachelor of Science in Tourism Management' => 6,
+            'Bachelor of Science in Nursing' => 7,
+            'Bachelor of Elementary Education' => 8,
+            'Bachelor of Secondary Education' => 8,
+            'Bachelor of Culture and Arts Education' => 8,
+            'Bachelor of Early Childhood Education' => 8,
+            'Bachelor of Physical Education' => 8,
+            'Bachelor of Special Needs Education' => 8,
+        ];
+
+        foreach($courses as $course => $department_id){
+            Course::create([
+                'course' => $course,
+                'department_id' => $department_id
+            ]);
+        }
 
         // Seed Adviser
         Adviser::factory(30)->create();
@@ -114,10 +155,6 @@ class DatabaseSeeder extends Seeder
         foreach ($categories as $category) {
             Category::create(['category' => $category]);
         }
-        // Category::create(['category' => 'Fiction']);
-        // Category::create(['category' => 'Non-Fiction']);
-        // Category::create(['category' => 'Science']);
-        // Category::create(['category' => 'Mathematics']);
 
         // Seed Purposes
         Purpose::create(['purpose' => 'Read']);
