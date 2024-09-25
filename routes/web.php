@@ -27,7 +27,7 @@ Route::controller(PatronLoginController::class)->group(function () {
     Route::post('/patrons/login/store', 'store');
     Route::post('/patrons/login/update', 'update');
     Route::get('/patrons/logout', 'logout');
-    Route::put('/patrons/logout/process', 'logoutProcess');
+    Route::post('/patrons/logout/process', 'logoutProcess');
 });
 
 Route::middleware('adminMiddleware')->group(function () {
@@ -45,6 +45,7 @@ Route::middleware('adminMiddleware')->group(function () {
     Route::controller(PatronController::class)->group(function () {
         Route::get('/patrons', 'index');
         Route::get('/patron/create', 'create');
+        Route::get('/courses/{department_id}', 'getCoursesByDepartment');
         Route::post('/patron/store', 'store');
         Route::get('/patron/show/{id}', 'show');
         Route::put('/patron/update/{id}', 'update');
@@ -72,13 +73,16 @@ Route::middleware('adminMiddleware')->group(function () {
 
     Route::controller(OptionController::class)->group(function () {
         Route::get('/options', 'index');
+        Route::post('/adviser/store', 'storeAdviser');
+        Route::post('/category/store', 'storeCategory');
+        Route::post('/course/store', 'storeCourse');
+        Route::post('/department/store', 'storeDepartment');
     });
 });
 
 Route::middleware('auth')->group(function () {
 
     Route::controller(BorrowBookController::class)->group(function () {
-        Route::get('/borrowed-books', 'index');
         Route::get('/borrow-book', 'create');
         Route::post('/borrow-book/process', 'store');
         Route::get('/return-book', 'edit');

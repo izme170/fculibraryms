@@ -15,8 +15,7 @@ class Book extends Model
         'title',
         'author',
         'category_id',
-        'qty',
-        'available',
+        'is_available',
         'is_archived'
     ];
 }

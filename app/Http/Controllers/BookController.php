@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Activity;
 use App\Models\Book;
+use App\Models\BorrowedBook;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,20 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->where('is_archived','=', false)->orderBy('title')->get();
+        $borrowed_books = BorrowedBook::leftJoin('books', 'borrowed_books.book_id', '=', 'books.book_id')
+            ->leftJoin('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
+            ->leftJoin('users', 'borrowed_books.user_id', '=', 'users.user_id')
+            ->select(
+                'borrowed_books.*',
+                'books.title',
+                'patrons.first_name as patron_first_name',
+                'users.first_name as user_first_name',
+                'patrons.last_name as patron_last_name',
+                'users.last_name as user_last_name'
+            )
+            ->get();
 
-        return view('books.index', compact('books'));
+        return view('books.index', compact('books', 'borrowed_books'));
     }
 
     public function create()
@@ -30,11 +43,8 @@ class BookController extends Controller
             'title' => ['required'],
             'author' => ['required'],
             'category_id' => ['required'],
-            'qty' => ['required'],
             'book_number' => ['required']
         ]);
-
-        $validated['available'] = $validated['qty'];
 
         $book = Book::create($validated);
 

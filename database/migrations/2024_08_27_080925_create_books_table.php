@@ -17,8 +17,7 @@ return new class extends Migration
             $table->string('title', 255);
             $table->string('author', 255);
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->integer('qty');
-            $table->integer('available');
+            $table->boolean('is_available')->default(true);
             $table->boolean('is_archived')->default(false);
             $table->timestamps();
 

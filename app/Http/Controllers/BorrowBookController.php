@@ -12,23 +12,6 @@ use function PHPUnit\Framework\isNull;
 
 class BorrowBookController extends Controller
 {
-    public function index()
-    {
-        $borrowed_books = BorrowedBook::leftJoin('books', 'borrowed_books.book_id', '=', 'books.book_id')
-            ->leftJoin('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
-            ->leftJoin('users', 'borrowed_books.user_id', '=', 'users.user_id')
-            ->select(
-                'borrowed_books.*',
-                'books.title',
-                'patrons.first_name as patron_first_name',
-                'users.first_name as user_first_name',
-                'patrons.last_name as patron_last_name',
-                'users.last_name as user_last_name'
-            )
-            ->get();
-
-        return view('borrow_books.index', compact('borrowed_books'));
-    }
     public function create()
     {
         return view('borrow_books.create');
@@ -38,9 +21,7 @@ class BorrowBookController extends Controller
     {
         $validated = $request->validate([
             'library_id' => 'required|exists:patrons,library_id',
-            'book_number' => 'required|exists:books,book_number',
-            'due' => 'required|date',
-            'fine' => 'required|numeric'
+            'book_number' => 'required|exists:books,book_number'
         ]);
 
         $patron = Patron::where('library_id', '=', $validated['library_id'])->first();
@@ -49,12 +30,10 @@ class BorrowBookController extends Controller
             'patron_id' => $patron->patron_id,
             'book_id' => $book->book_id,
             'user_id' => Auth::id(),
-            'due' => $validated['due'],
-            'fine' => $validated['fine']
         ];
 
         BorrowedBook::create($data);
-        $book->decrement('available');
+        $book->update(['is_available' => false]);
         return redirect()->back();
     }
 
@@ -70,15 +49,15 @@ class BorrowBookController extends Controller
         ]);
 
         $book = Book::where('book_number', '=', $validated['book_number'])->first();
-        $borrowed_book = BorrowedBook::where('book_id', '=', $book->book_id)->first();
+        $borrowed_book = BorrowedBook::where('book_id', '=', $book->book_id)->whereNull('returned')->first();
 
-        if ($borrowed_book && is_null($borrowed_book->returned)) {
+        if ($borrowed_book) {
             $borrowed_book->returned = now();
             $borrowed_book->save();
-            $book->increment('available');
+            $book->update(['is_available' => true]);
         } else {
             return redirect()->back()->with('message_error', 'Book is not found in the Borrowed List');
         }
-        return redirect('/borrowed-books');
+        return redirect('/books');
     }
 }

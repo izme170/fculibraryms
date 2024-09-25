@@ -28,10 +28,9 @@ class PatronController extends Controller
     {
         $patron_types = PatronType::all();
         $departments = Department::all();
-        $courses = Course::all();
         $advisers = Adviser::all();
 
-        return view('patrons.create', compact(['patron_types', 'departments', 'courses', 'advisers']));
+        return view('patrons.create', compact(['patron_types', 'departments', 'advisers']));
     }
 
     public function store(Request $request)
@@ -142,4 +141,11 @@ class PatronController extends Controller
 
         return redirect()->back()->with('success_message', 'Patron\'s RFID updated.');
     }
+
+    public function getCoursesByDepartment($department_id)
+    {
+        $courses = Course::where('department_id', $department_id)->get();
+        return response()->json($courses);
+    }
+
 }

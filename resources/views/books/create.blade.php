@@ -16,7 +16,7 @@
                     <input type="text" id="author" name="author">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="category_id">category</label>
+                    <label class="form-label" for="category_id">Category</label>
                     <select id="category_id" name="category_id">
                         <option value="">Select book category</option>
                         @foreach ($categories as $category)
@@ -25,10 +25,6 @@
                             </option>
                         @endforeach
                     </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="qty">Qty</label>
-                    <input type="number" id="qty" name="qty">
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="book_number">Scan book's RFID here to submit</label>

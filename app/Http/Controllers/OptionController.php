@@ -23,4 +23,41 @@ class OptionController extends Controller
             'departments'
         ]));
     }
+
+    public function storeAdviser(Request $request){
+        $validated = $request->validate([
+            'adviser' => 'required'
+        ]);
+
+        Adviser::create($validated);
+        return redirect()->back();
+    }
+
+    public function storeCategory(Request $request){
+        $validated = $request->validate([
+            'category' => 'required'
+        ]);
+
+        Category::create($validated);
+        return redirect()->back();
+    }
+
+    public function storeCourse(Request $request){
+        $validated = $request->validate([
+            'course' => 'required',
+            'department_id' => 'required|exists:departments,department_id'
+        ]);
+
+        Course::create($validated);
+        return redirect()->back();
+    }
+
+    public function storeDepartment(Request $request){
+        $validated = $request->validate([
+            'department' => 'required'
+        ]);
+
+        Department::create($validated);
+        return redirect()->back();
+    }
 }

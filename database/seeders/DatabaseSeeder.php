@@ -255,9 +255,6 @@ class DatabaseSeeder extends Seeder
             'title' => fake()->sentence(3),
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
-            'qty' => 10,
-            'available' => 10,
-            'is_archived' => false
         ]);
 
         Book::create([
@@ -265,9 +262,6 @@ class DatabaseSeeder extends Seeder
             'title' => fake()->sentence(3),
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
-            'qty' => 10,
-            'available' => 10,
-            'is_archived' => false
         ]);
     }
 }

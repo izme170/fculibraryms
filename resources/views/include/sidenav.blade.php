@@ -6,15 +6,12 @@
 
     <div class="nav-links">
         <a href="/user/dashboard" class="nav-link">Dashboard</a>
-        <a href="/users" class="nav-link">Users</a>
-        <a href="/books" class="nav-link">Books</a>
-        <a href="/borrowed-books" class="nav-link">Borrowed Books</a>
-        <a href="/patrons" class="nav-link">Patrons</a>
-        <a href="/patron-logins" class="nav-link">Patron Logins</a>
+        <a href="/books" class="nav-link">Book Management</a>
+        <a href="/patrons" class="nav-link">Patron Management</a>
+        <a href="/patron-logins" class="nav-link">Access Log</a>
         <a href="#" class="nav-link">Reports</a>
-        <a href="/activities" class="nav-link">Activities</a>
-        <a href="#" class="nav-link">Archives</a>
-        <a href="#" class="nav-link">Roles</a>
+        <a href="/users" class="nav-link">User Management</a>
+        <a href="/activities" class="nav-link">User Activities</a>
         <a href="/options" class="nav-link">Options</a>
         <form action="/logout" method="post">
             @csrf

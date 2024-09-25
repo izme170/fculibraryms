@@ -11,7 +11,7 @@
             @CSRF
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-                <input type="text" id="username" name="username">
+                <input type="text" id="username" name="username" autofocus>
             </div>
             <div class="mb-3">
                 <label for="password">Password</label>

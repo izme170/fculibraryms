@@ -9,19 +9,11 @@
             <div class="col">
                 <div class="mb-3">
                     <label class="form-label" for="library_id">Patron RFID</label>
-                    <input type="text" id="library_id" name="library_id">
+                    <input type="text" id="library_id" name="library_id" autofocus>
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="book_number">Book RFID</label>
                     <input type="text" id="book_number" name="book_number">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="due">Due</label>
-                    <input type="datetime-local" id="due" name="due">
-                </div>
-                <div class="mb-3">
-                    <label class="form-label" for="fine">Fee</label>
-                    <input type="number" id="fine" name="fine" value="5">
                 </div>
             </div>
         </div>

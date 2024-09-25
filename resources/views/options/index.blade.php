@@ -20,8 +20,7 @@
             <div class="tab-pane fade show active" id="advisers" role="tabpanel" aria-labelledby="advisers-tab"
                 tabindex="0">
                 <h1>Advisers</h1>
-                <button class="btn-simple">Add</button>
-                <div class="list-container">
+                <div class="list-container mb-3">
                     <table>
                         <tbody>
                             @foreach ($advisers as $adviser)
@@ -32,12 +31,16 @@
                         </tbody>
                     </table>
                 </div>
+                <form action="/adviser/store" method="post">
+                    @csrf
+                    <input type="text" name="adviser" placeholder="Enter new adviser's full name here..." required>
+                    <button type="submit" class="btn-simple">Add</button>
+                </form>
             </div>
 
             <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab" tabindex="0">
                 <h1>Book Categories</h1>
-                <button class="btn-simple">Add</button>
-                <div class="list-container">
+                <div class="list-container mb-3">
                     <table>
                         <tbody>
                             @foreach ($categories as $category)
@@ -48,12 +51,16 @@
                         </tbody>
                     </table>
                 </div>
+                <form action="/category/store" method="post">
+                    @csrf
+                    <input type="text" name="category" placeholder="Enter new book category here..." required>
+                    <button type="submit" class="btn-simple">Add</button>
+                </form>
             </div>
 
             <div class="tab-pane fade" id="courses" role="tabpanel" aria-labelledby="courses-tab" tabindex="0">
                 <h1>Courses</h1>
-                <button class="btn-simple">Add</button>
-                <div class="list-container">
+                <div class="list-container mb-3">
                     <table>
                         <tbody>
                             @foreach ($courses as $course)
@@ -64,12 +71,22 @@
                         </tbody>
                     </table>
                 </div>
+                <form action="/course/store" method="post">
+                    @csrf
+                    <input class="mb-3" type="text" name="course" placeholder="Type new course here..." required>
+                    <select name="department_id" id="department_id" required>
+                        <option value="">Select course's department</option>
+                        @foreach ($departments as $department)
+                            <option value="{{ $department->department_id }}">{{ $department->department }}</option>
+                        @endforeach
+                    </select>
+                    <button type="submit" class="btn-simple">Add</button>
+                </form>
             </div>
 
             <div class="tab-pane fade" id="departments" role="tabpanel" aria-labelledby="departments-tab" tabindex="0">
                 <h1>Departments</h1>
-                <button class="btn-simple">Add</button>
-                <div class="list-container">
+                <div class="list-container mb-3">
                     <table>
                         <tbody>
                             @foreach ($departments as $department)
@@ -80,6 +97,11 @@
                         </tbody>
                     </table>
                 </div>
+                <form action="/department/store" method="post">
+                    @csrf
+                    <input class="mb-3" type="text" name="department" placeholder="Type new department here..." required>
+                    <button type="submit" class="btn-simple">Add</button>
+                </form>
             </div>
         </div>
     </div>
