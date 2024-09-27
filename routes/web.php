@@ -83,6 +83,7 @@ Route::middleware('adminMiddleware')->group(function () {
 Route::middleware('auth')->group(function () {
 
     Route::controller(BorrowBookController::class)->group(function () {
+        Route::get('/borrowed-books', 'index');
         Route::get('/borrow-book', 'create');
         Route::post('/borrow-book/process', 'store');
         Route::get('/return-book', 'edit');

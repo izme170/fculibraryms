@@ -12,6 +12,24 @@ use function PHPUnit\Framework\isNull;
 
 class BorrowBookController extends Controller
 {
+    public function index()
+    {
+        $borrowed_books = BorrowedBook::leftJoin('books', 'borrowed_books.book_id', '=', 'books.book_id')
+            ->leftJoin('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
+            ->leftJoin('users', 'borrowed_books.user_id', '=', 'users.user_id')
+            ->select(
+                'borrowed_books.*',
+                'books.title',
+                'patrons.first_name as patron_first_name',
+                'users.first_name as user_first_name',
+                'patrons.last_name as patron_last_name',
+                'users.last_name as user_last_name'
+            )
+            ->get();
+
+        return view('borrow_books.index', compact('borrowed_books'));
+    }
+
     public function create()
     {
         return view('borrow_books.create');
