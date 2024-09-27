@@ -57,10 +57,9 @@
                             <div class="mb-3">
                                 <label class="form-label" for="department_id">Department</label>
                                 <select id="department_id" name="department_id">
+                                    <option value="">Select Department</option>
                                     @foreach ($departments as $department)
-                                        <option value="{{ $department->department_id }}"
-                                            {{ $patron->department_id == $department->department_id ? 'selected' : '' }}>
-                                            {{ $department->department }}</option>
+                                        <option value="{{ $department->department_id }}">{{ $department->department }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -68,11 +67,11 @@
                                 <label class="form-label" for="course_id">Course</label>
                                 <select id="course_id" name="course_id">
                                     <option value="">Select Course</option>
-                                    @foreach ($courses as $course)
-                                        <option value="{{ $course->course_id }}"
-                                            {{ $patron->course_id == $course->course_id ? 'selected' : '' }}>
-                                            {{ $course->course }}</option>
-                                    @endforeach
+                                    @if (isset($courses))
+                                        @foreach ($courses as $course)
+                                            <option value="{{ $course->course_id }}">{{ $course->course }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                             </div>
                             <div class="mb-3">
@@ -101,3 +100,40 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const departmentSelect = document.getElementById('department_id');
+        const courseSelect = document.getElementById('course_id');
+
+        departmentSelect.addEventListener('change', function() {
+            const departmentId = this.value;
+
+            // Clear the course dropdown
+            courseSelect.innerHTML = '<option value="">Select Course</option>';
+
+            if (departmentId) {
+                fetch(`/courses/${departmentId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        if (data.length > 0) {
+                            data.forEach(course => {
+                                const option = document.createElement('option');
+                                option.value = course.course_id;
+                                option.textContent = course.course;
+                                courseSelect.appendChild(option);
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching courses:', error);
+                    });
+            }
+        });
+    });
+</script>

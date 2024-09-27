@@ -88,32 +88,38 @@
         </form>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $(document).ready(function() {
-            $('#department_id').change(function() {
-                var departmentId = $(this).val();
+        document.addEventListener('DOMContentLoaded', function() {
+            const departmentSelect = document.getElementById('department_id');
+            const courseSelect = document.getElementById('course_id');
+
+            departmentSelect.addEventListener('change', function() {
+                const departmentId = this.value;
 
                 // Clear the course dropdown
-                $('#course_id').empty().append('<option value="">Select Course</option>');
+                courseSelect.innerHTML = '<option value="">Select Course</option>';
 
                 if (departmentId) {
-                    $.ajax({
-                        url: '/courses/' + departmentId,
-                        type: 'GET',
-                        success: function(response) {
-                            if (response.length > 0) {
-                                $.each(response, function(key, course) {
-                                    $('#course_id').append('<option value="' + course
-                                        .course_id + '">' + course.course +
-                                        '</option>');
+                    fetch(`/courses/${departmentId}`)
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.length > 0) {
+                                data.forEach(course => {
+                                    const option = document.createElement('option');
+                                    option.value = course.course_id;
+                                    option.textContent = course.course;
+                                    courseSelect.appendChild(option);
                                 });
                             }
-                        },
-                        error: function() {
-                            console.log('Error fetching courses.');
-                        }
-                    });
+                        })
+                        .catch(error => {
+                            console.error('Error fetching courses:', error);
+                        });
                 }
             });
         });

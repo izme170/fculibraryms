@@ -73,10 +73,9 @@ class PatronController extends Controller
             find($id);
         $patron_types = PatronType::all();
         $departments = Department::all();
-        $courses = Course::all();
         $advisers = Adviser::all();
 
-        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'courses', 'advisers'));
+        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'advisers'));
     }
 
     public function update(Request $request, $id)
