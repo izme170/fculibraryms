@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\BorrowedBook;
 use App\Models\Patron;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,6 +13,7 @@ use function PHPUnit\Framework\isNull;
 
 class BorrowBookController extends Controller
 {
+    private $finePerHour = 5;
     public function index()
     {
         $borrowed_books = BorrowedBook::leftJoin('books', 'borrowed_books.book_id', '=', 'books.book_id')
@@ -26,6 +28,24 @@ class BorrowBookController extends Controller
                 'users.last_name as user_last_name'
             )
             ->get();
+
+            $borrowed_books->each(function($borrowed_book){
+
+                //Checks if the book is returned
+                if(!$borrowed_book->returned){
+                    $dueDate = Carbon::parse($borrowed_book->due_date);
+                    $now = Carbon::now();
+
+                    //Check if the book is overdue
+                    if($now->gt($dueDate)){
+                        $hoursOverdue = $dueDate->diffInHours($now, false);
+                        $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+                    }
+                    else{
+                        $borrowed_book->fine = 0;
+                    }
+                }
+            });
 
         return view('borrow_books.index', compact('borrowed_books'));
     }
@@ -50,6 +70,12 @@ class BorrowBookController extends Controller
             'user_id' => Auth::id(),
         ];
 
+        if($request['due'] == 'oneHour'){
+            $data['due_date'] = Carbon::now()->addHours(1);
+        } else {
+            $data['due_date'] = Carbon::now()->adddays(1);
+        }
+
         BorrowedBook::create($data);
         $book->update(['is_available' => false]);
         return redirect()->back();
@@ -70,8 +96,22 @@ class BorrowBookController extends Controller
         $borrowed_book = BorrowedBook::where('book_id', '=', $book->book_id)->whereNull('returned')->first();
 
         if ($borrowed_book) {
-            $borrowed_book->returned = now();
+            $dueDate = Carbon::parse($borrowed_book->due_date);
+            $now = Carbon::now();
+            $borrowed_book->returned = $now;
+
+            // Check if the book is overdue
+            if($now->gt($dueDate)){
+                $hoursOverdue = $dueDate->diffInHours($now);
+                $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+            }
+            else{
+                $borrowed_book->fine = 0;
+            }
+
             $borrowed_book->save();
+
+            // Make the book available
             $book->update(['is_available' => true]);
         } else {
             return redirect()->back()->with('message_error', 'Book is not found in the Borrowed List');

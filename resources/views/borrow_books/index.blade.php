@@ -16,6 +16,7 @@
                 <th scope="col">Book</th>
                 <th scope="col">Patron</th>
                 <th scope="col">Librarian on Duty</th>
+                <th scope="col">Fine</th>
                 <th scope="col">Returned</th>
             </tr>
         </thead>
@@ -27,6 +28,7 @@
                     <td>{{ $borrowed_book->title }}</td>
                     <td>{{ $borrowed_book->patron_first_name }} {{ $borrowed_book->patron_last_name }}</td>
                     <td>{{ $borrowed_book->user_first_name }} {{ $borrowed_book->user_last_name }}</td>
+                    <td>₱{{ $borrowed_book->fine }}</td>
                     <td>{{ $borrowed_book->returned ? $borrowed_book->returned->format('F j, Y, g:i a') : 'Not returned' }}
                     </td>
                 </tr>

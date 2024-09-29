@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use Illuminate\Support\Facades\Route;
@@ -40,6 +41,11 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::put('/user/update/{id}', 'update');
         Route::put('/user/archive/{id}', 'archive');
         Route::put('/user/change-password/{id}', 'changePassword');
+    });
+
+    Route::controller(RoleController::class)->group(function(){
+        Route::get('/roles', 'index');
+        Route::put('/roles/update', 'update');
     });
 
     Route::controller(PatronController::class)->group(function () {

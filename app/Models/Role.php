@@ -11,6 +11,9 @@ class Role extends Model
     protected $table = 'roles';
     protected $primaryKey = 'role_id';
     protected $fillable = [
-        'role'
+        'role',
+        'books_access',
+        'patrons_acess',
+        'reports_access'
     ];
 }

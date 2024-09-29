@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('book_id')->nullable();
             $table->unsignedBigInteger('patron_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
+            $table->dateTime('due_date');
             $table->double("fine")->nullable();
             $table->dateTime('returned')->nullable();
             $table->timestamps();

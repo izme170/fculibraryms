@@ -14,6 +14,7 @@ class BorrowedBook extends Model
         'book_id',
         'patron_id',
         'user_id',
+        'due_date',
         'fine',
         'returned'
     ];

@@ -33,8 +33,10 @@
                 </div>
                 <form action="/adviser/store" method="post">
                     @csrf
-                    <input type="text" name="adviser" placeholder="Enter new adviser's full name here..." required>
-                    <button type="submit" class="btn-simple">Add</button>
+                    <div class="d-flex">
+                        <input type="text" name="adviser" placeholder="Enter new adviser's full name here..." required>
+                        <button type="submit" class="btn-simple">Add</button>
+                    </div>
                 </form>
             </div>
 
@@ -53,8 +55,10 @@
                 </div>
                 <form action="/category/store" method="post">
                     @csrf
-                    <input type="text" name="category" placeholder="Enter new book category here..." required>
-                    <button type="submit" class="btn-simple">Add</button>
+                    <div class="d-flex">
+                        <input type="text" name="category" placeholder="Enter new book category here..." required>
+                        <button type="submit" class="btn-simple">Add</button>
+                    </div>
                 </form>
             </div>
 
@@ -74,12 +78,14 @@
                 <form action="/course/store" method="post">
                     @csrf
                     <input class="mb-3" type="text" name="course" placeholder="Type new course here..." required>
-                    <select name="department_id" id="department_id" required>
-                        <option value="">Select course's department</option>
-                        @foreach ($departments as $department)
-                            <option value="{{ $department->department_id }}">{{ $department->department }}</option>
-                        @endforeach
-                    </select>
+                    <div class="mb-3">
+                        <select name="department_id" id="department_id" required>
+                            <option value="">Select course's department</option>
+                            @foreach ($departments as $department)
+                                <option value="{{ $department->department_id }}">{{ $department->department }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <button type="submit" class="btn-simple">Add</button>
                 </form>
             </div>
@@ -99,8 +105,10 @@
                 </div>
                 <form action="/department/store" method="post">
                     @csrf
-                    <input class="mb-3" type="text" name="department" placeholder="Type new department here..." required>
-                    <button type="submit" class="btn-simple">Add</button>
+                    <div class="d-flex">
+                        <input type="text" name="department" placeholder="Type new department here..." required>
+                        <button type="submit" class="btn-simple">Add</button>
+                    </div>
                 </form>
             </div>
         </div>

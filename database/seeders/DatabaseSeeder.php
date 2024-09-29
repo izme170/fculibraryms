@@ -25,7 +25,10 @@ class DatabaseSeeder extends Seeder
     {
         // Seed Roles
         Role::create([
-            'role' => 'Admin'
+            'role' => 'Admin',
+            'books_access' => true,
+            'patrons_access' => true,
+            'reports_access' => true
         ]);
 
         Role::create([
