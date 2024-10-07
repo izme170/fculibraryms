@@ -45,7 +45,26 @@ Route::middleware('adminMiddleware')->group(function () {
 
     Route::controller(RoleController::class)->group(function(){
         Route::get('/roles', 'index');
-        Route::put('/roles/update', 'update');
+        Route::post('/role/store', 'store');
+        Route::put('/role/update/{id}', 'update');
+    });
+
+    Route::controller(ActivityController::class)->group(function () {
+        Route::get('/activities', 'index');
+    });
+
+    Route::controller(OptionController::class)->group(function () {
+        Route::get('/options', 'index');
+        Route::post('/adviser/store', 'storeAdviser');
+        Route::post('/category/store', 'storeCategory');
+        Route::post('/course/store', 'storeCourse');
+        Route::post('/department/store', 'storeDepartment');
+    });
+});
+
+Route::middleware('auth')->group(function () {
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/user/dashboard', 'index');
     });
 
     Route::controller(PatronController::class)->group(function () {
@@ -68,25 +87,6 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::put('/book/archive/{id}', 'archive');
         Route::put('/book/new_rfid/{id}', 'newRFID');
     });
-
-    Route::controller(ActivityController::class)->group(function () {
-        Route::get('/activities', 'index');
-    });
-
-    Route::controller(DashboardController::class)->group(function () {
-        Route::get('/user/dashboard', 'index');
-    });
-
-    Route::controller(OptionController::class)->group(function () {
-        Route::get('/options', 'index');
-        Route::post('/adviser/store', 'storeAdviser');
-        Route::post('/category/store', 'storeCategory');
-        Route::post('/course/store', 'storeCourse');
-        Route::post('/department/store', 'storeDepartment');
-    });
-});
-
-Route::middleware('auth')->group(function () {
 
     Route::controller(BorrowBookController::class)->group(function () {
         Route::get('/borrowed-books', 'index');

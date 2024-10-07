@@ -9,26 +9,31 @@ class RoleController extends Controller
 {
     public function index()
     {
-        $roles = Role::all();
+        $roles = Role::where('role_id', '!=', 1)->get();
 
         return view('roles.index', compact('roles'));
     }
 
-    public function update(Request $request)
-    {
-        dd($request->roles);
-        // Loop through each role submitted in the request
-        foreach ($request->roles as $roleId => $roleData) {
-            // Find the role by its ID
-            $role = Role::findOrFail($roleId);
+    public function store(Request $request){
+        $validated = $request->validate([
+            'role' => 'required'
+        ]);
 
-            // Update the access permissions based on the checkboxes
-            $role->update([
-                'books_access' => isset($roleData['books_access']),
-                'patrons_access' => isset($roleData['patrons_access']),
-                'reports_access' => isset($roleData['reports_access']),
-            ]);
-        }
+        Role::insert($validated);
+        return redirect()->back();
+    }
+
+    public function update(Request $request, $id)
+    {
+        $books_access = $request->has('books_access') ? true : false;
+        $patrons_access = $request->has('patrons_access') ? true : false;
+        $reports_access = $request->has('reports_access') ? true : false;
+
+        Role::find($id)->update([
+            'books_access' => $books_access,
+            'patrons_access' => $patrons_access,
+            'reports_access' => $reports_access,
+        ]);
 
         return redirect()->back();
     }

@@ -32,7 +32,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Role::create([
-            'role' => 'Librarian'
+            'role' => 'Librarian',
+            'books_access' => true,
+            'patrons_access' => true,
+            'reports_access' => true
         ]);
 
         // Seed Users
@@ -181,6 +184,19 @@ class DatabaseSeeder extends Seeder
             'contact_number' => fake()->randomDigit(),
             'username' => 'admin',
             'password' => bcrypt('admin'),
+            'is_archived' => false
+        ]);
+
+        // Seed User
+        User::create([
+            'first_name' => fake()->firstName(),
+            'middle_name' => fake()->lastName(),
+            'last_name' => fake()->lastName(),
+            'role_id' => 2,
+            'email' => fake()->unique()->safeEmail(),
+            'contact_number' => fake()->randomDigit(),
+            'username' => 'user',
+            'password' => bcrypt('user'),
             'is_archived' => false
         ]);
 

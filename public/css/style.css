@@ -91,7 +91,7 @@ select {
     transition: 0.5s;
 }
 
-input:focus,
+input:focus:not([type="checkbox"]),
 select:focus {
     border-left: 10px solid var(--primary);
     box-shadow: 3px 3px 6px var(--shadow);

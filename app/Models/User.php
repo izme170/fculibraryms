@@ -23,4 +23,10 @@ class User extends AuthUser
         'is_archived'
     ];
     protected $hidden = ['password'];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
+
 }
