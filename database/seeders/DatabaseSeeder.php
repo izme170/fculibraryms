@@ -57,9 +57,6 @@ class DatabaseSeeder extends Seeder
             'College of Nursing',
             'College of Teacher Education',
             'Graduate School',
-            'Pre-School',
-            'Elementary',
-            'Junior High School',
             'Senior High School'
         ];
         foreach($departments as $department){
