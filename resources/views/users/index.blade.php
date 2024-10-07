@@ -10,6 +10,7 @@
         </li>
     </ul>
     <a class="btn-simple" href="/user/create">Add Users</a>
+    <a class="btn-simple" href="/users/export">Export</a>
     <table class="table">
         <thead class="thead-dark">
             <tr>

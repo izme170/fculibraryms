@@ -41,6 +41,7 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::put('/user/update/{id}', 'update');
         Route::put('/user/archive/{id}', 'archive');
         Route::put('/user/change-password/{id}', 'changePassword');
+        Route::get('/users/export', 'export');
     });
 
     Route::controller(RoleController::class)->group(function(){

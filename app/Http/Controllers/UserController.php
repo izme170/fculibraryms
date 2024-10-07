@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
+use Maatwebsite\Excel\Facades\Excel;
 use App\Models\Activity;
 use App\Models\Role;
 use App\Models\User;
@@ -156,5 +158,9 @@ class UserController extends Controller
         User::find($id)->update(['password' => bcrypt($validated['password'])]);
 
         return redirect()->back()->with('message_success', 'Password successfully updated!');
+    }
+
+    public function export(){
+        return Excel::download(new UsersExport, 'users-library-management-system.xlsx');
     }
 }
