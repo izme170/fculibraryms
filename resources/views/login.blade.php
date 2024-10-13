@@ -1,5 +1,4 @@
 @extends('layout.main')
-@include('include.sidepanel_login')
 @section('login-content')
 <div class="login-container">
     <div class="brand">
