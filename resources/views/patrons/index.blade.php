@@ -2,6 +2,7 @@
 @include('include.sidenav')
 @section('user-content')
 <a class="btn-simple" href="/patron/create">Add Patron</a>
+<a class="btn-simple" href="/patrons/export">Export</a>
 <table class="table">
     <thead class="thead-dark">
         <tr>

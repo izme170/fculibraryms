@@ -12,6 +12,7 @@ use App\Models\Book;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Marketer;
+use App\Models\PatronLogin;
 use App\Models\Purpose;
 use Database\Factories\BookFactory;
 use Illuminate\Database\Seeder;
@@ -171,6 +172,9 @@ class DatabaseSeeder extends Seeder
         // Seed Marketer
         Marketer::factory(10)->create();
 
+        // Seed Patron Logins
+        PatronLogin::factory(30)->create();
+
         // Seed Admin
         User::create([
             'first_name' => fake()->firstName(),
@@ -178,7 +182,7 @@ class DatabaseSeeder extends Seeder
             'last_name' => fake()->lastName(),
             'role_id' => 1,
             'email' => fake()->unique()->safeEmail(),
-            'contact_number' => fake()->randomDigit(),
+            'contact_number' => fake()->phoneNumber(),
             'username' => 'admin',
             'password' => bcrypt('admin'),
             'is_archived' => false
@@ -191,7 +195,7 @@ class DatabaseSeeder extends Seeder
             'last_name' => fake()->lastName(),
             'role_id' => 2,
             'email' => fake()->unique()->safeEmail(),
-            'contact_number' => fake()->randomDigit(),
+            'contact_number' => fake()->phoneNumber(),
             'username' => 'user',
             'password' => bcrypt('user'),
             'is_archived' => false
@@ -207,8 +211,8 @@ class DatabaseSeeder extends Seeder
             'type_id' => 1,
             'address' => 'Capiz',
             'school_id' => '21-C0000',
-            'department_id' => 1,
-            'course_id' => 1,
+            'department_id' => 3,
+            'course_id' => 9,
             'year' => 4,
             'adviser_id' => 1,
             'library_id' => '2598373405',
@@ -224,8 +228,8 @@ class DatabaseSeeder extends Seeder
             'type_id' => 1,
             'address' => 'Capiz',
             'school_id' => '21-C0000',
-            'department_id' => 1,
-            'course_id' => 1,
+            'department_id' => 3,
+            'course_id' => 9,
             'year' => 4,
             'adviser_id' => 1,
             'library_id' => '3745090404',
@@ -241,8 +245,8 @@ class DatabaseSeeder extends Seeder
             'type_id' => 1,
             'address' => 'Capiz',
             'school_id' => '21-C0000',
-            'department_id' => 1,
-            'course_id' => 1,
+            'department_id' => 3,
+            'course_id' => 9,
             'year' => 4,
             'adviser_id' => 1,
             'library_id' => '3689369892',
@@ -258,8 +262,8 @@ class DatabaseSeeder extends Seeder
             'type_id' => 1,
             'address' => 'Capiz',
             'school_id' => '21-C0000',
-            'department_id' => 1,
-            'course_id' => 1,
+            'department_id' => 3,
+            'course_id' => 9,
             'year' => 4,
             'adviser_id' => 1,
             'library_id' => '3743148436',

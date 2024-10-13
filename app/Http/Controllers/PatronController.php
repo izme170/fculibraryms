@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PatronExport;
+use App\Exports\UsersExport;
 use App\Mail\SendPatronQRCode;
 use App\Models\Activity;
 use App\Models\Adviser;
@@ -12,6 +14,8 @@ use App\Models\PatronLogin;
 use App\Models\PatronType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
+
 class PatronController extends Controller
 {
     public function index()
@@ -147,4 +151,7 @@ class PatronController extends Controller
         return response()->json($courses);
     }
 
+    public function export(){
+        return Excel::download(new PatronExport, 'patrons-library-management-system.xlsx');
+    }
 }

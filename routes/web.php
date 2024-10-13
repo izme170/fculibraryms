@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OptionController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
@@ -77,6 +78,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/patron/update/{id}', 'update');
         Route::put('/patron/archive/{id}', 'archive');
         Route::put('/patron/new_rfid/{id}', 'newRFID');
+        Route::get('/patrons/export', 'export');
     });
 
     Route::controller(BookController::class)->group(function () {
@@ -87,6 +89,11 @@ Route::middleware('auth')->group(function () {
         Route::put('/book/update/{id}', 'update');
         Route::put('/book/archive/{id}', 'archive');
         Route::put('/book/new_rfid/{id}', 'newRFID');
+        Route::get('/books/export', 'export');
+    });
+
+    Route::controller(ReportController::class)->group(function(){
+        Route::get('/reports', 'index');
     });
 
     Route::controller(BorrowBookController::class)->group(function () {

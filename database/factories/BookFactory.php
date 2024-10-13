@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,11 +17,12 @@ class BookFactory extends Factory
      */
     public function definition(): array
     {
+        $category = Category::inRandomOrder()->first();
         return [
             'book_number' => fake()->isbn10(),
             'title' => fake()->sentence(3),
             'author' => fake()->name(),
-            'category_id' => fake()->numberBetween(1, 4),
+            'category_id' => $category->category_id,
         ];
     }
 }

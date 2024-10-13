@@ -29,7 +29,7 @@ class RoleController extends Controller
         $patrons_access = $request->has('patrons_access') ? true : false;
         $reports_access = $request->has('reports_access') ? true : false;
 
-        Role::find($id)->update([
+        Role::where('role_id', '=',$id)->update([
             'books_access' => $books_access,
             'patrons_access' => $patrons_access,
             'reports_access' => $reports_access,

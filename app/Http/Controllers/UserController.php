@@ -56,8 +56,8 @@ class UserController extends Controller
 
     public function index(){
         $users = User::join('roles', 'users.role_id', '=', 'roles.role_id')
-        ->orderBy('first_name')
         ->orderBy('users.role_id')
+        ->orderBy('first_name')
         ->where('is_archived', false)
         ->get();
 

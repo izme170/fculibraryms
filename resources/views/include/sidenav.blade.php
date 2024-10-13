@@ -21,7 +21,7 @@
         @endif
         {{-- Checks if the user is allowed to access the reports module --}}
         @if ($user->role->reports_access)
-            <a href="#" class="nav-link">Reports</a>
+            <a href="/reports" class="nav-link">Reports</a>
         @endif
 
         {{-- Checks if the user is admin --}}

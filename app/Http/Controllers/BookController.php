@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BooksExport;
 use App\Models\Activity;
 use App\Models\Book;
 use App\Models\BorrowedBook;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class BookController extends Controller
 {
@@ -102,5 +104,9 @@ class BookController extends Controller
         Activity::create($data);
 
         return redirect()->back()->with('message_success', 'New RFID successfully assigned to the book.');
+    }
+
+    public function export(){
+        return Excel::download(new BooksExport, 'books-library-management-system'. now() . '.xlsx');
     }
 }

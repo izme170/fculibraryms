@@ -13,6 +13,7 @@
         <a class="btn-simple" href="/book/create">Add book</a>
         <a class="btn-simple" href="/borrow-book">Borrow Book</a>
         <a class="btn-simple" href="/return-book">Return Book</a>
+        <a class="btn-simple" href="/books/export">Export</a>
     </div>
     <table class="table">
         <thead class="thead-dark">
