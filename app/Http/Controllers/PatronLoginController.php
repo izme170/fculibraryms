@@ -16,6 +16,7 @@ class PatronLoginController extends Controller
         $patron_logins = PatronLogin::join('patrons', 'patron_logins.patron_id', '=', 'patrons.patron_id')
             ->leftJoin('purposes', 'patron_logins.purpose_id', '=', 'purposes.purpose_id')
             ->leftJoin('marketers', 'patron_logins.marketer_id', '=', 'marketers.marketer_id')
+            ->orderByDesc('login_at')
             ->get();
 
         return view('patron_logins.index', compact('patron_logins'));

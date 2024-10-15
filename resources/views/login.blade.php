@@ -6,6 +6,7 @@
         <span>FCU Library Management System</span>
     </div>
     <div class="login-form">
+        <h1>Authentication</h1>
         <form action="/authenticate" method="post">
             @CSRF
             <div class="mb-3">
@@ -16,7 +17,7 @@
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password">
             </div>
-            <button class="btn-simple btn-right" type="submit">Login</button>
+            <button class="btn-simple" type="submit">Login</button>
         </form>
     </div>
 </div>

@@ -2,74 +2,76 @@
 @include('include.sidenav')
 @section('user-content')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-    <ul class="nav nav-tabs mb-3">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/users">Users</a>
+    <ul class="nav nav-tabs">
+        <li class="nav-item bg-secondary rounded-top">
+            <a class="nav-link text-black" aria-current="page" href="/users">Users</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/roles">Roles</a>
         </li>
     </ul>
-    <form action="/role/store" method="post">
-        @csrf
-        <div class="d-flex w-50">
-            <input type="text" name="role" placeholder="Add role here..." required>
-            <button type="submit" class="btn-simple">Add</button>
-        </div>
-    </form>
-    <table class="table">
-        <thead class="thead-dark">
-            <tr>
-                <th scope="col">Role</th>
-                <th scope="col">Book Management</th>
-                <th scope="col">Patron Management</th>
-                <th scope="col">Reports</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach ($roles as $role)
+    <div class="container">
+        <form action="/role/store" method="post">
+            @csrf
+            <div class="d-flex w-50 mt-3">
+                <input type="text" name="role" placeholder="Add role here..." required>
+                <button type="submit" class="btn-simple">Add</button>
+            </div>
+        </form>
+        <table class="table">
+            <thead class="thead-dark">
                 <tr>
-                    <form action="/role/update/{{ $role->role_id }}" method="post" class="role-form">
-                        @csrf
-                        @method('PUT')
-                        <td>{{ $role->role }}</td>
-                        <td>
-                            <label class="switch">
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="books_access{{ $role->role_id }}" name="books_access"
-                                        {{ $role->books_access ? 'checked' : '' }} disabled>
-                                    <label for="books_access{{ $role->role_id }}"></label>
-                                </div>
-                            </label>
-                        </td>
-                        <td>
-                            <label class="switch">
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="patrons_access{{ $role->role_id }}" name="patrons_access"
-                                        {{ $role->patrons_access ? 'checked' : '' }} disabled>
-                                    <label for="patrons_access{{ $role->role_id }}"></label>
-                                </div>
-                            </label>
-                        </td>
-                        <td>
-                            <label class="switch">
-                                <div class="toggle-switch">
-                                    <input type="checkbox" id="reports_access{{ $role->role_id }}" name="reports_access"
-                                        {{ $role->reports_access ? 'checked' : '' }} disabled>
-                                    <label for="reports_access{{ $role->role_id }}"></label>
-                                </div>
-                            </label>
-                        </td>
-                        <td>
-                            <button class="btn-simple edit-btn" type="button">Edit</button>
-                            <button class="btn-simple cancel-btn" type="button" hidden onclick="location.reload();">Cancel</button>
-                            <button class="btn-simple save-btn" type="submit" hidden>Save</button>
-                        </td>
-                    </form>
+                    <th scope="col">Role</th>
+                    <th scope="col">Book Management</th>
+                    <th scope="col">Patron Management</th>
+                    <th scope="col">Reports</th>
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach ($roles as $role)
+                    <tr>
+                        <form action="/role/update/{{ $role->role_id }}" method="post" class="role-form">
+                            @csrf
+                            @method('PUT')
+                            <td>{{ $role->role }}</td>
+                            <td>
+                                <label class="switch">
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="books_access{{ $role->role_id }}" name="books_access"
+                                            {{ $role->books_access ? 'checked' : '' }} disabled>
+                                        <label for="books_access{{ $role->role_id }}"></label>
+                                    </div>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="patrons_access{{ $role->role_id }}" name="patrons_access"
+                                            {{ $role->patrons_access ? 'checked' : '' }} disabled>
+                                        <label for="patrons_access{{ $role->role_id }}"></label>
+                                    </div>
+                                </label>
+                            </td>
+                            <td>
+                                <label class="switch">
+                                    <div class="toggle-switch">
+                                        <input type="checkbox" id="reports_access{{ $role->role_id }}" name="reports_access"
+                                            {{ $role->reports_access ? 'checked' : '' }} disabled>
+                                        <label for="reports_access{{ $role->role_id }}"></label>
+                                    </div>
+                                </label>
+                            </td>
+                            <td>
+                                <button class="btn-simple edit-btn" type="button">Edit</button>
+                                <button class="btn-simple cancel-btn" type="button" hidden onclick="location.reload();">Cancel</button>
+                                <button class="btn-simple save-btn" type="submit" hidden>Save</button>
+                            </td>
+                        </form>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

@@ -23,9 +23,11 @@ class DashboardController extends Controller
 
         // Format the data for the view
         $visits = [];
-        for ($day = 2; $day <= 8; $day++) {
+        for ($day = 2; $day <= 7; $day++) {
             $visits[] = $dailyVisits->get($day, 0);  // Default to 0 if no visits for that day
         }
+        // Puts the sunday to the last of the array
+        $visits[] = $dailyVisits->get(1, 0);
 
         // Get the total visit today
         $total_visits_today = PatronLogin::whereDate('login_at', Carbon::today())->count();

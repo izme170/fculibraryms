@@ -1,31 +1,50 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-    <a class="btn-simple" href="/borrow-book">Borrow Book</a>
-    <a class="btn-simple" href="/return-book">Return Book</a>
-
-    <div class="widget-container">
-        <div class="widget">
-            <div class="w-text small">
-                Total visits today:
-            </div>
-            <div class="w-text large">
-                {{ $total_visits_today }}
-            </div>
-        </div>
-
-        <div class="widget">
-            <div class="w-text small">
-                Unreturned Books:
-            </div>
-            <div class="w-text large">
-                {{ $total_unreturned_books }}
-            </div>
-        </div>
+    <div class="widget">
+        <a class="btn-simple" href="/borrow-book">Borrow Book</a>
+        <a class="btn-simple" href="/return-book">Return Book</a>
     </div>
 
-    <div class="chart-container" style="position: relative; width:50vw">
-        <canvas id="dailyVisitChart"></canvas>
+    <div class="row">
+        <div class="col">
+            <div class="widget-container">
+                <div class="widget">
+                    <div class="w-text small">
+                        Total visits today:
+                    </div>
+                    <div class="w-text large">
+                        {{ $total_visits_today }}
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="w-text small">
+                        Unreturned Books:
+                    </div>
+                    <div class="w-text large">
+                        {{ $total_unreturned_books }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget">
+                <div class="chart-container" style="position: relative; width:600px">
+                    <canvas id="dailyVisitChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="widget">
+                <div class="w-text small" id="datetime"></div>
+            </div>
+            <div class="widget">
+                <div class="w-text small">
+                    Unreturned Books
+                </div>
+                <div class="w-text">Sample Book</div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -40,24 +59,9 @@
                     datasets: [{
                         data: data,
                         backgroundColor: [
-                            'rgba(255, 99, 132, 0.2)',
-                            'rgba(54, 162, 235, 0.2)',
-                            'rgba(255, 206, 86, 0.2)',
-                            'rgba(75, 192, 192, 0.2)',
-                            'rgba(153, 102, 255, 0.2)',
-                            'rgba(255, 159, 64, 0.2)',
-                            'rgba(255, 159, 64, 0.2)'
+                            'rgb(14, 17, 51)',
                         ],
-                        borderColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-                            'rgba(255, 159, 64, 1)'
-                        ],
-                        borderWidth: 1
+                        borderRadius: 5
                     }]
                 },
                 options: {
@@ -67,7 +71,11 @@
                         },
                         title: {
                             display: true,
-                            text: 'Total Visits'
+                            text: 'Visits of the Week',
+                            color: 'rgb(14, 17, 51)',
+                            font: {
+                                size: 25
+                            }
                         }
                     },
                     scales: {
@@ -85,5 +93,27 @@
                 }
             });
         });
+
+        //Date and time
+        function updateDateTime() {
+            const now = new Date(); // Get the current date and time
+
+            // Format the date and time
+            const options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit',
+                hour12: true
+            };
+            const currentDateTime = now.toLocaleString('en-US', options); // Use locale for formatting
+
+            // Display date and time in the div
+            document.getElementById('datetime').textContent = currentDateTime;
+        }
+
+        setInterval(updateDateTime, 1000); // Update every second
+        updateDateTime(); // Initial call to display date and time right away
     </script>
 @endsection
