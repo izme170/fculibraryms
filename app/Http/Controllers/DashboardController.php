@@ -32,9 +32,14 @@ class DashboardController extends Controller
         // Get the total visit today
         $total_visits_today = PatronLogin::whereDate('login_at', Carbon::today())->count();
 
-        // Unreturned Book
-        $total_unreturned_books = BorrowedBook::where('returned', null)->count();
+        //$ List of Unreturned Books
+        $unreturned_books_list = BorrowedBook::where('returned', null)
+        ->join('books', 'borrowed_books.book_id', '=', 'books.book_id')
+        ->get();
 
-        return view('users.dashboard', compact('visits', 'total_visits_today', 'total_unreturned_books'));
+        // Total Unreturned Books
+        $total_unreturned_books = $unreturned_books_list->count();
+
+        return view('users.dashboard', compact('visits', 'total_visits_today', 'total_unreturned_books', 'unreturned_books_list'));
     }
 }

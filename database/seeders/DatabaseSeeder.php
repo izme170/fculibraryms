@@ -9,12 +9,14 @@ use App\Models\PatronType;
 use App\Models\Patron;
 use App\Models\Category;
 use App\Models\Book;
+use App\Models\BorrowedBook;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Marketer;
 use App\Models\PatronLogin;
 use App\Models\Purpose;
 use Database\Factories\BookFactory;
+use Database\Factories\UnreturnedBookFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -60,7 +62,7 @@ class DatabaseSeeder extends Seeder
             'Graduate School',
             'Senior High School'
         ];
-        foreach($departments as $department){
+        foreach ($departments as $department) {
             Department::create(['department' => $department]);
         }
 
@@ -88,7 +90,7 @@ class DatabaseSeeder extends Seeder
             'Bachelor of Special Needs Education' => 8,
         ];
 
-        foreach($courses as $course => $department_id){
+        foreach ($courses as $course => $department_id) {
             Course::create([
                 'course' => $course,
                 'department_id' => $department_id
@@ -283,5 +285,24 @@ class DatabaseSeeder extends Seeder
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
         ]);
+
+        // Seed Borrowed Books
+        BorrowedBook::factory(20)->create();
+
+        //Seed Unreturned Book
+        for ($i = 0; $i <= 3; $i++) {
+            $book = Book::inRandomOrder()->first();
+            $patron = Patron::inRandomOrder()->first();
+            $user = User::where('role_id', 1)->inRandomOrder()->first();
+            $created_at = fake()->dateTimeBetween(now()->startOfDay(), now());
+            $due = (clone $created_at)->modify('+' . 60 . 'minutes');
+            BorrowedBook::create([
+                'book_id' => $book->book_id,
+                'patron_id' => $patron->patron_id,
+                'user_id' => $user->user_id,
+                'due_date' => $due,
+                'created_at' => $created_at
+            ]);
+        }
     }
 }

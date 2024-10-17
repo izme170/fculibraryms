@@ -42,7 +42,9 @@
                 <div class="w-text small">
                     Unreturned Books
                 </div>
-                <div class="w-text">Sample Book</div>
+                @foreach ($unreturned_books_list as $book)
+                    <div class="w-text">{{$book->title}}</div>
+                @endforeach
             </div>
         </div>
     </div>

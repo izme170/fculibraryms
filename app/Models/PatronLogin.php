@@ -22,4 +22,9 @@ class PatronLogin extends Model
         'login_at' => 'datetime',
         'logout_at' => 'datetime'
     ];
+
+    public function patron()
+    {
+        return $this->belongsTo(Patron::class, 'patron_id');
+    }
 }
