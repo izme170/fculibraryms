@@ -130,7 +130,7 @@
                 // Set a new timer for 10 seconds
                 reloadTimer = setTimeout(() => {
                     location.reload(); // Reload after 10 seconds
-                }, 10000); // 10 seconds
+                }, 20000); // 20 seconds
             }
         });
     </script>

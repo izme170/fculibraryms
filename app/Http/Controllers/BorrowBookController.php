@@ -27,6 +27,7 @@ class BorrowBookController extends Controller
                 'patrons.last_name as patron_last_name',
                 'users.last_name as user_last_name'
             )
+            ->orderByDesc('created_at')
             ->get();
 
             $borrowed_books->each(function($borrowed_book){

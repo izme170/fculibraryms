@@ -116,13 +116,60 @@ select:focus {
 }
 
 .btn-simple {
-    border: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #0E1133;
+    color: white;
+    border: 2px solid #0E1133;
+    border-radius: 20px;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
     text-decoration: none;
-    background-color: var(--primary);
-    color: var(--secondary);
-    padding: 5px 15px;
-    border-radius: 5px;
 }
+
+.btn-simple:hover {
+    background-color: #17208a;
+    border-color: #17208a;
+    transform: translateY(-3px); /* Slight lift effect on hover */
+}
+
+.btn-simple:active {
+    background-color: #161c60;
+    border-color: #161c60;
+    transform: translateY(1px);
+}
+
+.btn-simple:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(9, 0, 180, 0.4);
+}
+
+.btn-add {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 3px 3px 6px var(--disabled);
+    transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+}
+
+
 
 .bg-red {
     background-color: var(--danger);

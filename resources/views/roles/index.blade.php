@@ -15,7 +15,7 @@
             @csrf
             <div class="d-flex w-50 mt-3">
                 <input type="text" name="role" placeholder="Add role here..." required>
-                <button type="submit" class="btn-simple">Add</button>
+                <button type="submit" class="btn-add">Add</button>
             </div>
         </form>
         <table class="table">

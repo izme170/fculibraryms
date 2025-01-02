@@ -11,7 +11,7 @@
                     <div class="mb-3">
                         <label class="form-label" for="role_id">Role</label>
                         <select id="role_id" name="role_id">
-                            <option value="">Select Patron Type</option>
+                            <option value="">Select Role</option>
                             @foreach ($roles as $role)
                                 <option value="{{$role->role_id}}" {{$role->role == 'librarian' ? 'selected' :  ''}}>{{$role->role}}</option>
                             @endforeach

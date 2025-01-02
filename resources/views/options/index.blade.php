@@ -37,7 +37,7 @@
                         <div class="d-flex">
                             <input type="text" name="adviser" placeholder="Enter new adviser's full name here..."
                                 required>
-                            <button type="submit" class="btn-simple">Add</button>
+                            <button type="submit" class="btn-add">Add</button>
                         </div>
                     </form>
                 </div>
@@ -59,7 +59,7 @@
                         @csrf
                         <div class="d-flex">
                             <input type="text" name="category" placeholder="Enter new book category here..." required>
-                            <button type="submit" class="btn-simple">Add</button>
+                            <button type="submit" class="btn-add">Add</button>
                         </div>
                     </form>
                 </div>
@@ -88,7 +88,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <button type="submit" class="btn-simple">Add</button>
+                        <button type="submit" class="btn-add">Add</button>
                     </form>
                 </div>
 
@@ -110,7 +110,7 @@
                         @csrf
                         <div class="d-flex">
                             <input type="text" name="department" placeholder="Type new department here..." required>
-                            <button type="submit" class="btn-simple">Add</button>
+                            <button type="submit" class="btn-add">Add</button>
                         </div>
                     </form>
                 </div>

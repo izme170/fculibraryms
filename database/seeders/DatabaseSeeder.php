@@ -291,18 +291,34 @@ class DatabaseSeeder extends Seeder
 
         //Seed Unreturned Book
         for ($i = 0; $i <= 3; $i++) {
-            $book = Book::inRandomOrder()->first();
+            $book = Book::where('is_available', true)->inRandomOrder()->first();
+
+            if (!$book) {
+                continue;
+            }
+
             $patron = Patron::inRandomOrder()->first();
             $user = User::where('role_id', 1)->inRandomOrder()->first();
+
             $created_at = fake()->dateTimeBetween(now()->startOfDay(), now());
             $due = (clone $created_at)->modify('+' . 60 . 'minutes');
-            BorrowedBook::create([
-                'book_id' => $book->book_id,
-                'patron_id' => $patron->patron_id,
-                'user_id' => $user->user_id,
-                'due_date' => $due,
-                'created_at' => $created_at
-            ]);
+
+            $existingRecord = BorrowedBook::where('book_id', $book->book_id)
+                ->where('returned', false)
+                ->first();
+
+            if (!$existingRecord) {
+                BorrowedBook::create([
+                    'book_id' => $book->book_id,
+                    'patron_id' => $patron->patron_id,
+                    'user_id' => $user->user_id,
+                    'due_date' => $due,
+                    'created_at' => $created_at
+                ]);
+
+                //This line will update the book status
+                $book->update(['is_available' => false]);
+            }
         }
     }
 }

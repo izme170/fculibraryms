@@ -10,15 +10,44 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Carbon\Carbon;
 
 class BookController extends Controller
 {
     public function index()
     {
-        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')->where('is_archived','=', false)->orderBy('title')->get();
+        // Get all books and their associated categories
+        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')
+            ->where('is_archived', '=', false)
+            ->orderBy('title')
+            ->get();
+
+        // Get all borrowed books
+        $borrowed_books = BorrowedBook::all()->keyBy('book_id');
+
+        // Compute status for each book
+        $books->each(function ($book) use ($borrowed_books) {
+            // Check if the book is available
+            if ($book->is_available) {
+                $book->status = 'available';
+            } else {
+                // Find if the book is borrowed and check the status
+                $borrowed_book = $borrowed_books->get($book->book_id);
+
+                // Check if the book is borrowed and returned
+                if ($borrowed_book && $borrowed_book->returned) {
+                    $book->status = 'borrowed';
+                } else {
+                    // Check if it's overdue or just borrowed
+                    $dueDate = $borrowed_book ? Carbon::parse($borrowed_book->due_date) : null;
+                    $book->status = $dueDate && Carbon::now()->gt($dueDate) ? 'overdue' : 'borrowed';
+                }
+            }
+        });
 
         return view('books.index', compact('books'));
     }
+
 
     public function create()
     {
@@ -57,7 +86,8 @@ class BookController extends Controller
         return view('books.show', compact('book', 'categories'));
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $validated = $request->validate([
             'title' => 'required',
             'author' => 'required',
@@ -76,7 +106,8 @@ class BookController extends Controller
         return redirect()->back()->with('message_succes', 'Book information has been updated.');
     }
 
-    public function archive($id){
+    public function archive($id)
+    {
         Book::find($id)->update(['is_archived' => true]);
 
         // Record Activity
@@ -90,7 +121,8 @@ class BookController extends Controller
         return redirect('/books');
     }
 
-    public function newRFID(Request $request, $id){
+    public function newRFID(Request $request, $id)
+    {
         $validated = $request->validate([
             'book_number' => 'required|unique:books,book_number'
         ]);
@@ -106,7 +138,8 @@ class BookController extends Controller
         return redirect()->back()->with('message_success', 'New RFID successfully assigned to the book.');
     }
 
-    public function export(){
-        return Excel::download(new BooksExport, 'books-library-management-system'. now() . '.xlsx');
+    public function export()
+    {
+        return Excel::download(new BooksExport, 'books-library-management-system' . now() . '.xlsx');
     }
 }
