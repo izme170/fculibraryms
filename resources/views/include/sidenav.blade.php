@@ -9,57 +9,60 @@
     </div>
 
     <div class="nav-links">
-        <div class="nav-link-container">
+        <a href="/user/dashboard" class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <x-lucide-layout-dashboard class="nav-link-icon" />
-            <a href="/user/dashboard" class="nav-link">Dashboard</a>
-        </div>
+            <span>Dashboard</span>
+        </a>
+
         {{-- Checks if the user is allowed to access the book management --}}
         @if ($user->role->books_access)
-            <div class="nav-link-container">
+            <a href="/books" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
                 <x-lucide-book-copy class="nav-link-icon" />
-                <a href="/books" class="nav-link">Book Management</a>
-            </div>
+                <span>Book Management</span>
+            </a>
         @endif
+
         {{-- Checks if the user is allowed to access the patron management --}}
         @if ($user->role->patrons_access)
-            <div class="nav-link-container">
+            <a href="/patrons" class="nav-link {{ request()->routeIs('patrons.*') ? 'active' : '' }}">
                 <x-lucide-users class="nav-link-icon" />
-                <a href="/patrons" class="nav-link">Patron Management</a>
-            </div>
-            <div class="nav-link-container">
+                <span>Patron Management</span>
+            </a>
+            <a href="/patron-logins" class="nav-link {{ request()->routeIs('patron-logins.*') ? 'active' : '' }}">
                 <x-lucide-logs class="nav-link-icon" />
-                <a href="/patron-logins" class="nav-link">Access Log</a>
-            </div>
+                <span>Access Log</span>
+            </a>
         @endif
+
         {{-- Checks if the user is allowed to access the reports module --}}
         @if ($user->role->reports_access)
-            <div class="nav-link-container">
+            <a href="/reports" class="nav-link {{ request()->routeIs('reports.*') ? 'active' : '' }}">
                 <x-lucide-file-pie-chart class="nav-link-icon" />
-                <a href="/reports" class="nav-link">Reports</a>
-            </div>
+                <span>Reports</span>
+            </a>
         @endif
 
         {{-- Checks if the user is admin --}}
         @if ($user->role_id == 1)
-            <div class="nav-link-container">
+            <a href="/users" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
                 <x-lucide-user-cog class="nav-link-icon" />
-                <a href="/users" class="nav-link">User Management</a>
-            </div>
-            <div class="nav-link-container">
+                <span>User Management</span>
+            </a>
+            <a href="/activities" class="nav-link {{ request()->routeIs('activities.*') ? 'active' : '' }}">
                 <x-lucide-clipboard-list class="nav-link-icon" />
-                <a href="/activities" class="nav-link">User Activities</a>
-            </div>
-            <div class="nav-link-container">
+                <span>User Activities</span>
+            </a>
+            <a href="/options" class="nav-link {{ request()->routeIs('options.*') ? 'active' : '' }}">
                 <x-lucide-settings class="nav-link-icon" />
-                <a href="/options" class="nav-link">Options</a>
-            </div>
+                <span>Options</span>
+            </a>
         @endif
     </div>
+
     <form action="/logout" method="post">
         @csrf
-        <div class="nav-link-container">
-            <x-lucide-log-out class="nav-link-icon" />
-            <button type="submit" class="nav-link">Logout</button>
+        <div class="nav-link">
+            <button type="submit" class="nav-link"><x-lucide-log-out class="nav-link-icon" /> Logout</button>
         </div>
     </form>
 </div>

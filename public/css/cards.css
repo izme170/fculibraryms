@@ -145,21 +145,50 @@
     border-radius: 10px;
 }
 
-
-.legend-label {
-    font-family: system-ui, sans-serif;
+.legend-btn {
+    padding: 5px 15px;
     font-size: 14px;
+    font-family: system-ui, sans-serif;
+    font-weight: 500;
+    border: none;
+    border-radius: 20px;
+    background-color: #f5f5f5;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.legend-btn.active {
+    background-color: #171c55;
+    color: white;
+}
+
+.legend-btn:hover {
+    transform: scale(1.1);
+}
+
+.legend-btn:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.legend-btn.all {
+    background-color: #e0e0e0;
     color: #333;
 }
 
-.available{
-    background-color: #28a745;
+.legend-btn.available {
+    background-color: #d4f8e8;
+    color: #28a745;
 }
 
-.borrowed{
-    background-color: #a78e28;
+.legend-btn.borrowed {
+    background-color: #fef3c7;
+    color: #a78e28;
 }
 
-.overdue{
-    background-color: #a72828;
+.legend-btn.overdue {
+    background-color: #fdecea;
+    color: #a72828;
 }

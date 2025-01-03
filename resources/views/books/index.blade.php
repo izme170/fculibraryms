@@ -17,20 +17,44 @@
                 <a class="btn-simple" href="/return-book">Return Book</a>
                 <a class="btn-simple" href="/books/export">Export</a>
             </div>
-            <div class="d-flex flex-row align-items-center gap-2">
-                <span class="legend-label">Available</span>
-                <div class="status-indicator available"></div>
+            <div>
+                <div class="d-flex flex-column justify-content-between align-items-end mb-3">
+                    <!-- Form to filter books -->
+                    <form method="GET" action="/books" class="d-flex flex-row align-items-center gap-2" id="filterForm">
+                        <input type="text" name="search" class="form-control" placeholder="Search by title or author"
+                            value="{{ $search }}">
 
-                <span class="legend-label">Borrowed</span>
-                <div class="status-indicator borrowed"></div>
+                        <!-- Category filter -->
+                        <select name="category" class="form-select">
+                            <option value="all" {{ $category === 'all' ? 'selected' : '' }}>All Categories</option>
+                            @foreach ($categories as $cat)
+                                <option value="{{ $cat->category_id }}"
+                                    {{ $category == $cat->category_id ? 'selected' : '' }}>
+                                    {{ $cat->category }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </form>
 
-                <span class="legend-label">Overdue</span>
-                <div class="status-indicator overdue"></div>
+                    <!-- Status filter/legend -->
+                    <div class="d-flex flex-row align-items-center gap-2">
+                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
+                            data-status="all">All</a>
+                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'available' ? 'active' : '' }}"
+                            data-status="available">Available</a>
+                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}"
+                            data-status="borrowed">Borrowed</a>
+                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
+                            data-status="overdue">Overdue</a>
+                    </div>
+
+                </div>
             </div>
         </div>
         <div class="d-flex flex-wrap gap-3 mt-3 justify-content-center">
             @foreach ($books as $book)
-                <a class="card text-decoration-none" href="/book/show/{{ $book->book_id }}">
+                <a class="card text-decoration-none" href="/book/show/{{ $book->book_id }}"
+                    data-status="{{ $book->status }}">
                     <div class="indicator-container">
                         <div class="status-indicator {{ $book->status }}"></div>
                     </div>
@@ -39,33 +63,52 @@
                     <div class="text">
                         <p class="h3">{{ $book->title }}</p>
                         <p class="p">{{ $book->author }}</p>
-
-                        {{-- <div class="icon-box">
-                            <p class="span">View</p>
-                        </div> --}}
                     </div>
                 </a>
             @endforeach
         </div>
-        {{-- <table class="table">
-            <thead class="thead-dark">
-                <tr>
-                    <th scope="col">Title</th>
-                    <th scope="col">Author</th>
-                    <th scope="col">Category</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach ($books as $book)
-                    <tr onclick="window.location.href='/book/show/{{ $book->book_id }}';" style="cursor:pointer;">
-                        <td>{{ $book->title }}</td>
-                        <td>{{ $book->author }}</td>
-                        <td>{{ $book->category }}</td>
-                        <td>{{ $book->is_available? 'Available' : "Borrowed" }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table> --}}
+
+        {{-- pagination --}}
+        <div class="mt-4 d-flex justify-content-center">
+            {{ $books->appends(['status' => $status, 'category' => $category, 'search' => $search])->links() }}
+        </div>
     </div>
+    <script>
+        // Get the category dropdown element
+        const categorySelect = document.querySelector('select[name="category"]');
+
+        // Attach a change event listener to the category dropdown
+        categorySelect.addEventListener('change', function() {
+            // Get the form by its ID and submit it
+            document.getElementById('filterForm').submit();
+        });
+
+        // Get all legend buttons
+        const legendButtons = document.querySelectorAll('.legend-btn');
+
+        // Add event listener to each button
+        legendButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Get the status from the data-status attribute
+                const status = this.getAttribute('data-status');
+
+                // Remove 'active' class from all buttons
+                legendButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                this.classList.add('active');
+
+                // Update the status in the form and submit it
+                const form = document.getElementById('filterForm');
+                const statusInput = document.createElement('input');
+                statusInput.type = 'hidden';
+                statusInput.name = 'status';
+                statusInput.value = status;
+
+                // Append the status input to the form and submit the form
+                form.appendChild(statusInput);
+                form.submit();
+            });
+        });
+    </script>
 @endsection

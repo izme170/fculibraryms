@@ -14,13 +14,53 @@ use Carbon\Carbon;
 
 class BookController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get all books and their associated categories
-        $books = Book::join('categories', 'books.category_id', '=', 'categories.category_id')
+        // Retrieve the status, category, and search query parameters from the request
+        $status = $request->query('status', 'all');
+        $category = $request->query('category', 'all');
+        $search = $request->query('search', '');
+
+        // Create the query to get books
+        $query = Book::join('categories', 'books.category_id', '=', 'categories.category_id')
             ->where('is_archived', '=', false)
-            ->orderBy('title')
-            ->get();
+            ->select('books.*', 'categories.category as category_name');
+
+        // Apply the status filter if set
+        if ($status !== 'all') {
+            $query->where(function ($query) use ($status) {
+                if ($status === 'available') {
+                    $query->where('is_available', true);
+                } elseif ($status === 'borrowed' || $status === 'overdue') {
+                    $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
+                        if ($status === 'borrowed') {
+                            $subQuery->where('due_date', '>=', now());
+                        } else {
+                            $subQuery->where('due_date', '<', now());
+                        }
+                    });
+                }
+            });
+        }
+
+        // Apply the category filter if set
+        if ($category !== 'all') {
+            $query->where('categories.category_id', $category);
+        }
+
+        // Apply the search filter if set
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('books.title', 'like', "%{$search}%")
+                    ->orWhere('books.author', 'like', "%{$search}%");
+            });
+        }
+
+        // Get the books with pagination
+        $books = $query->orderBy('title')->paginate(10);
+
+        // Get all categories for the filter dropdown
+        $categories = Category::all();
 
         // Get all borrowed books
         $borrowed_books = BorrowedBook::all()->keyBy('book_id');
@@ -45,8 +85,10 @@ class BookController extends Controller
             }
         });
 
-        return view('books.index', compact('books'));
+        return view('books.index', compact('books', 'categories', 'status', 'category', 'search'));
     }
+
+
 
 
     public function create()

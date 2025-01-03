@@ -208,7 +208,7 @@ select:focus {
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
 }
 
 .sidenav .nav-link-container{
@@ -223,6 +223,23 @@ select:focus {
 .sidenav .nav-link-icon{
     height: 30px;
     width: 30px;
+}
+
+.sidenav .nav-link{
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.sidenav .nav-link.active {
+    background-color: var(--secondary);
+}
+
+.sidenav .nav-link.active {
+    color: var(--primary);
+}
+
+.sidenav .nav-link:hover {
+    background-color: #444daa;
 }
 
 .form-container {

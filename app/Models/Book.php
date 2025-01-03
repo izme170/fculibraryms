@@ -18,4 +18,9 @@ class Book extends Model
         'is_available',
         'is_archived'
     ];
+
+    public function borrowedBooks()
+    {
+        return $this->hasMany(BorrowedBook::class, 'book_id', 'book_id');
+    }
 }
