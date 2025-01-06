@@ -1,0 +1,105 @@
+.sidenav-toggle{
+    position: sticky;
+    top: 10px;
+    left: 10px;
+    font-size: 30px;
+    color: white;
+    z-index: 2;
+    background-color: #0e1133;
+    width: fit-content;
+    padding: 0px 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: none;
+}
+
+.sidenav {
+    top: 0;
+    color: var(--secondary);
+    position: fixed;
+    height: 100%;
+    width: 350px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--primary);
+    padding: 30px 40px;
+    background: rgba(14, 17, 51, 0.579);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border-radius: 10px;
+    border: 1px solid rgba(14, 17, 51, 0.18);
+    z-index: 1;
+    transition: all 0.2s ease-in-out;
+}
+
+.sidenav .brand img {
+    width: 80px;
+    height: 80px;
+}
+
+.sidenav .brand span {
+    font-size: 1.7rem;
+    line-height: 30px;
+}
+
+.sidenav .nav-links {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.sidenav .nav-link-container{
+    display: flex;
+    gap: 10px;
+}
+
+.sidenav .nav-link {
+    font-size: 1.3rem;
+}
+
+.sidenav .nav-link-icon{
+    height: 30px;
+    width: 30px;
+}
+
+.sidenav .nav-link{
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.sidenav .nav-link.active {
+    background-color: var(--secondary);
+}
+
+.sidenav .nav-link.active {
+    color: var(--primary);
+}
+
+.sidenav .nav-link:hover {
+    background-color: #17208a;
+}
+
+.sidenav.sidenav-on{
+    /* display: flex; */
+    width: 350px;
+    padding: 30px 40px;
+}
+
+@media(max-width: 900px){
+    .sidenav-toggle{
+        display: block;
+    }
+    .sidenav{
+        /* display: none; */
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    .user-page{
+        padding-left: 20px;
+    }
+}

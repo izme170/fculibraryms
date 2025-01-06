@@ -2,7 +2,11 @@
     $user = auth()->user()->load('role');
 @endphp
 
-<div class="sidenav">
+<div class="sidenav-toggle" id="sidenav-toggle">
+    ☰
+</div>
+
+<div class="sidenav" id="sidenav">
     <div class="brand">
         <img src="{{ asset('img/fcu-logo.png') }}" alt="filamer logo">
         <span>FCU Library Management System</span>
@@ -66,3 +70,12 @@
         </div>
     </form>
 </div>
+
+<script>
+    const toggleSideNav = document.getElementById("sidenav-toggle");
+    const sideNav = document.getElementById("sidenav");
+
+    toggleSideNav.addEventListener("click", function() {
+        sideNav.classList.toggle('sidenav-on')
+    })
+</script>

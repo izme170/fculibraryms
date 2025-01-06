@@ -2,13 +2,13 @@
     position: relative;
     width: 40px;
     height: 20px;
-  }
+}
 
-  .toggle-switch input {
+.toggle-switch input {
     display: none;
-  }
+}
 
-  .toggle-switch label {
+.toggle-switch label {
     position: absolute;
     top: 0;
     left: 0;
@@ -18,13 +18,13 @@
     border-radius: 10px;
     cursor: pointer;
     transition: background 0.3s;
-  }
+}
 
-  .toggle-switch input:checked + label {
+.toggle-switch input:checked + label {
     background: linear-gradient(to right, #0e1133, #0b0e31);
-  }
+}
 
-  .toggle-switch label:before {
+.toggle-switch label:before {
     content: "";
     position: absolute;
     height: 16px;
@@ -35,9 +35,70 @@
     border-radius: 50%;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s, background 0.3s;
-  }
+}
 
-  .toggle-switch input:checked + label:before {
+.toggle-switch input:checked + label:before {
     transform: translateX(20px);
     background-color: #ffffff;
-  }
+}
+
+.btn-simple {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: #0E1133;
+    color: white;
+    border: 2px solid #0E1133;
+    border-radius: 20px;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    text-decoration: none;
+}
+
+.btn-simple:hover {
+    background-color: #17208a;
+    border-color: #17208a;
+    transform: translateY(-3px); /* Slight lift effect on hover */
+}
+
+.btn-simple:active {
+    background-color: #161c60;
+    border-color: #161c60;
+    transform: translateY(1px);
+}
+
+.btn-simple:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(9, 0, 180, 0.4);
+}
+
+.btn-add {
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    font-family: system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 3px 3px 6px var(--disabled);
+    transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #218838;
+}
+
+@media (max-width: 870px) {
+    .btn-simple{
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+}

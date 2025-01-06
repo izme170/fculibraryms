@@ -115,131 +115,9 @@ select:focus {
     padding: 0;
 }
 
-.btn-simple {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 16px;
-    background-color: #0E1133;
-    color: white;
-    border: 2px solid #0E1133;
-    border-radius: 20px;
-    font-family: system-ui, sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    text-align: center;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    text-decoration: none;
-}
-
-.btn-simple:hover {
-    background-color: #17208a;
-    border-color: #17208a;
-    transform: translateY(-3px); /* Slight lift effect on hover */
-}
-
-.btn-simple:active {
-    background-color: #161c60;
-    border-color: #161c60;
-    transform: translateY(1px);
-}
-
-.btn-simple:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(9, 0, 180, 0.4);
-}
-
-.btn-add {
-    padding: 8px 16px;
-    background-color: #28a745;
-    color: white;
-    border: none;
-    font-family: system-ui, sans-serif;
-    font-weight: 600;
-    font-size: 14px;
-    text-transform: uppercase;
-    cursor: pointer;
-    box-shadow: 3px 3px 6px var(--disabled);
-    transition: background-color 0.3s ease;
-}
-
-.btn-add:hover {
-    background-color: #218838;
-}
-
-
-
 .bg-red {
     background-color: var(--danger);
     color: var(--secondary);
-}
-
-.sidenav {
-    color: var(--secondary);
-    position: fixed;
-    height: 100%;
-    width: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    background-color: var(--primary);
-    padding: 30px 40px;
-    background: rgba(14, 17, 51, 0.579);
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border-radius: 10px;
-    border: 1px solid rgba(14, 17, 51, 0.18);
-}
-
-.sidenav .brand img {
-    width: 80px;
-    height: 80px;
-}
-
-.sidenav .brand span {
-    font-size: 1.7rem;
-    line-height: 30px;
-}
-
-.sidenav .nav-links {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.sidenav .nav-link-container{
-    display: flex;
-    gap: 10px;
-}
-
-.sidenav .nav-link {
-    font-size: 1.3rem;
-}
-
-.sidenav .nav-link-icon{
-    height: 30px;
-    width: 30px;
-}
-
-.sidenav .nav-link{
-    padding: 5px;
-    border-radius: 10px;
-}
-
-.sidenav .nav-link.active {
-    background-color: var(--secondary);
-}
-
-.sidenav .nav-link.active {
-    color: var(--primary);
-}
-
-.sidenav .nav-link:hover {
-    background-color: #444daa;
 }
 
 .form-container {
@@ -280,7 +158,7 @@ select:focus {
 .widget {
     background-color: var(--body);
     padding: 20px;
-    min-width: 300px;
+    min-width: fit-content;
     max-width: fit-content;
     border-radius: 10px;
     margin-top: 10px;

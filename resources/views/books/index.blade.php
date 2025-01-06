@@ -9,8 +9,8 @@
             <a class="nav-link text-black" href="/borrowed-books">Borrowed Books</a>
         </li>
     </ul>
-    <div class="container">
-        <div class="mt-3 d-flex flex-row justify-content-between">
+    <div class="bg-white p-3" style="min-width: fit-content">
+        <div class="d-flex flex-row flex-wrap justify-content-around gap-2">
             <div>
                 <a class="btn-simple" href="/book/create">Add book</a>
                 <a class="btn-simple" href="/borrow-book">Borrow Book</a>
