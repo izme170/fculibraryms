@@ -120,12 +120,56 @@ class BookController extends Controller
         return redirect('/books');
     }
 
+    private $finePerHour = 5;
+
     public function show($id)
     {
-        $book = Book::leftJoin('categories', 'books.category_id', '=', 'categories.category_id')->find($id);
+        $book = Book::leftJoin('categories', 'books.category_id', '=', 'categories.category_id')
+            ->select('books.*', 'categories.category')
+            ->where('books.book_id', $id)
+            ->first();
         $categories = Category::all();
+        $borrowed_book = BorrowedBook::all()->keyBy('book_id')->get($book->book_id);
 
-        return view('books.show', compact('book', 'categories'));
+        // This code will Assign the book's status
+        if ($book->is_available) {
+            $book->status = 'available';
+        } else {
+
+            // Check if the book is borrowed and returned
+            if ($borrowed_book && $borrowed_book->returned) {
+                $book->status = 'borrowed';
+            } else {
+                // Check if it's overdue or just borrowed
+                $dueDate = $borrowed_book ? Carbon::parse($borrowed_book->due_date) : null;
+                $book->status = $dueDate && Carbon::now()->gt($dueDate) ? 'overdue' : 'borrowed';
+            }
+        }
+
+        $previous_borrowers = BorrowedBook::join('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
+            ->join('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')
+            ->select('borrowed_books.*', 'patrons.first_name', 'patrons.last_name', 'patron_types.type')
+            ->where('book_id', $id)
+            ->get();
+
+        $previous_borrowers->each(function ($borrowed_book) {
+
+            //Checks if the book is returned
+            if (!$borrowed_book->returned) {
+                $dueDate = Carbon::parse($borrowed_book->due_date);
+                $now = Carbon::now();
+
+                //Check if the book is overdue
+                if ($now->gt($dueDate)) {
+                    $hoursOverdue = $dueDate->diffInHours($now, false);
+                    $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+                } else {
+                    $borrowed_book->fine = 0;
+                }
+            }
+        });
+
+        return view('books.show', compact('book', 'categories', 'previous_borrowers'));
     }
 
     public function update(Request $request, $id)
