@@ -9,7 +9,7 @@
             <a class="nav-link active" href="/borrowed-books">Borrowed Books</a>
         </li>
     </ul>
-    <div class="container">
+    <div class="bg-white p-3" style="min-width: fit-content">
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
