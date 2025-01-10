@@ -30,13 +30,15 @@ class BookController extends Controller
             $query->where(function ($query) use ($status) {
                 if ($status === 'available') {
                     $query->where('is_available', true);
-                } elseif ($status === 'borrowed' || $status === 'overdue') {
+                } elseif ($status === 'borrowed') {
                     $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
-                        if ($status === 'borrowed') {
-                            $subQuery->where('due_date', '>=', now());
-                        } else {
-                            $subQuery->where('due_date', '<', now());
-                        }
+                        $subQuery->where('due_date', '>=', now())
+                        ->whereNull('returned');
+                    });
+                } elseif ($status === 'overdue') {
+                    $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
+                        $subQuery->where('due_date', '<', now())
+                        ->whereNull('returned');;
                     });
                 }
             });
