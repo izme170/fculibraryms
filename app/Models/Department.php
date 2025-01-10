@@ -13,4 +13,8 @@ class Department extends Model
     protected $fillable = [
         'department'
     ];
+
+    public function patrons(){
+        return $this->hasMany(Patron::class, 'department_id');
+    }
 }

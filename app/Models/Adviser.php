@@ -13,4 +13,8 @@ class Adviser extends Model
     protected $fillable = [
         'adviser'
     ];
+
+    public function patrons(){
+        return $this->hasMany(Patron::class, 'adviser_id');
+    }
 }

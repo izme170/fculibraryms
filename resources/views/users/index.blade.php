@@ -25,7 +25,7 @@
                 @foreach ($users as $user)
                     <tr onclick="window.location.href='/user/show/{{ $user->user_id }}';" style="cursor:pointer;">
                         <td>{{ $user->first_name . ' ' . $user->last_name }}</td>
-                        <td>{{ $user->role }}</td>
+                        <td>{{ $user->role->role }}</td>
                         <td>{{ $user->contact_number }}</td>
                         <td>{{ $user->email }}</td>
                     </tr>

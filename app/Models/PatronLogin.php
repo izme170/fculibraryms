@@ -27,4 +27,14 @@ class PatronLogin extends Model
     {
         return $this->belongsTo(Patron::class, 'patron_id');
     }
+
+    public function purpose()
+    {
+        return $this->belongsTo(Purpose::class, 'purpose_id');
+    }
+
+    public function marketer()
+    {
+        return $this->belongsTo(Marketer::class, 'marketer_id');
+    }
 }

@@ -8,7 +8,7 @@
         <div>
             <h1>{{ $book->title }}</h1>
             <p>Author: {{ $book->author }}</p>
-            <p>Category: {{ $book->category }}</p>
+            <p>Category: {{ $book->category->category }}</p>
             <div class="mb-3">
                 <span class="badge {{ $book->status == 'available' ? 'bg-success' : 'bg-warning' }}">
                     {{ $book->status == 'available' ? 'Available' : 'Borrowed' }}
@@ -41,8 +41,8 @@
                     <tbody>
                         @foreach ($previous_borrowers as $borrower)
                         <tr>
-                            <td>{{$borrower->type}}</td>
-                            <td>{{$borrower->first_name}} {{$borrower->last_name}}</td>
+                            <td>{{$borrower->patron->type->type}}</td>
+                            <td>{{$borrower->patron->first_name}} {{$borrower->patron->last_name}}</td>
                             <td>{{$borrower->created_at->format('m/d/y h:i a') }}</td>
                             <td>{{$borrower->returned ? $borrower->returned->format('m/d/y h:i a') : 'Unreturned'}}</td>
                             <td>₱{{$borrower->fine}}</td>

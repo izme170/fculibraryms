@@ -13,4 +13,8 @@ class PatronType extends Model
     protected $fillable = [
         'type'
     ];
+
+    public function patrons(){
+        return $this->hasMany(Patron::class, 'type_id');
+    }
 }

@@ -3,14 +3,14 @@
 @section('user-content')
     <div class="widget">
         <h1>{{ $patron->first_name }} {{ $patron->last_name }}</h1>
-        <p>{{ $patron->type }}</p>
+        <p>{{ $patron->type->type }}</p>
         <p>{{ $patron->library_id }}</p>
         <p>Contact Number: {{ $patron->contact_number }}</p>
         <p>Email: {{ $patron->email }}</p>
         <p>Address: {{ $patron->address }}</p>
-        <p>Department: {{ $patron->department }}</p>
-        <p>Course: {{ $patron->course }}</p>
-        <p>Adviser: {{ $patron->adviser }}</p>
+        <p>Department: {{ $patron->department->department }}</p>
+        <p>Course: {{ $patron->course->course }}</p>
+        <p>Adviser: {{ $patron->adviser->adviser }}</p>
 
         <div class="mb-3">
             <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editPatron">Update</button>

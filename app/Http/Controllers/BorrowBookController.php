@@ -16,37 +16,26 @@ class BorrowBookController extends Controller
     private $finePerHour = 5;
     public function index()
     {
-        $borrowed_books = BorrowedBook::leftJoin('books', 'borrowed_books.book_id', '=', 'books.book_id')
-            ->leftJoin('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
-            ->leftJoin('users', 'borrowed_books.user_id', '=', 'users.user_id')
-            ->select(
-                'borrowed_books.*',
-                'books.title',
-                'patrons.first_name as patron_first_name',
-                'users.first_name as user_first_name',
-                'patrons.last_name as patron_last_name',
-                'users.last_name as user_last_name'
-            )
+        $borrowed_books = BorrowedBook::with(['book:book_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name'])
             ->orderByDesc('created_at')
             ->get();
 
-            $borrowed_books->each(function($borrowed_book){
+        $borrowed_books->each(function ($borrowed_book) {
 
-                //Checks if the book is returned
-                if(!$borrowed_book->returned){
-                    $dueDate = Carbon::parse($borrowed_book->due_date);
-                    $now = Carbon::now();
+            //Checks if the book is returned
+            if (!$borrowed_book->returned) {
+                $dueDate = Carbon::parse($borrowed_book->due_date);
+                $now = Carbon::now();
 
-                    //Check if the book is overdue
-                    if($now->gt($dueDate)){
-                        $hoursOverdue = $dueDate->diffInHours($now, false);
-                        $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
-                    }
-                    else{
-                        $borrowed_book->fine = 0;
-                    }
+                //Check if the book is overdue
+                if ($now->gt($dueDate)) {
+                    $hoursOverdue = $dueDate->diffInHours($now, false);
+                    $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+                } else {
+                    $borrowed_book->fine = 0;
                 }
-            });
+            }
+        });
 
         return view('borrow_books.index', compact('borrowed_books'));
     }
@@ -71,7 +60,7 @@ class BorrowBookController extends Controller
             'user_id' => Auth::id(),
         ];
 
-        if($request['due'] == 'oneHour'){
+        if ($request['due'] == 'oneHour') {
             $data['due_date'] = Carbon::now()->addHours(1);
         } else {
             $data['due_date'] = Carbon::now()->adddays(1);
@@ -102,11 +91,10 @@ class BorrowBookController extends Controller
             $borrowed_book->returned = $now;
 
             // Check if the book is overdue
-            if($now->gt($dueDate)){
+            if ($now->gt($dueDate)) {
                 $hoursOverdue = $dueDate->diffInHours($now);
                 $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
-            }
-            else{
+            } else {
                 $borrowed_book->fine = 0;
             }
 

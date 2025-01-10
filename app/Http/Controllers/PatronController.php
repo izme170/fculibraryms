@@ -20,8 +20,8 @@ class PatronController extends Controller
 {
     public function index()
     {
-        $patrons = Patron::where('is_archived', '=', false)
-            ->leftJoin('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')
+        $patrons = Patron::with('type')
+            ->where('is_archived', '=', false)
             ->orderBy('patrons.type_id')
             ->orderBy('first_name')->get();
 
@@ -70,11 +70,9 @@ class PatronController extends Controller
 
     public function show($id)
     {
-        $patron = Patron::leftJoin('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')->
-            leftJoin('departments', 'patrons.department_id', '=', 'departments.department_id')->
-            leftJoin('courses', 'patrons.course_id', '=', 'courses.course_id')->
-            leftJoin('advisers', 'patrons.adviser_id', '=', 'advisers.adviser_id')->
-            find($id);
+        $patron = Patron::with(['type', 'department', 'course', 'adviser'])
+        ->find($id);
+
         $patron_types = PatronType::all();
         $departments = Department::all();
         $advisers = Adviser::all();
@@ -151,7 +149,8 @@ class PatronController extends Controller
         return response()->json($courses);
     }
 
-    public function export(){
+    public function export()
+    {
         return Excel::download(new PatronExport, 'patrons-library-management-system.xlsx');
     }
 }

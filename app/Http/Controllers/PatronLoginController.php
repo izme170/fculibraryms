@@ -13,9 +13,7 @@ class PatronLoginController extends Controller
 {
     public function index()
     {
-        $patron_logins = PatronLogin::join('patrons', 'patron_logins.patron_id', '=', 'patrons.patron_id')
-            ->leftJoin('purposes', 'patron_logins.purpose_id', '=', 'purposes.purpose_id')
-            ->leftJoin('marketers', 'patron_logins.marketer_id', '=', 'marketers.marketer_id')
+        $patron_logins = PatronLogin::with(['patron:patron_id,first_name,last_name', 'purpose:purpose_id,purpose', 'marketer:marketer_id,marketer'])
             ->orderByDesc('login_at')
             ->get();
 

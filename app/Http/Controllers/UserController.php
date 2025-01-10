@@ -55,7 +55,7 @@ class UserController extends Controller
     }
 
     public function index(){
-        $users = User::join('roles', 'users.role_id', '=', 'roles.role_id')
+        $users = User::with('role:role_id,role')
         ->orderBy('users.role_id')
         ->orderBy('first_name')
         ->where('is_archived', false)
@@ -98,7 +98,7 @@ class UserController extends Controller
     }
 
     public function show($id){
-        $user = User::leftJoin('roles', 'users.role_id', '=', 'roles.role_id')->find($id);
+        $user = User::with('role:role_id,role')->find($id);
         $roles = Role::all();
 
         return view('users.show', compact(['user', 'roles']));

@@ -26,4 +26,24 @@ class Patron extends Model
         'library_id',
         'is_archived'
     ];
+
+    public function patronLogins(){
+        return $this->hasMany(PatronLogin::class, 'patron_id');
+    }
+
+    public function type(){
+        return $this->belongsTo(PatronType::class, 'type_id');
+    }
+
+    public function department(){
+        return $this->belongsTo(Department::class, 'department_id');
+    }
+
+    public function course(){
+        return $this->belongsTo(Course::class, 'course_id');
+    }
+
+    public function adviser(){
+        return $this->belongsTo(Adviser::class, 'adviser_id');
+    }
 }

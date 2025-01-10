@@ -14,7 +14,7 @@
                     </div>
                     <div class="text">
                         <p class="h3">{{ $patron->first_name }} {{ $patron->last_name }}</p>
-                        <p class="p">{{ $patron->type }}</p>
+                        <p class="p">{{ $patron->type->type }}</p>
                     </div>
                 </a>
             @endforeach

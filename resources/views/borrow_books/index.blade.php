@@ -26,9 +26,9 @@
                     <tr onclick="window.location.href='/borrowed_book/show/{{ $borrowed_book->borrow_id }}';"
                         style="cursor:pointer;">
                         <td>{{ $borrowed_book->created_at->format('m/d/y h:i a') }}</td>
-                        <td>{{ $borrowed_book->title }}</td>
-                        <td>{{ $borrowed_book->patron_first_name }} {{ $borrowed_book->patron_last_name }}</td>
-                        <td>{{ $borrowed_book->user_first_name }} {{ $borrowed_book->user_last_name }}</td>
+                        <td>{{ $borrowed_book->book->title }}</td>
+                        <td>{{ $borrowed_book->patron->first_name }} {{ $borrowed_book->patron->last_name }}</td>
+                        <td>{{ $borrowed_book->user->first_name }} {{ $borrowed_book->user->last_name }}</td>
                         <td>₱{{ $borrowed_book->fine }}</td>
                         <td>
                             <span

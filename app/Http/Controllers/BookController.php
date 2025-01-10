@@ -22,9 +22,8 @@ class BookController extends Controller
         $search = $request->query('search', '');
 
         // Create the query to get books
-        $query = Book::join('categories', 'books.category_id', '=', 'categories.category_id')
-            ->where('is_archived', '=', false)
-            ->select('books.*', 'categories.category as category_name');
+        $query = Book::with('category')
+            ->where('is_archived', '=', false);
 
         // Apply the status filter if set
         if ($status !== 'all') {
@@ -45,7 +44,7 @@ class BookController extends Controller
 
         // Apply the category filter if set
         if ($category !== 'all') {
-            $query->where('categories.category_id', $category);
+            $query->where('category_id', $category);
         }
 
         // Apply the search filter if set
@@ -60,7 +59,7 @@ class BookController extends Controller
         $books = $query->orderBy('title')->paginate(10);
 
         // Get all categories for the filter dropdown
-        $categories = Category::all();
+        $categories = Category::orderBy('category')->get();
 
         // Get all borrowed books
         $borrowed_books = BorrowedBook::all()->keyBy('book_id');
@@ -124,8 +123,7 @@ class BookController extends Controller
 
     public function show($id)
     {
-        $book = Book::leftJoin('categories', 'books.category_id', '=', 'categories.category_id')
-            ->select('books.*', 'categories.category')
+        $book = Book::with('category')
             ->where('books.book_id', $id)
             ->first();
         $categories = Category::all();
@@ -146,9 +144,7 @@ class BookController extends Controller
             }
         }
 
-        $previous_borrowers = BorrowedBook::join('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
-            ->join('patron_types', 'patrons.type_id', '=', 'patron_types.type_id')
-            ->select('borrowed_books.*', 'patrons.first_name', 'patrons.last_name', 'patron_types.type')
+        $previous_borrowers = BorrowedBook::with(['patron'])
             ->where('book_id', $id)
             ->get();
 

@@ -13,4 +13,8 @@ class Marketer extends Model
     protected $fillable = [
         'fullname'
     ];
+
+    public function patronLogins() {
+        return $this->hasMany(PatronLogin::class, 'marketer_id');
+    }
 }

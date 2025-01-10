@@ -17,4 +17,20 @@ class Activity extends Model
         'user_id',
         'initiator_id'
     ];
+
+    public function book(){
+        return $this->belongsTo(Book::class, 'book_id');
+    }
+
+    public function patron(){
+        return $this->belongsTo(Patron::class, 'patron_id');
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function initiator(){
+        return $this->belongsTo(User::class, 'initiator_id', 'user_id');
+    }
 }

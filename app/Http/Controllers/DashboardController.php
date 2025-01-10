@@ -33,9 +33,10 @@ class DashboardController extends Controller
         $total_visits_today = PatronLogin::whereDate('login_at', Carbon::today())->count();
 
         //$ List of Unreturned Books
-        $unreturned_books_list = BorrowedBook::where('returned', null)
-        ->join('books', 'borrowed_books.book_id', '=', 'books.book_id')
-        ->get();
+        $unreturned_books_list = BorrowedBook::with('book')
+        ->whereNull('returned')
+        ->get()
+        ->pluck('book');
 
         // Total Unreturned Books
         $total_unreturned_books = $unreturned_books_list->count();

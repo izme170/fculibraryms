@@ -13,4 +13,8 @@ class Purpose extends Model
     protected $fillable = [
         'purpose'
     ];
+
+    public function patronLogins(){
+        return $this->hasMany(PatronLogin::class, 'purpose_id');
+    }
 }

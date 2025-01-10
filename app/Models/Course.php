@@ -14,4 +14,8 @@ class Course extends Model
         'course',
         'department_id'
     ];
+
+    public function patrons(){
+        return $this->hasMany(Patron::class, 'course_id');
+    }
 }

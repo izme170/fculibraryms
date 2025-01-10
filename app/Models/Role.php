@@ -13,7 +13,12 @@ class Role extends Model
     protected $fillable = [
         'role',
         'books_access',
-        'patrons_acess',
+        'patrons_access',
         'reports_access'
     ];
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'role_id');
+    }
 }

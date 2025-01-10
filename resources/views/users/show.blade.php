@@ -2,7 +2,7 @@
 @include('include.sidenav')
 @section('user-content')
     <h1>{{ $user->first_name . ' ' . $user->last_name }}</h1>
-    <p>{{ $user->role }}</p>
+    <p>{{ $user->role->role }}</p>
     <p>Contact Number: {{ $user->contact_number }}</p>
     <p>Email: {{ $user->email }}</p>
     <p>username: {{ $user->username }}</p>
