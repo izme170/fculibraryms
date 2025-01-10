@@ -14,19 +14,45 @@ use function PHPUnit\Framework\isNull;
 class BorrowBookController extends Controller
 {
     private $finePerHour = 5;
-    public function index()
+    public function index(Request $request)
     {
-        $borrowed_books = BorrowedBook::with(['book:book_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name'])
-            ->orderByDesc('created_at')
-            ->get();
+        $status = $request->query('status', 'all');
+        $search = $request->query('search', '');
+
+        $query = BorrowedBook::with(['book:book_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name']);
+
+        if (!empty($search)) {
+            $query->whereHas('book', function ($query) use ($search) {
+                $query->where('title', 'like', "%{$search}%");
+            })->orWhereHas('patron', function ($query) use ($search) {
+                $query->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('first_name', 'like', "%{$search}%");
+            })->orWhereHas('user', function ($q) use ($search) {
+                $q->where('first_name', 'like', "%{$search}%")
+                    ->orWhere('last_name', 'like', "%{$search}%");
+            });
+        }
+
+        if ($status !== 'all') {
+            if ($status === 'returned') {
+                $query->whereNotNull('returned');
+            } elseif ($status === 'borrowed') {
+                $query->whereNull('returned')
+                    ->where('due_date', '>=', now());
+            } elseif ($status === 'overdue') {
+                $query->whereNull('returned')
+                ->where('due_date', '<', now());
+            }
+        }
+
+        $borrowed_books = $query->orderByDesc('created_at')
+            ->paginate(10);
 
         $borrowed_books->each(function ($borrowed_book) {
-
             //Checks if the book is returned
             if (!$borrowed_book->returned) {
                 $dueDate = Carbon::parse($borrowed_book->due_date);
                 $now = Carbon::now();
-
                 //Check if the book is overdue
                 if ($now->gt($dueDate)) {
                     $hoursOverdue = $dueDate->diffInHours($now, false);
@@ -37,7 +63,7 @@ class BorrowBookController extends Controller
             }
         });
 
-        return view('borrow_books.index', compact('borrowed_books'));
+        return view('borrow_books.index', compact(['borrowed_books', 'search', 'status']));
     }
 
     public function create()

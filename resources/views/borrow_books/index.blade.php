@@ -10,6 +10,23 @@
         </li>
     </ul>
     <div class="bg-white p-3" style="min-width: fit-content">
+        <div class="d-flex flex-column justify-content-between align-items-end mb-3">
+            <form method="GET" action="/borrowed-books" class="d-flex flex-row align-items-center gap-2" id="filterForm">
+                <input type="text" name="search" class="form-control" placeholder="Search..."
+                    value="{{ $search }}">
+            </form>
+
+            <div class="d-flex flex-row align-items-center gap-2">
+                <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
+                    data-status="all">All</a>
+                <a href="javascript:void(0);" class="legend-btn {{ $status === 'returned' ? 'active' : '' }}"
+                    data-status="returned">Returned</a>
+                <a href="javascript:void(0);" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}"
+                    data-status="borrowed">Borrowed</a>
+                <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
+                    data-status="overdue">Overdue</a>
+            </div>
+        </div>
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
@@ -44,5 +61,37 @@
                 @endforeach
             </tbody>
         </table>
+        <div class="mt-4 d-flex justify-content-center">
+            {{ $borrowed_books->links() }}
+        </div>
     </div>
+    <script>
+        // Get all legend buttons
+        const legendButtons = document.querySelectorAll('.legend-btn');
+
+        // Add event listener to each button
+        legendButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // Get the status from the data-status attribute
+                const status = this.getAttribute('data-status');
+
+                // Remove 'active' class from all buttons
+                legendButtons.forEach(btn => btn.classList.remove('active'));
+
+                // Add 'active' class to the clicked button
+                this.classList.add('active');
+
+                // Update the status in the form and submit it
+                const form = document.getElementById('filterForm');
+                const statusInput = document.createElement('input');
+                statusInput.type = 'hidden';
+                statusInput.name = 'status';
+                statusInput.value = status;
+
+                // Append the status input to the form and submit the form
+                form.appendChild(statusInput);
+                form.submit();
+            });
+        });
+    </script>
 @endsection
