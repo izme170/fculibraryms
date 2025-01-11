@@ -46,8 +46,18 @@
                             data-status="borrowed">Borrowed</a>
                         <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
                             data-status="overdue">Overdue</a>
-                    </div>
 
+                        <div class="dropdown">
+                            <button class="btn text-white dropdown-toggle" style="background-color: #0E1133" type="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                Sort
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="?sort=title">Title</a></li>
+                                <li><a class="dropdown-item" href="?sort=author">Author</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

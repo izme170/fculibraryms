@@ -10,8 +10,8 @@
         </li>
     </ul>
     <div class="bg-white p-3" style="min-width: fit-content">
-        <div class="d-flex flex-column justify-content-between align-items-end mb-3">
-            <form method="GET" action="/borrowed-books" class="d-flex flex-row align-items-center gap-2" id="filterForm">
+        <div class="d-flex flex-column justify-content-evenly align-items-end mb-3">
+            <form method="GET" action="/borrowed-books" id="filterForm">
                 <input type="text" name="search" class="form-control" placeholder="Search..."
                     value="{{ $search }}">
             </form>
