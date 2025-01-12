@@ -10,8 +10,8 @@
         </li>
     </ul>
     <div class="bg-white p-3" style="min-width: fit-content">
-        <div class="d-flex flex-column justify-content-evenly align-items-end mb-3">
-            <form method="GET" action="/borrowed-books" id="filterForm">
+        <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+            <form method="GET" action="/borrowed-books" id="filterForm" class="m-0">
                 <input type="text" name="search" class="form-control" placeholder="Search..."
                     value="{{ $search }}">
             </form>
@@ -30,12 +30,54 @@
         <table class="table table-bordered">
             <thead class="table-dark">
                 <tr>
-                    <th scope="col">Date</th>
-                    <th scope="col">Book</th>
-                    <th scope="col">Patron</th>
-                    <th scope="col">Librarian on Duty</th>
-                    <th scope="col">Fine</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">
+                        <a href="?sort=created_at&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
+                            class="text-decoration-none text-white d-block">
+                            Date
+                            @if ($sort === 'created_at')
+                                <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a href="?sort=title&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
+                            class="text-decoration-none text-white d-block">
+                            Book
+                            @if ($sort === 'title')
+                                <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a href="?sort=patrons_name&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
+                            class="text-decoration-none text-white d-block">
+                            Patron
+                            @if ($sort === 'patrons_name')
+                                <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a href="?sort=users_name&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
+                            class="text-decoration-none text-white d-block">
+                            Librarian on Duty
+                            @if ($sort === 'users_name')
+                                <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a href="?sort=fine&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
+                            class="text-decoration-none text-white d-block">
+                            Fine
+                            @if ($sort === 'fine')
+                                <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        Status
+                    </th>
                 </tr>
             </thead>
             <tbody>

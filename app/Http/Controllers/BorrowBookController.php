@@ -18,8 +18,14 @@ class BorrowBookController extends Controller
     {
         $status = $request->query('status', 'all');
         $search = $request->query('search', '');
+        $sort = $request->query('sort', 'created_at');
+        $direction = $request->query('direction', 'desc');
 
-        $query = BorrowedBook::with(['book:book_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name']);
+        $query = BorrowedBook::with(['book:book_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name'])
+        ->join('books', 'borrowed_books.book_id', '=', 'books.book_id')
+        ->join('patrons', 'borrowed_books.patron_id', '=', 'patrons.patron_id')
+        ->join('users', 'borrowed_books.user_id', '=', 'users.user_id')
+        ->select('borrowed_books.*', 'books.title', 'patrons.first_name as patrons_name', 'users.first_name as users_name');
 
         if (!empty($search)) {
             $query->whereHas('book', function ($query) use ($search) {
@@ -41,12 +47,13 @@ class BorrowBookController extends Controller
                     ->where('due_date', '>=', now());
             } elseif ($status === 'overdue') {
                 $query->whereNull('returned')
-                ->where('due_date', '<', now());
+                    ->where('due_date', '<', now());
             }
         }
 
-        $borrowed_books = $query->orderByDesc('created_at')
-            ->paginate(10);
+        $borrowed_books = $query->orderBy($sort, $direction)
+            ->paginate(10)
+            ->appends(['search' => $search, 'status' => $status, 'sort' => $sort, 'direction' => $direction]);
 
         $borrowed_books->each(function ($borrowed_book) {
             //Checks if the book is returned
@@ -63,7 +70,7 @@ class BorrowBookController extends Controller
             }
         });
 
-        return view('borrow_books.index', compact(['borrowed_books', 'search', 'status']));
+        return view('borrow_books.index', compact(['borrowed_books', 'search', 'status', 'sort', 'direction']));
     }
 
     public function create()
