@@ -53,8 +53,10 @@
                                 Sort
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="?sort=title">Title</a></li>
-                                <li><a class="dropdown-item" href="?sort=author">Author</a></li>
+                                <li><a class="dropdown-item" href="?sort=title&direction=asc">Title (Ascending)</a></li>
+                                <li><a class="dropdown-item" href="?sort=title&direction=desc">Title (Descending)</a></li>
+                                <li><a class="dropdown-item" href="?sort=author&direction=asc">Author (Ascending)</a></li>
+                                <li><a class="dropdown-item" href="?sort=author&direction=desc">Author (Descending)</a></li>
                             </ul>
                         </div>
                     </div>

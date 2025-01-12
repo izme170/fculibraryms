@@ -21,6 +21,7 @@ class BookController extends Controller
         $category = $request->query('category', 'all');
         $search = $request->query('search', '');
         $sort = $request->query('sort', 'title');
+        $direction = $request->query('direction', 'asc');
 
         // Create the query to get books
         $query = Book::with('category')
@@ -59,7 +60,13 @@ class BookController extends Controller
         }
 
         // Get the books with pagination
-        $books = $query->orderBy($sort)->paginate(10);
+        $books = $query->orderBy($sort, $direction)->paginate(10)->appends([
+            'status' => $status,
+            'category' => $category,
+            'search' => $search,
+            'sort' => $sort,
+            'direction' => $direction
+        ]);
 
         // Get all categories for the filter dropdown
         $categories = Category::orderBy('category')->get();
