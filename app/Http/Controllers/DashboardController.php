@@ -30,7 +30,7 @@ class DashboardController extends Controller
         $visits[] = $dailyVisits->get(1, 0);
 
         // Get the total visit today
-        $total_visits_today = PatronLogin::whereDate('login_at', Carbon::today())->count();
+        $visits_today = PatronLogin::whereDate('login_at', Carbon::today())->count();
 
         //$ List of Unreturned Books
         $unreturned_books_list = BorrowedBook::with('book')
@@ -38,9 +38,6 @@ class DashboardController extends Controller
         ->get()
         ->pluck('book');
 
-        // Total Unreturned Books
-        $total_unreturned_books = $unreturned_books_list->count();
-
-        return view('users.dashboard', compact('visits', 'total_visits_today', 'total_unreturned_books', 'unreturned_books_list'));
+        return view('users.dashboard', compact('visits', 'visits_today', 'unreturned_books_list'));
     }
 }

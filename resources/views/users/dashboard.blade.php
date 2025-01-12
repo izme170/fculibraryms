@@ -8,27 +8,10 @@
 
     <div class="row">
         <div class="col">
-            <div class="widget-container">
-                <div class="widget">
-                    <div class="w-text small">
-                        Total visits today:
-                    </div>
-                    <div class="w-text large">
-                        {{ $total_visits_today }}
-                    </div>
-                </div>
-
-                <div class="widget">
-                    <div class="w-text small">
-                        Unreturned Books:
-                    </div>
-                    <div class="w-text large">
-                        {{ $total_unreturned_books }}
-                    </div>
-                </div>
-            </div>
-
             <div class="widget">
+                <div class="w-text small">
+                    Total visits today: {{ $visits_today }}
+                </div>
                 <div class="chart-container" style="position: relative; width:600px">
                     <canvas id="dailyVisitChart"></canvas>
                 </div>
@@ -40,10 +23,10 @@
             </div>
             <div class="widget">
                 <div class="w-text small">
-                    Unreturned Books
+                    Unreturned Books: {{ count($unreturned_books_list) }}
                 </div>
                 @foreach ($unreturned_books_list as $book)
-                    <div class="w-text">{{$book->title}}</div>
+                    <div class="w-text">{{ $book->title }}</div>
                 @endforeach
             </div>
         </div>
