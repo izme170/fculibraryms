@@ -80,6 +80,7 @@
 
 .sidenav .nav-link:hover {
     background-color: #17208a;
+    color: var(--secondary);
 }
 
 .sidenav.sidenav-on{

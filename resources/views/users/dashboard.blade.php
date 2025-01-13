@@ -1,11 +1,6 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-    <div class="widget">
-        <a class="btn-simple" href="/borrow-book">Borrow Book</a>
-        <a class="btn-simple" href="/return-book">Return Book</a>
-    </div>
-
     <div class="row">
         <div class="col">
             <div class="widget">
@@ -16,6 +11,10 @@
                     <canvas id="dailyVisitChart"></canvas>
                 </div>
             </div>
+            <div class="widget">
+                <a class="btn-simple" href="/borrow-book">Borrow Book</a>
+                <a class="btn-simple" href="/return-book">Return Book</a>
+            </div>
         </div>
         <div class="col">
             <div class="widget">
@@ -23,7 +22,7 @@
             </div>
             <div class="widget">
                 <div class="w-text small">
-                    Unreturned Books: {{ count($unreturned_books_list) }}
+                    <span>Unreturned Books: {{ count($unreturned_books_list) }}</span>
                 </div>
                 @foreach ($unreturned_books_list as $book)
                     <div class="w-text">{{ $book->title }}</div>
