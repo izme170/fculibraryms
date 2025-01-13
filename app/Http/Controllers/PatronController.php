@@ -18,14 +18,54 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PatronController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $patrons = Patron::with('type')
-            ->where('is_archived', '=', false)
-            ->orderBy('patrons.type_id')
-            ->orderBy('first_name')->get();
+        $search = $request->query('search', '');
+        $sort = $request->query('sort', 'first_name');
+        $direction = $request->query('direction', 'asc');
+        $course_filter = $request->query('course_filter', '');
+        $department_filter = $request->query('deparment_filter', '');
+        $type_filter = $request->query('type_filter', '');
 
-        return view('patrons.index', compact('patrons'));
+        $query = Patron::with('type', 'department')
+            ->where('is_archived', '=', false);
+
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('patrons.first_name', 'like', "%{$search}%")
+                    ->orWhere('patrons.last_name', 'like', "%{$search}%");
+            });
+        }
+
+        if (!empty($course_filter)) {
+            $query->where('course_id', '=', $course_filter);
+        }
+
+        if (!empty($department_filter)) {
+            $query->where('department_id', '=', $department_filter);
+        }
+
+        if (!empty($type_filter)) {
+            $query->where('type_id', '=', $type_filter);
+        }
+
+        $patrons = $query->orderBy($sort, $direction)
+            ->paginate(15)
+            ->appends(['search', 'sort', 'direction', 'course_filter', 'department_filter', 'type_filter']);
+
+        $patrons->each(function ($patron) use ($patrons) {
+            $words = explode(' ', $patron->department->department);
+            $ignoreWords = ['of', 'and', 'the', 'a', 'an', 'in'];
+            $patron->department_acronym = implode('', array_map(function ($word) use ($ignoreWords) {
+                return !in_array(strtolower($word), $ignoreWords) ? strtoupper($word[0]) : '';
+            }, $words));
+        });
+
+        $courses = Course::all();
+        $departments = Department::all();
+        $types = PatronType::all();
+
+        return view('patrons.index', compact('patrons', 'search', 'sort', 'direction', 'courses', 'departments', 'types'));
     }
 
     public function create()
@@ -71,7 +111,7 @@ class PatronController extends Controller
     public function show($id)
     {
         $patron = Patron::with(['type', 'department', 'course', 'adviser'])
-        ->find($id);
+            ->find($id);
 
         $patron_types = PatronType::all();
         $departments = Department::all();

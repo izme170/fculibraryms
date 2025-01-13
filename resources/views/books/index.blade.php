@@ -53,10 +53,20 @@
                                 Sort
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="?sort=title&direction=asc">Title (Ascending)</a></li>
-                                <li><a class="dropdown-item" href="?sort=title&direction=desc">Title (Descending)</a></li>
-                                <li><a class="dropdown-item" href="?sort=author&direction=asc">Author (Ascending)</a></li>
-                                <li><a class="dropdown-item" href="?sort=author&direction=desc">Author (Descending)</a></li>
+                                <li><a class="dropdown-item"
+                                        href="?sort=title&direction={{ $direction === 'asc' && $sort === 'title' ? 'desc' : 'asc' }}">
+                                        Title
+                                        @if ($sort === 'title')
+                                            <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                        @endif
+                                    </a></li>
+                                <li><a class="dropdown-item"
+                                        href="?sort=author&direction={{ $direction === 'asc' && $sort === 'author' ? 'desc' : 'asc' }}">
+                                        Author
+                                        @if ($sort === 'author')
+                                            <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                        @endif
+                                    </a></li>
                             </ul>
                         </div>
                     </div>
@@ -82,7 +92,7 @@
 
         {{-- pagination --}}
         <div class="mt-4 d-flex justify-content-center">
-            {{ $books->appends(['status' => $status, 'category' => $category, 'search' => $search])->links() }}
+            {{ $books->links() }}
         </div>
     </div>
     <script>

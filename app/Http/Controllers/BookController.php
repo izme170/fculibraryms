@@ -60,7 +60,7 @@ class BookController extends Controller
         }
 
         // Get the books with pagination
-        $books = $query->orderBy($sort, $direction)->paginate(10)->appends([
+        $books = $query->orderBy($sort, $direction)->paginate(15)->appends([
             'status' => $status,
             'category' => $category,
             'search' => $search,
@@ -94,7 +94,7 @@ class BookController extends Controller
             }
         });
 
-        return view('books.index', compact('books', 'categories', 'status', 'category', 'search'));
+        return view('books.index', compact('books', 'categories', 'status', 'category', 'search', 'sort', 'direction'));
     }
 
 
