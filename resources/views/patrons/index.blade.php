@@ -37,7 +37,7 @@
 
         <div class="d-flex">
             <div class="dropdown">
-                <button class="btn text-secondary dropdown-toggle" type="button"
+                <button class="btn text-secondary dropdown-toggle border-0" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Course
                 </button>
@@ -53,7 +53,7 @@
                 </ul>
             </div>
             <div class="dropdown">
-                <button class="btn text-secondary dropdown-toggle" type="button"
+                <button class="btn text-secondary dropdown-toggle border-0" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Department
                 </button>
@@ -69,7 +69,7 @@
                 </ul>
             </div>
             <div class="dropdown">
-                <button class="btn text-secondary dropdown-toggle" type="button"
+                <button class="btn text-secondary dropdown-toggle border-0" type="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Patron Type
                 </button>

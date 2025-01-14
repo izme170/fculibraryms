@@ -7,17 +7,20 @@ use App\Exports\UsersExport;
 use App\Mail\SendPatronQRCode;
 use App\Models\Activity;
 use App\Models\Adviser;
+use App\Models\BorrowedBook;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Patron;
 use App\Models\PatronLogin;
 use App\Models\PatronType;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 
 class PatronController extends Controller
 {
+    public $finePerHour = 5;
     public function index(Request $request)
     {
         $search = $request->query('search', '');
@@ -117,7 +120,29 @@ class PatronController extends Controller
         $departments = Department::all();
         $advisers = Adviser::all();
 
-        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'advisers'));
+        $borrowed_books = BorrowedBook::with('patron')
+        ->where('patron_id', $id)
+        ->orderBy('created_at', 'desc')
+        ->get();
+
+        $borrowed_books->each(function ($borrowed_book) {
+
+            //Checks if the book is returned
+            if (!$borrowed_book->returned) {
+                $dueDate = Carbon::parse($borrowed_book->due_date);
+                $now = Carbon::now();
+
+                //Check if the book is overdue
+                if ($now->gt($dueDate)) {
+                    $hoursOverdue = $dueDate->diffInHours($now, false);
+                    $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+                } else {
+                    $borrowed_book->fine = 0;
+                }
+            }
+        });
+
+        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'advisers', 'borrowed_books'));
     }
 
     public function update(Request $request, $id)

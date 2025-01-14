@@ -194,3 +194,8 @@ select:focus {
     padding: 10px;
     background-color: white;
 }
+
+.icon {
+    height: 30px;
+    width: 30px;
+}
