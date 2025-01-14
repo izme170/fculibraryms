@@ -18,16 +18,25 @@
                 @endif
             </div>
 
-            <div class="mb-3">
+            <div class="d-flex gap-1 mb-3">
                 <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editBook">Update</button>
                 <button class="btn-simple" type="button" data-bs-toggle="modal"
                     data-bs-target="#archiveBook">Archive</button>
                 <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#newBookRFID">Assign new
                     RFID</button>
+                {{-- <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#editBook" style="color: #0E1133">
+                    <x-lucide-edit class="icon" />Update
+                </a>
+                <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#archiveBook" style="color: #0E1133">
+                    <x-lucide-archive class="icon" />Archive
+                </a>
+                <a class="text-decoration-none" href="#" data-bs-toggle="modal" data-bs-target="#newBookRFID" style="color: #0E1133">
+                    <x-lucide-radio class="icon" />Assign new RFID
+                </a> --}}
             </div>
 
             <div>
-                <p>Previous Borrowers:</p>
+                <h5>Previous Borrowers</h5>
                 <table class="table table-bordered">
                     <thead class="table-dark">
                         <tr>
@@ -40,13 +49,14 @@
                     </thead>
                     <tbody>
                         @foreach ($previous_borrowers as $borrower)
-                        <tr>
-                            <td>{{$borrower->patron->type->type}}</td>
-                            <td>{{$borrower->patron->first_name}} {{$borrower->patron->last_name}}</td>
-                            <td>{{$borrower->created_at->format('m/d/y h:i a') }}</td>
-                            <td>{{$borrower->returned ? $borrower->returned->format('m/d/y h:i a') : 'Unreturned'}}</td>
-                            <td>₱{{$borrower->fine}}</td>
-                        </tr>
+                            <tr>
+                                <td>{{ $borrower->patron->type->type }}</td>
+                                <td>{{ $borrower->patron->first_name }} {{ $borrower->patron->last_name }}</td>
+                                <td>{{ $borrower->created_at->format('m/d/y h:i a') }}</td>
+                                <td>{{ $borrower->returned ? $borrower->returned->format('m/d/y h:i a') : 'Unreturned' }}
+                                </td>
+                                <td>₱{{ $borrower->fine }}</td>
+                            </tr>
                         @endforeach
                     </tbody>
                 </table>

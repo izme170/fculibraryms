@@ -35,9 +35,11 @@
                         <div class="row mb-1">
                             <p><strong>RFID:</strong> {{ $patron->library_id }}</p>
                         </div>
+                        @if ($patron->type->type === 'Student')
                         <div class="row">
                             <p><strong>Adviser:</strong> {{ $patron->adviser->adviser }}</p>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -50,7 +52,7 @@
                 RFID</button>
         </div>
         <div>
-            <p>Books borrowed:</p>
+            <h5>Books borrowed</h5>
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
