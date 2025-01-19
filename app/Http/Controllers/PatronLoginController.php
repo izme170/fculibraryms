@@ -11,14 +11,36 @@ use Illuminate\Http\Request;
 
 class PatronLoginController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $patron_logins = PatronLogin::with(['patron:patron_id,first_name,last_name', 'purpose:purpose_id,purpose', 'marketer:marketer_id,marketer'])
-            ->orderByDesc('login_at')
-            ->get();
+        $search = $request->query('search', '');
+        $date = $request->query('date', '');
 
-        return view('patron_logins.index', compact('patron_logins'));
+        $patron_logins = PatronLogin::query()
+            ->when($search, function ($query, $search) {
+                $query->where(function ($query) use ($search) {
+                    $query->whereHas('patron', function ($query) use ($search) {
+                        $query->where('first_name', 'like', "%$search%")
+                            ->orWhere('last_name', 'like', "%$search%");
+                    })
+                        ->orWhereHas('purpose', function ($query) use ($search) {
+                            $query->where('purpose', 'like', "%$search%");
+                        })
+                        ->orWhereHas('marketer', function ($query) use ($search) {
+                            $query->where('marketer', 'like', "%$search%");
+                        });
+                });
+            })
+            ->when($date, function ($query, $date) {
+                $query->whereDate('login_at', $date); // Ensure date comparison is applied properly
+            })
+            ->with('patron', 'purpose', 'marketer')
+            ->orderByDesc('login_at')
+            ->paginate(10);
+
+        return view('patron_logins.index', compact(['patron_logins', 'search', 'date']));
     }
+
     public function create()
     {
         $purposes = Purpose::all();

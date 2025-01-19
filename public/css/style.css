@@ -20,13 +20,14 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center; */
-    background: rgb(14, 17, 51);
+    /* background: rgb(14, 17, 51);
     background: linear-gradient(
         90deg,
         rgba(14, 17, 51, 1) 0%,
         rgba(38, 47, 153, 1) 50%,
         rgba(8, 32, 73, 1) 100%
-    );
+    ); */
+    background-color: #F8F9FA;
 }
 
 .user-page {

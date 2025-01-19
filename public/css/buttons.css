@@ -62,8 +62,8 @@
 }
 
 .btn-simple:hover {
-    background-color: #17208a;
-    border-color: #17208a;
+    background-color: #292D69;
+    border-color: #292D69;
     transform: translateY(-3px); /* Slight lift effect on hover */
 }
 
@@ -78,9 +78,9 @@
     box-shadow: 0 0 0 3px rgba(9, 0, 180, 0.4);
 }
 
-.btn-add {
+.btn-rectangle {
     padding: 8px 16px;
-    background-color: #28a745;
+    background-color: #0E1133;
     color: white;
     border: none;
     font-family: system-ui, sans-serif;
@@ -92,8 +92,8 @@
     transition: background-color 0.3s ease;
 }
 
-.btn-add:hover {
-    background-color: #218838;
+.btn-rectangle:hover {
+    background-color: #292D69;
 }
 
 @media (max-width: 870px) {
