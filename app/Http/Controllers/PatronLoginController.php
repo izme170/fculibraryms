@@ -32,7 +32,7 @@ class PatronLoginController extends Controller
                 });
             })
             ->when($date, function ($query, $date) {
-                $query->whereDate('login_at', $date); // Ensure date comparison is applied properly
+                $query->whereDate('login_at', $date);
             })
             ->with('patron', 'purpose', 'marketer')
             ->orderByDesc('login_at')

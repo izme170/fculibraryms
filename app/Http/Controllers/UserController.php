@@ -54,14 +54,29 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function index(){
+    public function index(Request $request){
+        $search = $request->search;
+        $role_filter = $request->role_filter;
         $users = User::with('role:role_id,role')
         ->orderBy('users.role_id')
         ->orderBy('first_name')
         ->where('is_archived', false)
-        ->get();
+        ->when($search, function($query, $search){
+            return $query->where('first_name', 'like', "%$search%")
+            ->orWhere('middle_name', 'like', "%$search%")
+            ->orWhere('last_name', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")
+            ->orWhere('contact_number', 'like', "%$search%")
+            ->orWhere('username', 'like', "%$search%");
+        })
+        ->when($role_filter, function($query, $role_filter){
+            return $query->where('role_id', $role_filter);
+        })
+        ->paginate(15);
 
-        return view('users.index', compact(['users']));
+        $roles = Role::all();
+
+        return view('users.index', compact(['users', 'search', 'roles']));
     }
 
     public function create(){

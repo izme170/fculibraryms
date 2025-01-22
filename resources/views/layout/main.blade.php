@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <div class="login-page">
+    <div>
         @yield('login-content')
     </div>
     <div class="user-page">

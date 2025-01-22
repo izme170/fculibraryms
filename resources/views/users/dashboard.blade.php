@@ -3,30 +3,43 @@
 @section('user-content')
     <div class="row">
         <div class="col">
-            <div class="widget">
-                <div class="w-text small">
-                    Total visits today: {{ $visits_today }}
+            <div class="widget-container">
+                <div class="widget">
+                    <a class="btn-simple" href="/borrow-book">Borrow Book</a>
+                    <a class="btn-simple" href="/return-book">Return Book</a>
                 </div>
-                <div class="chart-container" style="position: relative; width:600px">
-                    <canvas id="dailyVisitChart"></canvas>
-                </div>
+                <a class="shortcut" href="/books">
+                    Go to Book List
+                </a>
             </div>
-            <div class="widget">
-                <a class="btn-simple" href="/borrow-book">Borrow Book</a>
-                <a class="btn-simple" href="/return-book">Return Book</a>
+            <div class="widget-container">
+                <div class="widget">
+                    <div class="w-text small">
+                        Total visits today: {{ $visits_today }}
+                    </div>
+                    <div class="chart-container" style="position: relative; width:600px">
+                        <canvas id="dailyVisitChart"></canvas>
+                    </div>
+                </div>
+                <a class="shortcut" href="/patron-logins">Go to Access Log</a>
             </div>
         </div>
         <div class="col">
             <div class="widget">
                 <div class="w-text small" id="datetime"></div>
             </div>
-            <div class="widget">
-                <div class="w-text small">
-                    <span>Unreturned Books: {{ count($unreturned_books_list) }}</span>
+            <div class="widget-container">
+                <div class="widget">
+                    <div class="w-text small">
+                        <span>Unreturned Books: {{ count($unreturned_books_list) }}</span>
+                    </div>
+                    <ol>
+                        @foreach ($unreturned_books_list as $book)
+                            <li><a href="/book/show/{{ $book->book_id }}" class="shortcut-link">{{ $book->title }}</a></li>
+                        @endforeach
+                    </ol>
                 </div>
-                @foreach ($unreturned_books_list as $book)
-                    <div class="w-text">{{ $book->title }}</div>
-                @endforeach
+                <a href="/borrowed-books" class="shortcut">Go to Borrowed Books List</a>
             </div>
         </div>
     </div>

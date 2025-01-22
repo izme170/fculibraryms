@@ -10,18 +10,18 @@
                 <div class="col">
                     <div class="mb-3">
                         <label class="form-label" for="title">Title</label>
-                        <input type="text" id="title" name="title" autofocus>
+                        <input type="text" id="title" name="title" value="{{old('title')}}" autofocus>
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="author">Author</label>
-                        <input type="text" id="author" name="author">
+                        <input type="text" id="author" name="author" value="{{old('author')}}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="category_id">Category</label>
                         <select id="category_id" name="category_id">
                             <option value="">Select book category</option>
                             @foreach ($categories as $category)
-                                <option value="{{$category->category_id}}">
+                                <option value="{{$category->category_id}}" {{old('category_id') == $category->category_id ? 'selected' : ''}}>
                                     {{$category->category}}
                                 </option>
                             @endforeach
