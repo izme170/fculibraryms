@@ -12,6 +12,7 @@
 </head>
 
 <body>
+    @include('include.messages')
     <div>
         @yield('login-content')
     </div>

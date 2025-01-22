@@ -79,6 +79,4 @@
     @include('modals.patron.edit')
     @include('modals.patron.archive')
     @include('modals.patron.new_rfid')
-
-    @include('include.messages')
 @endsection

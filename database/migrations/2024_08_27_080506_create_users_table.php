@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('username', 55);
             $table->string('password', 255);
             $table->boolean('is_archived')->default(false);
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
 
             $table->foreign('role_id')

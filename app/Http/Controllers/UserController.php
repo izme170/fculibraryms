@@ -22,6 +22,12 @@ class UserController extends Controller
         ]);
 
         if(Auth::attempt($credentials)){
+            if(Auth::user()->is_active == false){
+                Auth::logout();
+                return back()->withErrors([
+                    'username' => 'Your account has been deactivated.'
+                ])->onlyInput('username');
+            }
             $request->session()->regenerate();
 
             // Record Activity
@@ -31,7 +37,7 @@ class UserController extends Controller
             ];
             Activity::create($data);
 
-            return redirect('/user/dashboard');
+            return redirect('/user/dashboard')->with('message_success', 'Welcome back, ' . Auth::user()->first_name . '!');
         }
 
         return back()->withErrors([
@@ -144,7 +150,7 @@ class UserController extends Controller
     }
 
     public function archive($id){
-        User::find($id)->update(['is_archived' => true]);
+        User::find($id)->update(['is_archived' => true, 'is_active' => false]);
 
         // Record Activity
         $data = [
@@ -154,7 +160,7 @@ class UserController extends Controller
         ];
         Activity::create($data);
 
-        return redirect('/users')->with('message_success', 'User has been archived!');
+        return redirect('/users')->with('message_success', 'User has been archived and deactivated!');
     }
 
     public function changePassword(Request $request, $id){
@@ -177,5 +183,34 @@ class UserController extends Controller
 
     public function export(){
         return Excel::download(new UsersExport, 'users-library-management-system.xlsx');
+    }
+
+    public function deactivate($id){
+        $user = User::findOrFail($id);
+        $user->update(['is_active' => false]);
+
+        // Record Activity
+        $data = [
+            'action' => 'deactivated a user account.',
+            'user_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'User account has been deactivated!');
+    }
+
+    public function activate($id){
+        User::find($id)->update(['is_active' => true]);
+
+        // Record Activity
+        $data = [
+            'action' => 'activated a user account.',
+            'user_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'User account has been activated!');
     }
 }

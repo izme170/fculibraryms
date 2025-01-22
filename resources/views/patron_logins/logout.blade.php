@@ -10,7 +10,6 @@
             <h1 id="message"></h1>
         </div>
     </form>
-    @include('include.messages')
 </div>
 
 <script>

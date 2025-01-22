@@ -66,6 +66,4 @@
     @include('modals.book.edit')
     @include('modals.book.archive')
     @include('modals.book.new_rfid')
-
-    @include('include.messages')
 @endsection

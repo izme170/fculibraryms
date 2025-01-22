@@ -43,6 +43,8 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::put('/user/archive/{id}', 'archive');
         Route::put('/user/change-password/{id}', 'changePassword');
         Route::get('/users/export', 'export')->name('users.export');
+        Route::put('/user/deactivate/{id}', 'deactivate');
+        Route::put('/user/activate/{id}', 'activate');
     });
 
     Route::controller(RoleController::class)->group(function(){

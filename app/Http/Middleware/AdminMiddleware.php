@@ -17,9 +17,9 @@ class AdminMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         $user = Auth::user();
-        if ($user && $user->role_id == 1 && $user->is_archived == false) {
+        if ($user && $user->role_id == 1 && $user->is_active == true) {
             return $next($request);
         }
-        return back();
+        return redirect('/')->with('message_error', 'Unauthorized access.');
     }
 }

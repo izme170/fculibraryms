@@ -20,7 +20,8 @@ class User extends AuthUser
         'contact_number',
         'username',
         'password',
-        'is_archived'
+        'is_archived',
+        'is_active'
     ];
     protected $hidden = ['password'];
 

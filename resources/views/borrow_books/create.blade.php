@@ -1,7 +1,6 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.messages')
 <div class="widget">
     <div class="form-container">
         <form action="/borrow-book/process" method="post">

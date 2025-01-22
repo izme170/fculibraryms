@@ -13,12 +13,21 @@
             <p>username: {{ $user->username }}</p>
             <div class="mb-3">
                 <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editUser">Update</button>
-                <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#archiveUser">Archive</button>
+                <button class="btn-simple" type="button" data-bs-toggle="modal"
+                    data-bs-target="#archiveUser">Archive</button>
+                @if ($user->is_active)
+                    <button class="btn-simple bg-danger" type="button" data-bs-toggle="modal"
+                        data-bs-target="#deactivate">Deactivate</button>
+                @else
+                    <button class="btn-simple bg-success" type="button" data-bs-toggle="modal"
+                        data-bs-target="#activate">Activate</button>
+                @endif
+
             </div>
         </div>
     </div>
     @include('modals.user.edit')
     @include('modals.user.archive')
-
-    @include('include.messages')
+    @include('modals.user.deactivate')
+    @include('modals.user.activate')
 @endsection
