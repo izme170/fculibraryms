@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('contact_number');
             $table->string('username', 55);
             $table->string('password', 255);
+            $table->string('user_image', 255)->nullable();
             $table->boolean('is_archived')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

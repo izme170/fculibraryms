@@ -100,10 +100,27 @@ class UserController extends Controller
             'contact_number' => 'required_without:email',
             'role_id' => 'required',
             'username' => 'required',
-            'password' => 'required|min:5'
+            'password' => 'required|min:5',
+            'user_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
         $validated['password'] = bcrypt($request->password);
+
+        if($request->hasFile('user_image')){
+            $file = $request->file('user_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/users', $filenameToStore, 'public');
+
+            if($path){
+                $validated['user_image'] = str_replace('public/', '', $path); // Save relative path
+            } else {
+                return back()->withErrors(['user_image' => 'Failed to upload the image.']);
+            }
+        }
 
         $id = User::create($validated);
 
@@ -147,6 +164,48 @@ class UserController extends Controller
         Activity::create($data);
 
         return redirect('/user/show/' . $id)->with('message_success', 'The user\'s details have been updated!');
+    }
+
+    public function updateImage(Request $request, $id){
+        $validated = $request->validate([
+            'user_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $user = User::find($id);
+
+        if($request->hasFile('user_image')){
+            $file = $request->file('user_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/users', $filenameToStore, 'public');
+
+            // Delete the old image if it exists
+            if($user->user_image){
+                $oldImagePath = public_path('storage/' . $user->user_image);
+                if(file_exists($oldImagePath)){
+                    unlink($oldImagePath);
+                }
+            }
+
+            if($path){
+                $user->update(['user_image' => str_replace('public/', '', $path)]); // Save relative path
+            } else {
+                return back()->withErrors(['user_image' => 'Failed to upload the image.']);
+            }
+        }
+
+        // Record Activity
+        $data = [
+            'action' => 'updated the image of a user.',
+            'user_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'User image has been updated.');
     }
 
     public function archive($id){

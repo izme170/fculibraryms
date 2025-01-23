@@ -3,9 +3,16 @@
 @section('user-content')
 <div class="widget">
     <div class="form-container">
-        <form action="/user/store" method="post">
+        <form action="/user/store" method="post" enctype="multipart/form-data">
             @csrf
             <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        <label class="form-label" for="image">Profile Image</label>
+                        <input type="file" id="image" name="user_image" accept="image/*" onchange="previewImage(event)" style="display: none;">
+                        <img id="imagePreview" src="{{asset('img/default-user-image.png')}}" alt="Image Preview" style="max-width: 200px; display: block; margin-top: 10px; cursor: pointer;" onclick="document.getElementById('image').click();">
+                    </div>
+                </div>
                 <div class="col">
                     <div class="mb-3">
                         <label class="form-label" for="role_id">Role</label>
@@ -30,6 +37,8 @@
                         <label class="form-label" for="last_name">Lastname</label>
                         <input type="text" id="last_name" name="last_name" value="{{old('last_name')}}">
                     </div>
+                </div>
+                <div class="col">
                     <div class="mb-3">
                         <label class="form-label" for="email">Email</label>
                         <input type="text" id="email" name="email" value="{{old('email')}}">
@@ -38,8 +47,6 @@
                         <label class="form-label" for="contact_number">Contact Number</label>
                         <input type="text" id="contact_number" name="contact_number" value="{{old('contact_number')}}">
                     </div>
-                </div>
-                <div class="col">
                     <div class="mb-3">
                         <label class="form-label" for="username">Username</label>
                         <input type="text" id="username" name="username" value="{{old('username')}}">
@@ -54,4 +61,14 @@
         </form>
     </div>
 </div>
+<script>
+    function previewImage(event) {
+        var reader = new FileReader();
+        reader.onload = function() {
+            var output = document.getElementById('imagePreview');
+            output.src = reader.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
 @endsection

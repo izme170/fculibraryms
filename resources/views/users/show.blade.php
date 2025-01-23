@@ -3,7 +3,18 @@
 @section('user-content')
     <div class="bg-white p-3 rounded d-flex gap-3 flex-wrap justify-content-center" style="min-width: fit-content">
         <div>
-            <img src="{{ asset('img/default-user-image.png') }}" class="img-thumbnail img-fluid" alt="..." width="200px">
+            <form action="/user/update-image/{{ $user->user_id }}" method="post" enctype="multipart/form-data">
+                @method('PUT')
+                @csrf
+                <label for="user_image" style="cursor: pointer;">
+                    <img class="img-thumbnail img-fluid"
+                        src="{{ $user->user_image ? asset('storage/' . $user->user_image) : asset('img/default-user-image.png') }}"
+                        alt="User Image" id="image-preview" width="200px">
+                </label>
+                <input type="file" id="user_image" name="user_image" accept="image/*" style="display: none"
+                    onchange="previewImage(this)">
+                <button type="submit" style="display: none;" id="submit-button">Update Image</button>
+            </form>
         </div>
         <div>
             <h1>{{ $user->first_name . ' ' . $user->last_name }}</h1>
@@ -30,4 +41,19 @@
     @include('modals.user.archive')
     @include('modals.user.deactivate')
     @include('modals.user.activate')
+
+    <script>
+        function previewImage(input) {
+            var file = input.files[0];
+            if (file) {
+                var reader = new FileReader();
+                reader.onload = function () {
+                    document.getElementById('image-preview').src = reader.result;
+                }
+                reader.readAsDataURL(file);
+
+                document.getElementById('submit-button').click();
+            }
+        }
+    </script>
 @endsection

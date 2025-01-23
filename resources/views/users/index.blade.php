@@ -49,8 +49,8 @@
                     <div class="indicator-container">
                         <div class="status-indicator {{$user->is_active ? 'active' : 'deactivated'}}"></div>
                     </div>
-                    <div class="img" style="background-image: url('{{ asset('img/default-user-image.png') }}');">
-                    </div>
+                    <img class="img" src="{{ $user->user_image ? asset('storage/' . $user->user_image) : asset('img/default-user-image.png') }}"
+                        alt="User Image">
                     <div class="text">
                         <p class="h3">{{ $user->first_name }} {{ $user->last_name }}</p>
                         <p class="p">{{ $user->role->role }}</p>

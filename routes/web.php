@@ -40,6 +40,7 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::post('/user/store', 'store');
         Route::get('/user/show/{id}', 'show')->name('users.show');
         Route::put('/user/update/{id}', 'update');
+        Route::put('/user/update-image/{id}', 'updateImage');
         Route::put('/user/archive/{id}', 'archive');
         Route::put('/user/change-password/{id}', 'changePassword');
         Route::get('/users/export', 'export')->name('users.export');

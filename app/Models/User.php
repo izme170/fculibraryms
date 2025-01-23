@@ -20,6 +20,7 @@ class User extends AuthUser
         'contact_number',
         'username',
         'password',
+        'user_image',
         'is_archived',
         'is_active'
     ];
