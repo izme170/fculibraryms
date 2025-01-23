@@ -107,7 +107,7 @@
     opacity: 0; /* Initially hidden */
 }
 
-.status-indicator.available {
+.status-indicator.available, .status-indicator.active {
     background-color: #28a745;
 }
 
@@ -115,7 +115,7 @@
     background-color: #a78e28;
 }
 
-.status-indicator.overdue {
+.status-indicator.overdue, .status-indicator.deactivated {
     background-color: #a72828;
 }
 
@@ -129,6 +129,14 @@
 
 .status-indicator.overdue::after {
     content: 'Overdue';
+}
+
+.status-indicator.active::after {
+    content: 'Active';
+}
+
+.status-indicator.deactivated::after {
+    content: 'Deactivated';
 }
 
 /* Hover on the card */

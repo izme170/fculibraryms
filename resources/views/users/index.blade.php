@@ -46,6 +46,9 @@
             @foreach ($users as $user)
                 <a class="card text-decoration-none" href="/user/show/{{ $user->user_id }}"
                     data-status="{{ $user->status }}">
+                    <div class="indicator-container">
+                        <div class="status-indicator {{$user->is_active ? 'active' : 'deactivated'}}"></div>
+                    </div>
                     <div class="img" style="background-image: url('{{ asset('img/default-user-image.png') }}');">
                     </div>
                     <div class="text">
