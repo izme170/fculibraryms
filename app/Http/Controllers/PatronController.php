@@ -95,8 +95,25 @@ class PatronController extends Controller
             'course_id' => 'nullable',
             'year' => 'nullable|numeric',
             'library_id' => 'nullable|unique:patrons,library_id',
+            'patron_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'adviser_id' => 'nullable'
         ]);
+
+        if ($request->hasFile('patron_image')) {
+            $file = $request->file('patron_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/patrons', $filenameToStore, 'public');
+
+            if ($path) {
+                $validated['patron_image'] = str_replace('public/', '', $path); // Save relative path
+            } else {
+                return back()->withErrors(['patron_image' => 'Failed to upload the image.']);
+            }
+        }
 
         $patron = Patron::create($validated);
 
@@ -121,9 +138,9 @@ class PatronController extends Controller
         $advisers = Adviser::all();
 
         $borrowed_books = BorrowedBook::with('patron')
-        ->where('patron_id', $id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+            ->where('patron_id', $id)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         $borrowed_books->each(function ($borrowed_book) {
 
@@ -175,6 +192,49 @@ class PatronController extends Controller
         return redirect()->back()->with('message_success', 'Success! The patron\'s profile has been updated.');
     }
 
+    public function updateImage(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'patron_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+
+        $patron = Patron::find($id);
+
+        if ($request->hasFile('patron_image')) {
+            $file = $request->file('patron_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/patrons', $filenameToStore, 'public');
+
+            // Delete the old image if it exists
+            if ($patron->patron_image) {
+                $oldImagePath = public_path('storage/' . $patron->patron_image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            if ($path) {
+                $patron->update(['patron_image' => str_replace('public/', '', $path)]); // Save relative path
+            } else {
+                return back()->withErrors(['patron_image' => 'Failed to upload the image.']);
+            }
+        }
+
+        // Record Activity
+        $data = [
+            'action' => 'updated patron profile image',
+            'patron_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'Patron\'s profile image updated.');
+    }
+
     public function archive($id)
     {
         Patron::find($id)->update(['is_archived' => true]);
@@ -208,9 +268,9 @@ class PatronController extends Controller
         return redirect()->back()->with('success_message', 'Patron\'s RFID updated.');
     }
 
-    public function getCoursesByDepartment($department_id)
+    public function getCoursesByDepartment($departmentId)
     {
-        $courses = Course::where('department_id', $department_id)->get();
+        $courses = Course::where('department_id', $departmentId)->get();
         return response()->json($courses);
     }
 

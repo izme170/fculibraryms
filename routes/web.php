@@ -80,7 +80,9 @@ Route::middleware('auth')->group(function () {
         Route::put('/patron/update/{id}', 'update');
         Route::put('/patron/archive/{id}', 'archive');
         Route::put('/patron/new_rfid/{id}', 'newRFID');
+        Route::put('/patron/update-image/{id}', 'updateImage');
         Route::get('/patrons/export', 'export')->name('patrons.export');
+        Route::get('/api/courses/{department}', 'getCoursesByDepartment');
     });
 
     Route::controller(BookController::class)->group(function () {
@@ -91,7 +93,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/book/update/{id}', 'update')->name('books.update');
         Route::put('/book/archive/{id}', 'archive')->name('books.archive');
         Route::put('/book/new_rfid/{id}', 'newRFID')->name('books.newRFID');
-        Route::put('/book/update-image/{id}', 'updateImage')->name('book.update_image');
+        Route::put('/book/update-image/{id}', 'updateImage')->name('books.update_image');
         Route::get('/books/export', 'export');
     });
 

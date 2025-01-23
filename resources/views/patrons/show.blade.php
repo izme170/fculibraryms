@@ -5,9 +5,19 @@
         style="min-width: fit-content">
         <div class="d-flex gap-3 flex-row justify-content-start">
             <div>
-                <img src="{{ asset('img/default-patron-image.png') }}" class="img-thumbnail img-fluid" alt="..."
-                    width="200px">
-                <h2>{{ $patron->first_name }} {{$patron->middle_name}} {{ $patron->last_name }}</h2>
+                <form action="/patron/update-image/{{ $patron->patron_id }}" method="post" enctype="multipart/form-data">
+                    @method('PUT')
+                    @csrf
+                    <label for="patron_image" style="cursor: pointer;">
+                        <img class="img-thumbnail img-fluid"
+                            src="{{ $patron->patron_image ? asset('storage/' . $patron->patron_image) : asset('img/default-patron-image.png') }}"
+                            alt="Patron Image" id="image-preview" width="200px">
+                    </label>
+                    <input type="file" id="patron_image" name="patron_image" accept="image/*" style="display: none"
+                        onchange="previewImage(this)">
+                    <button type="submit" style="display: none;" id="submit-button">Update Image</button>
+                </form>
+                <h2>{{ $patron->first_name }} {{ $patron->middle_name }} {{ $patron->last_name }}</h2>
             </div>
             <div class="grid">
                 <div class="row">
@@ -15,20 +25,28 @@
                         <div class="row mb-1">
                             <p><strong>Patron Type:</strong> {{ $patron->type->type }}</p>
                         </div>
-                        <div class="row mb-1">
-                            <p><strong>Department:</strong> {{ $patron->department->department }}</p>
-                        </div>
-                        <div class="row mb-1">
-                            <p><strong>Course:</strong> {{ $patron->course->course }}</p>
-                        </div>
-                        <div class="row mb-1">
-                            <p><strong>Contact</strong>{{ $patron->contact_number }}</p>
-                        </div>
+                        @if ($patron->department)
+                            <div class="row mb-1">
+                                <p><strong>Department:</strong> {{ $patron->department->department }}</p>
+                            </div>
+                        @endif
+                        @if ($patron->course)
+                            <div class="row mb-1">
+                                <p><strong>Course:</strong> {{ $patron->course->course }}</p>
+                            </div>
+                        @endif
+                        @if ($patron->contact_number)
+                            <div class="row mb-1">
+                                <p><strong>Contact Number:</strong> {{ $patron->contact_number }}</p>
+                            </div>
+                        @endif
                     </div>
                     <div class="col">
-                        <div class="row mb-1">
-                            <p><strong>Email:</strong> {{ $patron->email }}</p>
-                        </div>
+                        @if ($patron->email)
+                            <div class="row mb-1">
+                                <p><strong>Email:</strong> {{ $patron->email }}</p>
+                            </div>
+                        @endif
                         <div class="row mb-1">
                             <p><strong>Address:</strong> {{ $patron->address }}</p>
                         </div>
@@ -36,9 +54,9 @@
                             <p><strong>RFID:</strong> {{ $patron->library_id }}</p>
                         </div>
                         @if ($patron->type->type === 'Student')
-                        <div class="row">
-                            <p><strong>Adviser:</strong> {{ $patron->adviser->adviser }}</p>
-                        </div>
+                            <div class="row">
+                                <p><strong>Adviser:</strong> {{ $patron->adviser->adviser }}</p>
+                            </div>
                         @endif
                     </div>
                 </div>
@@ -79,4 +97,19 @@
     @include('modals.patron.edit')
     @include('modals.patron.archive')
     @include('modals.patron.new_rfid')
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            const preview = document.getElementById('image-preview');
+
+            reader.onload = function() {
+                preview.src = reader.result;
+            };
+
+            reader.readAsDataURL(event.files[0]);
+
+            document.getElementById('submit-button').click();
+        }
+    </script>
 @endsection

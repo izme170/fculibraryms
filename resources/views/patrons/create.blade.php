@@ -3,7 +3,7 @@
 @section('user-content')
     <div class="widget">
         <div class="form-container">
-            <form action="/patron/store" method="post">
+            <form action="/patron/store" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col">
@@ -16,41 +16,45 @@
                             </select>
                         </div>
                         <div class="mb-3">
+                            <label class="form-label" for="patron_image">Image</label>
+                            <input type="file" id="patron_image" name="patron_image" accept="image/*" value="{{ old('patron_image') }}">
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label" for="first_name">Firstname</label>
-                            <input type="text" id="first_name" name="first_name" autofocus>
+                            <input type="text" id="first_name" name="first_name" autofocus value="{{ old('first_name') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="middle_name">Middle Name</label>
-                            <input type="text" id="middle_name" name="middle_name">
+                            <input type="text" id="middle_name" name="middle_name" value="{{ old('middle_name') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="last_name">Lastname</label>
-                            <input type="text" id="last_name" name="last_name">
+                            <input type="text" id="last_name" name="last_name" value="{{ old('last_name') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="email">Email</label>
-                            <input type="text" id="email" name="email">
+                            <input type="text" id="email" name="email" value="{{ old('email') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="contact_number">Contact Number</label>
-                            <input type="text" id="contact_number" name="contact_number">
+                            <input type="text" id="contact_number" name="contact_number" value="{{ old('contact_number') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="address">Address</label>
-                            <input type="text" id="address" name="address">
+                            <input type="text" id="address" name="address" value="{{ old('address') }}">
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-3">
                             <label class="form-label" for="school_id">School ID</label>
-                            <input type="text" id="school_id" name="school_id">
+                            <input type="text" id="school_id" name="school_id" value="{{ old('school_id') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="department_id">Department</label>
-                            <select id="department_id" name="department_id">
+                            <select id="department_id" name="department_id" onchange="fetchCourses()">
                                 <option value="">Select Department</option>
                                 @foreach ($departments as $department)
-                                    <option value="{{ $department->department_id }}">{{ $department->department }}</option>
+                                    <option value="{{ $department->department_id }}" {{old('department_id') == $department->department_id ? 'selected' : ''}}>{{ $department->department }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -58,11 +62,6 @@
                             <label class="form-label" for="course_id">Course</label>
                             <select id="course_id" name="course_id">
                                 <option value="">Select Course</option>
-                                @if (isset($courses))
-                                    @foreach ($courses as $course)
-                                        <option value="{{ $course->course_id }}">{{ $course->course }}</option>
-                                    @endforeach
-                                @endif
                             </select>
                         </div>
                         <div class="mb-3">
@@ -90,39 +89,24 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const departmentSelect = document.getElementById('department_id');
-            const courseSelect = document.getElementById('course_id');
+        function fetchCourses() {
+            var departmentId = document.getElementById('department_id').value;
+            var courseSelect = document.getElementById('course_id');
+            courseSelect.innerHTML = '<option value="">Select Course</option>'; // Clear previous options
 
-            departmentSelect.addEventListener('change', function() {
-                const departmentId = this.value;
-
-                // Clear the course dropdown
-                courseSelect.innerHTML = '<option value="">Select Course</option>';
-
-                if (departmentId) {
-                    fetch(`/courses/${departmentId}`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Network response was not ok');
-                            }
-                            return response.json();
-                        })
-                        .then(data => {
-                            if (data.length > 0) {
-                                data.forEach(course => {
-                                    const option = document.createElement('option');
-                                    option.value = course.course_id;
-                                    option.textContent = course.course;
-                                    courseSelect.appendChild(option);
-                                });
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error fetching courses:', error);
+            if (departmentId) {
+                fetch(`/api/courses/${departmentId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(course => {
+                            var option = document.createElement('option');
+                            option.value = course.course_id;
+                            option.text = course.course;
+                            courseSelect.appendChild(option);
                         });
-                }
-            });
-        });
+                    })
+                    .catch(error => console.error('Error fetching courses:', error));
+            }
+        }
     </script>
 @endsection

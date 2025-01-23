@@ -90,8 +90,7 @@
             @foreach ($patrons as $patron)
                 <a class="card text-decoration-none" href="/patron/show/{{ $patron->patron_id }}"
                     data-status="{{ $patron->status }}">
-                    <div class="img" style="background-image: url('{{ asset('img/default-patron-image.png') }}');">
-                    </div>
+                    <img class="img" src="{{ $patron->patron_image ? asset('storage/' . $patron->patron_image) : asset('img/default-patron-image.png') }}" alt="Patron Image">
                     <div class="text">
                         <p class="h3">{{ $patron->first_name }} {{ $patron->last_name }}</p>
                         <p class="p">{{ $patron->type->type }}</p>

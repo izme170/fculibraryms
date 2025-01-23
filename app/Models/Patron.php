@@ -24,6 +24,7 @@ class Patron extends Model
         'year',
         'adviser_id',
         'library_id',
+        'patron_image',
         'is_archived'
     ];
 
