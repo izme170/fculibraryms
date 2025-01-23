@@ -8,6 +8,16 @@
                 <div class="row">
                     <div class="col">
                         <div class="mb-3">
+                            <label class="form-label" for="image">Patron Image</label>
+                            <input type="file" id="image" name="patron_image" accept="image/*" onchange="previewImage(event)"
+                                style="display: none;">
+                            <img id="imagePreview" src="{{ asset('img/default-user-image.png') }}" alt="Image Preview"
+                                style="max-width: 200px; display: block; margin-top: 10px; cursor: pointer;"
+                                onclick="document.getElementById('image').click();">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-3">
                             <label class="form-label" for="type_id">Patron Type</label>
                             <select id="type_id" name="type_id">
                                 @foreach ($patron_types as $patron_type)
@@ -16,12 +26,9 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="patron_image">Image</label>
-                            <input type="file" id="patron_image" name="patron_image" accept="image/*" value="{{ old('patron_image') }}">
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label" for="first_name">Firstname</label>
-                            <input type="text" id="first_name" name="first_name" autofocus value="{{ old('first_name') }}">
+                            <input type="text" id="first_name" name="first_name" autofocus
+                                value="{{ old('first_name') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="middle_name">Middle Name</label>
@@ -35,16 +42,17 @@
                             <label class="form-label" for="email">Email</label>
                             <input type="text" id="email" name="email" value="{{ old('email') }}">
                         </div>
+                    </div>
+                    <div class="col">
                         <div class="mb-3">
                             <label class="form-label" for="contact_number">Contact Number</label>
-                            <input type="text" id="contact_number" name="contact_number" value="{{ old('contact_number') }}">
+                            <input type="text" id="contact_number" name="contact_number"
+                                value="{{ old('contact_number') }}">
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="address">Address</label>
                             <input type="text" id="address" name="address" value="{{ old('address') }}">
                         </div>
-                    </div>
-                    <div class="col">
                         <div class="mb-3">
                             <label class="form-label" for="school_id">School ID</label>
                             <input type="text" id="school_id" name="school_id" value="{{ old('school_id') }}">
@@ -54,7 +62,9 @@
                             <select id="department_id" name="department_id" onchange="fetchCourses()">
                                 <option value="">Select Department</option>
                                 @foreach ($departments as $department)
-                                    <option value="{{ $department->department_id }}" {{old('department_id') == $department->department_id ? 'selected' : ''}}>{{ $department->department }}</option>
+                                    <option value="{{ $department->department_id }}"
+                                        {{ old('department_id') == $department->department_id ? 'selected' : '' }}>
+                                        {{ $department->department }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -64,6 +74,8 @@
                                 <option value="">Select Course</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="col">
                         <div class="mb-3">
                             <label class="form-label" for="year">Year</label>
                             <input type="text" id="year" name="year">
@@ -107,6 +119,15 @@
                     })
                     .catch(error => console.error('Error fetching courses:', error));
             }
+        }
+
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function() {
+                var output = document.getElementById('imagePreview');
+                output.src = reader.result;
+            }
+            reader.readAsDataURL(event.target.files[0]);
         }
     </script>
 @endsection
