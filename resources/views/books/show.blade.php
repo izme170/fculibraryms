@@ -3,7 +3,18 @@
 @section('user-content')
     <div class="bg-white p-3 rounded d-flex gap-3 flex-wrap justify-content-center" style="min-width: fit-content">
         <div>
-            <img src="{{ asset('img/default-book-cover.png') }}" class="img-thumbnail img-fluid" alt="..." width="200px">
+            <form action="/book/update-image/{{ $book->book_id }}" method="post" enctype="multipart/form-data">
+                @method('PUT')
+                @csrf
+                <label for="book_image" style="cursor: pointer;">
+                    <img class="img-thumbnail img-fluid"
+                        src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('img/default-book-image.png') }}"
+                        alt="Book Image" id="book-image-preview" width="200px">
+                </label>
+                <input type="file" id="book_image" name="book_image" accept="image/*" style="display: none"
+                    onchange="previewImage(this)">
+                <button type="submit" style="display: none;" id="submit-button">Update Image</button>
+            </form>
         </div>
         <div>
             <h1>{{ $book->title }}</h1>
@@ -67,3 +78,19 @@
     @include('modals.book.archive')
     @include('modals.book.new_rfid')
 @endsection
+
+@section('script')
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            const preview = document.getElementById('book-image-preview');
+
+            reader.onload = function() {
+                preview.src = reader.result;
+            };
+
+            reader.readAsDataURL(event.files[0]);
+
+            document.getElementById('submit-button').click();
+        }
+    </script>

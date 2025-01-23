@@ -15,6 +15,7 @@ class Book extends Model
         'title',
         'author',
         'category_id',
+        'book_image',
         'is_available',
         'is_archived'
     ];

@@ -80,8 +80,7 @@
                     <div class="indicator-container">
                         <div class="status-indicator {{ $book->status }}"></div>
                     </div>
-                    <div class="img" style="background-image: url('{{ asset('img/default-book-cover.png') }}');">
-                    </div>
+                    <img class="img" src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('img/default-book-image.png') }}" alt="">
                     <div class="text">
                         <p class="h3">{{ $book->title }}</p>
                         <p class="p">{{ $book->author }}</p>

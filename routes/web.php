@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/book/update/{id}', 'update')->name('books.update');
         Route::put('/book/archive/{id}', 'archive')->name('books.archive');
         Route::put('/book/new_rfid/{id}', 'newRFID')->name('books.newRFID');
+        Route::put('/book/update-image/{id}', 'updateImage')->name('book.update_image');
         Route::get('/books/export', 'export');
     });
 

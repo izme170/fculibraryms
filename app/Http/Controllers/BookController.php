@@ -113,8 +113,25 @@ class BookController extends Controller
             'title' => ['required'],
             'author' => ['required'],
             'category_id' => ['required'],
-            'book_number' => ['required']
+            'book_number' => ['required'],
+            'book_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
+
+        if ($request->hasFile('book_image')) {
+            $file = $request->file('book_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/books', $filenameToStore, 'public');
+
+            if ($path) {
+                $validated['book_image'] = str_replace('public/', '', $path); // Save relative path
+            } else {
+                return back()->withErrors(['book_image' => 'Failed to upload the image.']);
+            }
+        }
 
         $book = Book::create($validated);
 
@@ -196,6 +213,51 @@ class BookController extends Controller
         Activity::create($data);
 
         return redirect()->back()->with('message_succes', 'Book information has been updated.');
+    }
+
+    public function updateImage(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'book_image' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
+        ]);
+
+        $book = Book::find($id);
+
+        if ($request->hasFile('book_image')) {
+            $file = $request->file('book_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/books', $filenameToStore, 'public');
+
+            // Delete the old image if it exists
+            if ($book->book_image) {
+                $oldImagePath = public_path('storage/' . $book->book_image);
+                if (file_exists($oldImagePath)) {
+                    unlink($oldImagePath);
+                }
+            }
+
+            if ($path) {
+                $book->book_image = str_replace('public/', '', $path); // Save relative path
+                $book->save();
+            } else {
+                return back()->withErrors(['book_image' => 'Failed to upload the image.']);
+            }
+
+        }
+
+        // Record Activity
+        $data = [
+            'action' => 'updated the image of a book.',
+            'book_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'Book image has been updated.');
     }
 
     public function archive($id)
