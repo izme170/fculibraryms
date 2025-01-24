@@ -3,12 +3,16 @@
     <div class="modal-dialog modal-dialog-centered modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="staticBackdropLabel">Edit User</h1>
+                <h1 class="modal-title fs-5" id="staticBackdropLabel">Change Password</h1>
             </div>
             <div class="modal-body">
-                <form action="/user/change-password/{{$user->user_id}}" method="post">
+                <form action="/user/change-password/{{Auth::user()->user_id}}" method="post">
                     @method('PUT')
                     @csrf
+                    <div class="mb-3">
+                        <label class="form-label" for="old_password">Enter old password</label>
+                        <input type="password" id="old_password" name="old_password">
+                    </div>
                     <div class="mb-3">
                         <label class="form-label" for="password">Enter new password</label>
                         <input type="password" id="password" name="password">

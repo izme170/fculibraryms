@@ -11,6 +11,7 @@ use IcehouseVentures\LaravelChartjs\Facades\Chartjs;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -223,9 +224,27 @@ class UserController extends Controller
     }
 
     public function changePassword(Request $request, $id){
+        $user = User::find($id);
+
+        //check if old password is empty
+        if(empty($request->old_password)){
+            return redirect()->back()->withErrors(['old_password' => 'The old password is required.']);
+        }
+
+        //validate the request
         $validated = $request->validate([
             'password' => 'required|confirmed|min:5'
         ]);
+
+        //check if old password is correct
+        if(!Hash::check($request->old_password, $user->password)){
+            return redirect()->back()->withErrors(['old_password' => 'The old password is incorrect.']);
+        }
+
+        //check if new password is the same as the old password
+        if($request->old_password == $request->password){
+            return redirect()->back()->withErrors(['password' => 'New password must be different from the old password.']);
+        }
 
         // Record Activity
         $data = [

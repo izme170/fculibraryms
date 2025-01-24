@@ -1,5 +1,6 @@
 @extends('layout.main')
 @include('include.sidenav')
+@include('include.topbar')
 @section('user-content')
     <div class="row">
         <div class="col">
