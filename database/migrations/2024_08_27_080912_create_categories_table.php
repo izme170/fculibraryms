@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id('category_id');
             $table->string('category', 255);
+            $table->boolean('show_in_forms')->default(1);
             $table->timestamps();
         });
     }

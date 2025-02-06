@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('purposes', function (Blueprint $table) {
             $table->id('purpose_id');
             $table->string('purpose', 55);
+            $table->boolean('show_in_forms')->default(1);
             $table->timestamps();
         });
     }

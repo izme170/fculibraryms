@@ -13,6 +13,10 @@
                     role="tab" aria-controls="courses" aria-selected="false">Courses</button>
                 <button class="tab-link" id="departments-tab" data-bs-toggle="pill" data-bs-target="#departments"
                     type="button" role="tab" aria-controls="departments" aria-selected="false">Departments</button>
+                    <button class="tab-link" id="marketers-tab" data-bs-toggle="pill" data-bs-target="#marketers" type="button"
+                    role="tab" aria-controls="marketers" aria-selected="false">Marketers</button>
+                <button class="tab-link" id="purposes-tab" data-bs-toggle="pill" data-bs-target="#purposes" type="button"
+                    role="tab" aria-controls="purposes" aria-selected="false">Purposes</button>
             </div>
 
 
@@ -21,12 +25,12 @@
                 <div class="tab-pane fade show active" id="advisers" role="tabpanel" aria-labelledby="advisers-tab"
                     tabindex="0">
                     <h1>Advisers</h1>
-                    <div class="list-container mb-3">
+                    <div class="list-container mb-3 p-1">
                         <table>
                             <tbody>
                                 @foreach ($advisers as $adviser)
                                     <tr>
-                                        <td>{{ $adviser->adviser }}</td>
+                                        <td>{{ $adviser->adviser }} @livewire('adviser-toggle', ['adviser' => $adviser])</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -49,7 +53,7 @@
                             <tbody>
                                 @foreach ($categories as $category)
                                     <tr>
-                                        <td>{{ $category->category }}</td>
+                                        <td>{{ $category->category }} @livewire('category-toggle', ['category' => $category])</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -71,7 +75,7 @@
                             <tbody>
                                 @foreach ($courses as $course)
                                     <tr>
-                                        <td>{{ $course->course }}</td>
+                                        <td>{{ $course->course }} @livewire('course-toggle', ['course' => $course])</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -100,7 +104,7 @@
                             <tbody>
                                 @foreach ($departments as $department)
                                     <tr>
-                                        <td>{{ $department->department }}</td>
+                                        <td>{{ $department->department }} @livewire('department-toggle', ['department' => $department])</td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -110,6 +114,52 @@
                         @csrf
                         <div class="d-flex">
                             <input type="text" name="department" placeholder="Type new department here..." required>
+                            <button type="submit" class="btn-rectangle">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="marketers" role="tabpanel" aria-labelledby="marketers-tab"
+                    tabindex="0">
+                    <h1>Marketers</h1>
+                    <div class="list-container mb-3">
+                        <table>
+                            <tbody>
+                                @foreach ($marketers as $marketer)
+                                    <tr>
+                                        <td>{{ $marketer->marketer }} @livewire('marketer-toggle', ['marketer' => $marketer])</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <form action="/marketer/store" method="post">
+                        @csrf
+                        <div class="d-flex">
+                            <input type="text" name="marketer" placeholder="Type new marketer here..." required>
+                            <button type="submit" class="btn-rectangle">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="purposes" role="tabpanel" aria-labelledby="purposes-tab"
+                    tabindex="0">
+                    <h1>Purposes</h1>
+                    <div class="list-container mb-3">
+                        <table>
+                            <tbody>
+                                @foreach ($purposes as $purpose)
+                                    <tr>
+                                        <td>{{ $purpose->purpose }} @livewire('purpose-toggle', ['purpose' => $purpose])</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <form action="/purpose/store" method="post">
+                        @csrf
+                        <div class="d-flex">
+                            <input type="text" name="purpose" placeholder="Type new purpose here..." required>
                             <button type="submit" class="btn-rectangle">Add</button>
                         </div>
                     </form>

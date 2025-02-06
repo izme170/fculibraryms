@@ -11,7 +11,8 @@ class Department extends Model
     protected $table = 'departments';
     protected $primaryKey = 'department_id';
     protected $fillable = [
-        'department'
+        'department',
+        'show_in_forms'
     ];
 
     public function patrons(){

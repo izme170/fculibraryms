@@ -12,7 +12,8 @@ class Course extends Model
     protected $primaryKey = 'course_id';
     protected $fillable = [
         'course',
-        'department_id'
+        'department_id',
+        'show_in_forms'
     ];
 
     public function patrons(){

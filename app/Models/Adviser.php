@@ -11,7 +11,8 @@ class Adviser extends Model
     protected $table = 'advisers';
     protected $primaryKey = 'adviser_id';
     protected $fillable = [
-        'adviser'
+        'adviser',
+        'show_in_forms'
     ];
 
     public function patrons(){

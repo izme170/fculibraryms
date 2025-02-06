@@ -11,7 +11,8 @@ class Marketer extends Model
     protected $table = 'marketers';
     protected $primaryKey = 'marketer_id';
     protected $fillable = [
-        'fullname'
+        'fullname',
+        'show_in_forms'
     ];
 
     public function patronLogins() {

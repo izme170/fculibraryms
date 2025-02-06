@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id('course_id');
             $table->string('course');
             $table->unsignedBigInteger('department_id')->nullable();
+            $table->boolean('show_in_forms')->default(1);
             $table->timestamps();
 
             $table->foreign('department_id')

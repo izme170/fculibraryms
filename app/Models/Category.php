@@ -11,7 +11,8 @@ class Category extends Model
     protected $table = 'categories';
     protected $primaryKey = 'category_id';
     protected $fillable = [
-        'category'
+        'category',
+        'show_in_forms'
     ];
 
     public function books(){

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('departments', function (Blueprint $table) {
             $table->id('department_id');
             $table->string('department', 55);
+            $table->boolean('show_in_forms')->default(1);
             $table->timestamps();
         });
     }

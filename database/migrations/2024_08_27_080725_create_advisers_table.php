@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('advisers', function (Blueprint $table) {
             $table->id('adviser_id');
             $table->string('adviser', 255);
+            $table->boolean('show_in_forms')->default(true);
             $table->timestamps();
         });
     }

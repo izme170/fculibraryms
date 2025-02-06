@@ -4,7 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\OptionController;
+use App\Http\Controllers\DataEntryController;
 use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
 use App\Http\Controllers\ReportController;
@@ -58,8 +58,8 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::get('/activities', 'index')->name('activities.index');
     });
 
-    Route::controller(OptionController::class)->group(function () {
-        Route::get('/options', 'index')->name('options.index');
+    Route::controller(DataEntryController::class)->group(function () {
+        Route::get('/data-entry', 'index')->name('data-entry.index');
         Route::post('/adviser/store', 'storeAdviser');
         Route::post('/category/store', 'storeCategory');
         Route::post('/course/store', 'storeCourse');

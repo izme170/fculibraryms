@@ -167,6 +167,9 @@ class DatabaseSeeder extends Seeder
         Purpose::create(['purpose' => 'Borrow Books']);
         Purpose::create(['purpose' => 'Research']);
         Purpose::create(['purpose' => 'WiFi/Internet']);
+        Purpose::create(['purpose' => 'Signing of Clearance']);
+        Purpose::create(['purpose' => 'Passing of Requirements']);
+        Purpose::create(['purpose' => 'Others']);
 
         // Seed Books
         Book::factory(20)->create();

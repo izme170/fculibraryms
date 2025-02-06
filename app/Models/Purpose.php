@@ -11,7 +11,8 @@ class Purpose extends Model
     protected $table = 'purposes';
     protected $primaryKey = 'purpose_id';
     protected $fillable = [
-        'purpose'
+        'purpose',
+        'show_in_forms'
     ];
 
     public function patronLogins(){

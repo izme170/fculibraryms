@@ -7,6 +7,7 @@
     --disabled: #707070;
     --danger: #ff5a5a;
     --dangerLight: #ffc5c5;
+    --dangerDark: #eb4545;
     --warning: #d86d00;
     --warningLight: #f9a652;
     --success: #25850e;
@@ -171,8 +172,22 @@ select:focus {
 
 .list-container {
     height: 300px;
-    width: 400px;
+    width: fit-content;
     overflow: scroll;
+}
+
+.list-container td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+    cursor: pointer;
+}
+
+.list-container td:hover {
+    font-weight: bold;
+    padding: 5px;
+    background-color: var(--secondary);
 }
 
 .widget-container {

@@ -18,6 +18,14 @@
             <span>Dashboard</span>
         </a>
 
+        {{-- Checks if the user is admin --}}
+        @if ($user->role_id == 1)
+            <a href="/users" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                <x-lucide-user-cog class="nav-link-icon" />
+                <span>User Management</span>
+            </a>
+        @endif
+
         {{-- Checks if the user is allowed to access the book management --}}
         @if ($user->role->books_access)
             <a href="/books" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
@@ -32,10 +40,6 @@
                 <x-lucide-users class="nav-link-icon" />
                 <span>Patron Management</span>
             </a>
-            <a href="/patron-logins" class="nav-link {{ request()->routeIs('patron-logins.*') ? 'active' : '' }}">
-                <x-lucide-logs class="nav-link-icon" />
-                <span>Access Log</span>
-            </a>
         @endif
 
         {{-- Checks if the user is allowed to access the reports module --}}
@@ -46,19 +50,23 @@
             </a>
         @endif
 
+        {{-- Checks if the user is allowed to access the patron management --}}
+        @if ($user->role->patrons_access)
+            <a href="/patron-logins" class="nav-link {{ request()->routeIs('patron-logins.*') ? 'active' : '' }}">
+                <x-lucide-logs class="nav-link-icon" />
+                <span>Access Log</span>
+            </a>
+        @endif
+
         {{-- Checks if the user is admin --}}
         @if ($user->role_id == 1)
-            <a href="/users" class="nav-link {{ request()->routeIs('users.*') ? 'active' : '' }}">
-                <x-lucide-user-cog class="nav-link-icon" />
-                <span>User Management</span>
-            </a>
             <a href="/activities" class="nav-link {{ request()->routeIs('activities.*') ? 'active' : '' }}">
                 <x-lucide-clipboard-list class="nav-link-icon" />
                 <span>User Activities</span>
             </a>
-            <a href="/options" class="nav-link {{ request()->routeIs('options.*') ? 'active' : '' }}">
+            <a href="/data-entry" class="nav-link {{ request()->routeIs('data-entry.*') ? 'active' : '' }}">
                 <x-lucide-settings class="nav-link-icon" />
-                <span>Options</span>
+                <span>Data Entry</span>
             </a>
         @endif
     </div>
