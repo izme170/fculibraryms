@@ -74,8 +74,8 @@ class PatronController extends Controller
     public function create()
     {
         $patron_types = PatronType::all();
-        $departments = Department::all();
-        $advisers = Adviser::all();
+        $departments = Department::where('show_in_forms', true)->get();
+        $advisers = Adviser::where('show_in_forms', true)->get();
 
         return view('patrons.create', compact(['patron_types', 'departments', 'advisers']));
     }
@@ -134,8 +134,8 @@ class PatronController extends Controller
             ->find($id);
 
         $patron_types = PatronType::all();
-        $departments = Department::all();
-        $advisers = Adviser::all();
+        $departments = Department::where('show_in_forms', true)->get();
+        $advisers = Adviser::where('show_in_forms', true)->get();
 
         $borrowed_books = BorrowedBook::with('patron')
             ->where('patron_id', $id)

@@ -78,6 +78,9 @@
                     <th scope="col">
                         Status
                     </th>
+                    <th scope="col">
+                        Remark
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -99,6 +102,7 @@
                                 <span class="badge bg-danger">Overdue</span>
                             @endif
                         </td>
+                        <td>{{ $borrowed_book->remark->remark ?? 'No remark'}}</td>
                     </tr>
                 @endforeach
             </tbody>

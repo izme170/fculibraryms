@@ -102,7 +102,7 @@ class BookController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
+        $categories = Category::where('show_in_forms', true)->get();
 
         return view('books.create', compact('categories'));
     }

@@ -43,8 +43,8 @@ class PatronLoginController extends Controller
 
     public function create()
     {
-        $purposes = Purpose::all();
-        $marketers = Marketer::all();
+        $purposes = Purpose::where('show_in_forms', true)->get();
+        $marketers = Marketer::where('show_in_forms', true)->get();
         return view('patron_logins.create', compact('purposes', 'marketers'));
     }
 

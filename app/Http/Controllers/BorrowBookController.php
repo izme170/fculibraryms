@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\BorrowedBook;
 use App\Models\Patron;
+use App\Models\Remark;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -106,13 +107,15 @@ class BorrowBookController extends Controller
 
     public function edit()
     {
-        return view('borrow_books.edit');
+        $remarks = Remark::all();
+        return view('borrow_books.edit', compact('remarks'));
     }
 
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'book_number' => 'required|exists:books,book_number'
+            'book_number' => 'required|exists:books,book_number',
+            'remark_id' => 'required|exists:remarks,remark_id'
         ]);
 
         $book = Book::where('book_number', '=', $validated['book_number'])->first();
@@ -130,6 +133,8 @@ class BorrowBookController extends Controller
             } else {
                 $borrowed_book->fine = 0;
             }
+
+            $borrowed_book->remark_id = $validated['remark_id'];
 
             $borrowed_book->save();
 

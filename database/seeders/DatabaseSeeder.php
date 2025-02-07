@@ -293,10 +293,8 @@ class DatabaseSeeder extends Seeder
         // Seed Remarks
         $remarks = [
             'Good',
-            'Lost',
             'Damaged',
             'Missing Pages',
-            'Replacement'
         ];
 
         foreach ($remarks as $remark) {
