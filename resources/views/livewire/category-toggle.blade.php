@@ -1,5 +1,5 @@
 <div>
     @include('include.messages')
-    <input type="checkbox" wire:change="updateShowInForms($event.target.checked)"
+    <input type="checkbox" title="Show in forms" wire:change="updateShowInForms($event.target.checked)"
         @if ($category->show_in_forms) checked @endif>
 </div>
