@@ -13,10 +13,12 @@
                     role="tab" aria-controls="courses" aria-selected="false">Courses</button>
                 <button class="tab-link" id="departments-tab" data-bs-toggle="pill" data-bs-target="#departments"
                     type="button" role="tab" aria-controls="departments" aria-selected="false">Departments</button>
-                    <button class="tab-link" id="marketers-tab" data-bs-toggle="pill" data-bs-target="#marketers" type="button"
+                <button class="tab-link" id="marketers-tab" data-bs-toggle="pill" data-bs-target="#marketers" type="button"
                     role="tab" aria-controls="marketers" aria-selected="false">Marketers</button>
                 <button class="tab-link" id="purposes-tab" data-bs-toggle="pill" data-bs-target="#purposes" type="button"
                     role="tab" aria-controls="purposes" aria-selected="false">Purposes</button>
+                <button class="tab-link" id="remarks-tab" data-bs-toggle="pill" data-bs-target="#remarks" type="button"
+                    role="tab" aria-controls="remarks" aria-selected="false">Remarks</button>
             </div>
 
 
@@ -83,7 +85,8 @@
                     </div>
                     <form action="/course/store" method="post">
                         @csrf
-                        <input class="mb-3" type="text" name="course" placeholder="Type new course here..." required>
+                        <input class="mb-3" type="text" name="course" placeholder="Type new course here..."
+                            required>
                         <div class="mb-3">
                             <select name="department_id" id="department_id" required>
                                 <option value="">Select course's department</option>
@@ -160,6 +163,28 @@
                         @csrf
                         <div class="d-flex">
                             <input type="text" name="purpose" placeholder="Type new purpose here..." required>
+                            <button type="submit" class="btn-rectangle">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="tab-pane fade" id="remarks" role="tabpanel" aria-labelledby="remarks-tab" tabindex="0">
+                    <h1>Remarks</h1>
+                    <div class="list-container mb-3">
+                        <table>
+                            <tbody>
+                                @foreach ($remarks as $remark)
+                                    <tr>
+                                        <td>{{ $remark->remark }} @livewire('remark-toggle', ['remark' => $remark])</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <form action="/remark/store" method="post">
+                        @csrf
+                        <div class="d-flex">
+                            <input type="text" name="remark" placeholder="Type new remark here..." required>
                             <button type="submit" class="btn-rectangle">Add</button>
                         </div>
                     </form>

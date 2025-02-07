@@ -15,6 +15,7 @@ use App\Models\Department;
 use App\Models\Marketer;
 use App\Models\PatronLogin;
 use App\Models\Purpose;
+use App\Models\Remark;
 use Database\Factories\BookFactory;
 use Database\Factories\UnreturnedBookFactory;
 use Illuminate\Database\Seeder;
@@ -288,6 +289,19 @@ class DatabaseSeeder extends Seeder
             'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
         ]);
+
+        // Seed Remarks
+        $remarks = [
+            'Good',
+            'Lost',
+            'Damaged',
+            'Missing Pages',
+            'Replacement'
+        ];
+
+        foreach ($remarks as $remark) {
+            Remark::create(['remark' => $remark]);
+        }
 
         // Seed Borrowed Books
         BorrowedBook::factory(20)->create();

@@ -16,7 +16,8 @@ class BorrowedBook extends Model
         'user_id',
         'due_date',
         'fine',
-        'returned'
+        'returned',
+        'remark_id'
     ];
 
     protected $casts = [
@@ -35,4 +36,7 @@ class BorrowedBook extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    public function remark(){
+        return $this->belongsTo(Remark::class, 'remark_id');
+    }
 }

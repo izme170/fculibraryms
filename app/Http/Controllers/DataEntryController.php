@@ -8,6 +8,7 @@ use App\Models\Course;
 use App\Models\Department;
 use App\Models\Marketer;
 use App\Models\Purpose;
+use App\Models\Remark;
 use Illuminate\Http\Request;
 
 class DataEntryController extends Controller
@@ -20,6 +21,7 @@ class DataEntryController extends Controller
         $departments = Department::orderBy('department')->get();
         $marketers = Marketer::orderBy('marketer')->get();
         $purposes = Purpose::orderBy('purpose')->get();
+        $remarks = Remark::orderBy('remark')->get();
 
         return view('data_entries.index', compact([
             'advisers',
@@ -27,7 +29,8 @@ class DataEntryController extends Controller
             'courses',
             'departments',
             'marketers',
-            'purposes'
+            'purposes',
+            'remarks'
         ]));
     }
 
@@ -89,6 +92,16 @@ class DataEntryController extends Controller
         ]);
 
         Purpose::create($validated);
+        return redirect()->back();
+    }
+
+    public function storeRemark(Request $request)
+    {
+        $validated = $request->validate([
+            'remark' => 'required'
+        ]);
+
+        Remark::create($validated);
         return redirect()->back();
     }
 }

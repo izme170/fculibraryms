@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->dateTime('due_date');
             $table->double("fine")->nullable();
             $table->dateTime('returned')->nullable();
+            $table->unsignedBigInteger('remark_id')->nullable();
             $table->timestamps();
 
             $table->foreign('book_id')
@@ -33,6 +34,11 @@ return new class extends Migration {
             $table->foreign('user_id')
                 ->references('user_id')
                 ->on('users')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+            $table->foreign('remark_id')
+                ->references('remark_id')
+                ->on('remarks')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
         });
