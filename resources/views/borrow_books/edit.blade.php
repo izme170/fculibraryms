@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     <div class="widget">
         <div class="form-container">
             <form action="/return-book/process" method="post">

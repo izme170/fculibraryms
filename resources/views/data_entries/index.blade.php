@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     <div class="widget">
         <div class="option-container d-flex align-items-start">
             <div class="tab-links nav flex-column align-items-start nav-pills" id="v-pills-tab" role="tablist"

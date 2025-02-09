@@ -65,7 +65,7 @@
                 <span>User Activities</span>
             </a>
             <a href="/data-entry" class="nav-link {{ request()->routeIs('data-entry.*') ? 'active' : '' }}">
-                <x-lucide-settings class="nav-link-icon" />
+                <x-lucide-pencil-line class="nav-link-icon" />
                 <span>Data Entry</span>
             </a>
         @endif

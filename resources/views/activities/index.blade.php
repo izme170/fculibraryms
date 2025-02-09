@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     <div class="bg-white p-3 rounded" style="min-width: fit-content">
         <div class="d-flex justify-content-between">
             <!-- Form to filter -->

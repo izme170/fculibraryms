@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     <div class="bg-white p-3 rounded d-flex gap-3 flex-wrap flex-column justify-content-center"
         style="min-width: fit-content">
         <div class="d-flex gap-3 flex-row justify-content-start">

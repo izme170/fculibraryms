@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
     <ul class="nav nav-tabs">
         <li class="nav-item bg-secondary rounded-top">

@@ -1,7 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
-@include('include.topbar')
 @section('user-content')
+@include('include.topbar')
     <div class="row">
         <div class="col">
             <div class="widget-container">

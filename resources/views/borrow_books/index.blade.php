@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     <ul class="nav nav-tabs">
         <li class="nav-item bg-secondary rounded-top">
             <a class="nav-link text-black" aria-current="page" href="/books">Books</a>

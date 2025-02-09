@@ -1,6 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
+@include('include.topbar')
     @vite('resources/js/app.js')
     <ul class="nav nav-tabs">
         <li class="nav-item">

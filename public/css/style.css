@@ -32,7 +32,8 @@ body {
 }
 
 .user-page {
-    padding: 10px 20px 10px 370px;
+    padding: 0 20px 10px 370px;
+    min-width: fit-content;
 }
 
 .login-page {
@@ -215,7 +216,7 @@ select:focus {
     background-color: var(--primary);
     color: var(--secondary);
     height: 30px;
-    transition: 0.5s;
+    transition: 0.2s;
     text-decoration: none;
     text-align: center;
 }
