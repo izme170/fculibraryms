@@ -3,12 +3,14 @@
 namespace Database\Seeders;
 
 use App\Models\Adviser;
+use App\Models\Author;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\PatronType;
 use App\Models\Patron;
 use App\Models\Category;
 use App\Models\Book;
+use App\Models\BookAuthor;
 use App\Models\BorrowedBook;
 use App\Models\Course;
 use App\Models\Department;
@@ -16,6 +18,7 @@ use App\Models\Marketer;
 use App\Models\PatronLogin;
 use App\Models\Purpose;
 use App\Models\Remark;
+use Database\Factories\AuthorFactory;
 use Database\Factories\BookFactory;
 use Database\Factories\UnreturnedBookFactory;
 use Illuminate\Database\Seeder;
@@ -279,16 +282,34 @@ class DatabaseSeeder extends Seeder
         Book::create([
             'book_number' => '3738229540',
             'title' => fake()->sentence(3),
-            'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
         ]);
 
         Book::create([
             'book_number' => '3743346372',
             'title' => fake()->sentence(3),
-            'author' => fake()->name(),
             'category_id' => fake()->numberBetween(1, 4),
         ]);
+
+        //seed authors
+        Author::factory(20)->create();
+
+        //seed book authors
+        for ($i = 0; $i <= 20; $i++) {
+            $book = Book::inRandomOrder()->first();
+            $author = Author::inRandomOrder()->first();
+
+            $existingRecord = BookAuthor::where('book_id', $book->book_id)
+                ->where('author_id', $author->author_id)
+                ->first();
+
+            if (!$existingRecord) {
+                BookAuthor::create([
+                    'book_id' => $book->book_id,
+                    'author_id' => $author->author_id
+                ]);
+            }
+        }
 
         // Seed Remarks
         $remarks = [

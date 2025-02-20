@@ -61,13 +61,13 @@
                                             <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                         @endif
                                     </a></li>
-                                <li><a class="dropdown-item"
+                                {{-- <li><a class="dropdown-item"
                                         href="?sort=author&direction={{ $direction === 'asc' && $sort === 'author' ? 'desc' : 'asc' }}">
                                         Author
                                         @if ($sort === 'author')
                                             <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                         @endif
-                                    </a></li>
+                                    </a></li> --}}
                             </ul>
                         </div>
                     </div>
@@ -84,7 +84,7 @@
                     <img class="img" src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('img/default-book-image.png') }}" alt="">
                     <div class="text">
                         <p class="h3">{{ $book->title }}</p>
-                        <p class="p">{{ $book->author }}</p>
+                        <p class="p">{{ $book->authors->pluck('name')->implode(', ') }}</p>
                     </div>
                 </a>
             @endforeach

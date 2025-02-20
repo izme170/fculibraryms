@@ -19,7 +19,12 @@
         </div>
         <div>
             <h1>{{ $book->title }}</h1>
-            <p>Author: {{ $book->author }}</p>
+            <p>Author/s:</p>
+            <ol>
+                @foreach ($book->authors as $author)
+                    <li>{{ $author->name }}</li>
+                @endforeach
+            </ol>
             <p>Category: {{ $book->category->category }}</p>
             <div class="mb-3">
                 <span class="badge {{ $book->status == 'available' ? 'bg-success' : 'bg-warning' }}">

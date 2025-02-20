@@ -22,9 +22,14 @@
                             <label class="form-label" for="title">Title</label>
                             <input type="text" id="title" name="title" value="{{ old('title') }}" autofocus>
                         </div>
-                        <div class="mb-3">
+                        <div>
                             <label class="form-label" for="author">Author</label>
-                            <input type="text" id="author" name="author" value="{{ old('author') }}">
+                            <div id="author-container">
+                                <input class="mb-1" type="text" id="author" name="author[]" value="{{ old('author') }}">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <button class="btn-rectangle" type="button" onclick="addAuthorInput()">Add Another Author</button>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="category_id">Category</label>
@@ -57,6 +62,25 @@
                 output.src = reader.result;
             }
             reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function addAuthorInput() {
+            var container = document.getElementById('author-container');
+            var div = document.createElement('div');
+            div.className = 'author-input-group mt-2';
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'author[]';
+            var button = document.createElement('button');
+            button.type = 'button';
+            button.className = 'btn-rectangle btn-sm my-1';
+            button.innerText = 'Remove';
+            button.onclick = function() {
+                container.removeChild(div);
+            };
+            div.appendChild(input);
+            div.appendChild(button);
+            container.appendChild(div);
         }
     </script>
 @endsection

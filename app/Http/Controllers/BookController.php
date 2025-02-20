@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\BooksExport;
 use App\Models\Activity;
+use App\Models\Author;
 use App\Models\Book;
 use App\Models\BorrowedBook;
 use App\Models\Category;
@@ -24,7 +25,7 @@ class BookController extends Controller
         $direction = $request->query('direction', 'asc');
 
         // Create the query to get books
-        $query = Book::with('category')
+        $query = Book::with(['category', 'authors'])
             ->where('is_archived', '=', false);
 
         // Apply the status filter if set
@@ -35,12 +36,12 @@ class BookController extends Controller
                 } elseif ($status === 'borrowed') {
                     $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
                         $subQuery->where('due_date', '>=', now())
-                        ->whereNull('returned');
+                            ->whereNull('returned');
                     });
                 } elseif ($status === 'overdue') {
                     $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
                         $subQuery->where('due_date', '<', now())
-                        ->whereNull('returned');;
+                            ->whereNull('returned');;
                     });
                 }
             });
@@ -55,7 +56,9 @@ class BookController extends Controller
         if (!empty($search)) {
             $query->where(function ($query) use ($search) {
                 $query->where('books.title', 'like', "%{$search}%")
-                    ->orWhere('books.author', 'like', "%{$search}%");
+                    ->orWhereHas('authors', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    });
             });
         }
 
@@ -111,11 +114,13 @@ class BookController extends Controller
     {
         $validated = $request->validate([
             'title' => ['required'],
-            'author' => ['required'],
+            'author' => ['required', 'array'],
+            'author.*' => ['required', 'string'],
             'category_id' => ['required'],
             'book_number' => ['required'],
             'book_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
+
 
         if ($request->hasFile('book_image')) {
             $file = $request->file('book_image');
@@ -134,6 +139,12 @@ class BookController extends Controller
         }
 
         $book = Book::create($validated);
+
+        // Save authors
+        foreach ($validated['author'] as $authorName) {
+            $author = Author::firstOrCreate(['name' => $authorName]);
+            $book->authors()->attach($author->author_id);
+        }
 
         // Record Activity
         $data = [
@@ -198,21 +209,51 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         $validated = $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            'category_id' => 'required'
+            'title' => ['required'],
+            'author' => ['required', 'array'],
+            'author.*' => ['required', 'string'],
+            'category_id' => ['required'],
+            // 'book_number' => ['required'],
+            'book_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
-        $book = Book::find($id)->update($validated);
+        $book = Book::findOrFail($id);
+
+        if ($request->hasFile('book_image')) {
+            $file = $request->file('book_image');
+
+            // Generate a unique filename
+            $filenameToStore = uniqid() . '.' . $file->getClientOriginalExtension();
+
+            // Store the file
+            $path = $file->storeAs('img/books', $filenameToStore, 'public');
+
+            if ($path) {
+                $validated['book_image'] = str_replace('public/', '', $path); // Save relative path
+            } else {
+                return back()->withErrors(['book_image' => 'Failed to upload the image.']);
+            }
+        }
+
+        $book->update($validated);
+
+        // Sync authors
+        $authorIds = [];
+        foreach ($validated['author'] as $authorName) {
+            $author = Author::firstOrCreate(['name' => $authorName]);
+            $authorIds[] = $author->author_id;
+        }
+        $book->authors()->sync($authorIds);
+
         // Record Activity
         $data = [
             'action' => 'updated a book.',
-            'book_id' => $id,
+            'book_id' => $book->book_id,
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 
-        return redirect()->back()->with('message_succes', 'Book information has been updated.');
+        return redirect()->back()->with('message_success', 'Book has been updated.');
     }
 
     public function updateImage(Request $request, $id)
@@ -246,7 +287,6 @@ class BookController extends Controller
             } else {
                 return back()->withErrors(['book_image' => 'Failed to upload the image.']);
             }
-
         }
 
         // Record Activity

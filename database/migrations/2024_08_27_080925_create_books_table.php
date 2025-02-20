@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id('book_id');
             $table->string('book_number');
             $table->string('title', 255);
-            $table->string('author', 255);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('book_image', 255)->nullable();
             $table->boolean('is_available')->default(true);

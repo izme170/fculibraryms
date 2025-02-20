@@ -21,7 +21,6 @@ class BookFactory extends Factory
         return [
             'book_number' => fake()->isbn10(),
             'title' => fake()->sentence(3),
-            'author' => fake()->name(),
             'category_id' => $category->category_id,
         ];
     }
