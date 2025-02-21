@@ -83,11 +83,11 @@ class BorrowBookController extends Controller
     {
         $validated = $request->validate([
             'library_id' => 'required|exists:patrons,library_id',
-            'book_number' => 'required|exists:books,book_number'
+            'book_rfid' => 'required|exists:books,book_rfid'
         ]);
 
         $patron = Patron::where('library_id', '=', $validated['library_id'])->first();
-        $book = Book::where('book_number', '=', $validated['book_number'])->first();
+        $book = Book::where('book_rfid', '=', $validated['book_rfid'])->first();
         $data = [
             'patron_id' => $patron->patron_id,
             'book_id' => $book->book_id,
@@ -114,11 +114,11 @@ class BorrowBookController extends Controller
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'book_number' => 'required|exists:books,book_number',
+            'book_rfid' => 'required|exists:books,book_rfid',
             'remark_id' => 'required|exists:remarks,remark_id'
         ]);
 
-        $book = Book::where('book_number', '=', $validated['book_number'])->first();
+        $book = Book::where('book_rfid', '=', $validated['book_rfid'])->first();
         $borrowed_book = BorrowedBook::where('book_id', '=', $book->book_id)->whereNull('returned')->first();
 
         if ($borrowed_book) {

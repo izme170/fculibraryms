@@ -74,9 +74,9 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-wrap gap-3 mt-3 justify-content-center">
+        <div class="d-flex flex-column gap-3 mt-3 justify-content-center">
             @foreach ($books as $book)
-                <a class="card text-decoration-none" href="/book/show/{{ $book->book_id }}"
+                <a class="card-list text-decoration-none" href="/book/show/{{ $book->book_id }}"
                     data-status="{{ $book->status }}">
                     <div class="indicator-container">
                         <div class="status-indicator {{ $book->status }}"></div>
@@ -84,14 +84,17 @@
                     <img class="img" src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('img/default-book-image.png') }}" alt="">
                     <div class="text">
                         <p class="h3">{{ $book->title }}</p>
+                        <p class="p">{{ $book->accession_number }}</p>
                         <p class="p">{{ $book->authors->pluck('name')->implode(', ') }}</p>
+                        <p class="p">Isbn: {{ $book->isbn }}</p>
+                        <p class="p">Category: {{ $book->category->category}}</p>
                     </div>
                 </a>
             @endforeach
         </div>
 
         {{-- pagination --}}
-        <div class="mt-4 d-flex justify-content-center">
+        <div class="fixed-bottom mt-4 d-flex justify-content-center">
             {{ $books->links() }}
         </div>
     </div>

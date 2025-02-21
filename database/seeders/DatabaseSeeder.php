@@ -280,14 +280,22 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Book::create([
-            'book_number' => '3738229540',
+            'book_rfid' => '3738229540',
+            'accession_number' => 'C-0001',
             'title' => fake()->sentence(3),
+            'isbn' => fake()->isbn13(),
+            'call_number' => 'BOK 000 A1 2025',
+            'description' => fake()->sentence(10),
             'category_id' => fake()->numberBetween(1, 4),
         ]);
 
         Book::create([
-            'book_number' => '3743346372',
+            'book_rfid' => '3743346372',
+            'accession_number' => 'C-0002',
             'title' => fake()->sentence(3),
+            'isbn' => fake()->isbn13(),
+            'description' => fake()->sentence(10),
+            'call_number' => 'BOK 000 A1 2025',
             'category_id' => fake()->numberBetween(1, 4),
         ]);
 

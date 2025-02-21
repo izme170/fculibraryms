@@ -13,10 +13,14 @@ return new class extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id('book_id');
-            $table->string('book_number');
+            $table->string('book_rfid');
+            $table->string('accession_number')->nullable();
+            $table->string('call_number')->nullable();
+            $table->string('isbn')->nullable();
             $table->string('title', 255);
             $table->unsignedBigInteger('category_id')->nullable();
             $table->string('book_image', 255)->nullable();
+            $table->string('description', 255)->nullable();
             $table->boolean('is_available')->default(true);
             $table->boolean('is_archived')->default(false);
             $table->timestamps();

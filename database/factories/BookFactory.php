@@ -19,8 +19,12 @@ class BookFactory extends Factory
     {
         $category = Category::inRandomOrder()->first();
         return [
-            'book_number' => fake()->isbn10(),
+            'book_rfid' => fake()->randomNumber(9),
+            'accession_number' => 'C-' . fake()->randomNumber(5),
+            'call_number' => 'BOK 000 A1 2025',
             'title' => fake()->sentence(3),
+            'isbn' => fake()->isbn13(),
+            'description' => fake()->sentence(10),
             'category_id' => $category->category_id,
         ];
     }

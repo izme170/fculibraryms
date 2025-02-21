@@ -11,8 +11,8 @@
                     <div class="col">
                         <div class="mb-3">
                             <h1>Please scan the book's RFID</h1>
-                            <!-- <label class="form-label" for="book_number">Please scan the book's RFID</label> -->
-                            <input type="text" id="book_number" name="book_number" autofocus>
+                            <!-- <label class="form-label" for="book_rfid">Please scan the book's RFID</label> -->
+                            <input type="text" id="book_rfid" name="book_rfid" autofocus>
                         </div>
                         <div class="mb-3">
                             <h3>Remark</h3>

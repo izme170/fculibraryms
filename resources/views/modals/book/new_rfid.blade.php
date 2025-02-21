@@ -10,8 +10,8 @@
                     @method('PUT')
                     @csrf
                     <div class="mb-3">
-                        <label class="form-label" for="book_number">New RFID</label>
-                        <input type="text" id="book_number" name="book_number" autofocus>
+                        <label class="form-label" for="book_rfid">New RFID</label>
+                        <input type="text" id="book_rfid" name="book_rfid" autofocus>
                     </div>
                     <div class="d-flex flex-row justify-content-end gap-1">
                         <button class="btn-simple bg-red" type="button" data-bs-dismiss="modal"

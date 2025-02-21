@@ -44,8 +44,8 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="book_number">Scan book's RFID here to submit</label>
-                            <input type="text" id="book_number" name="book_number">
+                            <label class="form-label" for="book_rfid">Scan book's RFID here to submit</label>
+                            <input type="text" id="book_rfid" name="book_rfid">
                         </div>
                     </div>
                 </div>

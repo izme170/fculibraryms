@@ -117,7 +117,7 @@ class BookController extends Controller
             'author' => ['required', 'array'],
             'author.*' => ['required', 'string'],
             'category_id' => ['required'],
-            'book_number' => ['required'],
+            'book_rfid' => ['required'],
             'book_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -213,7 +213,7 @@ class BookController extends Controller
             'author' => ['required', 'array'],
             'author.*' => ['required', 'string'],
             'category_id' => ['required'],
-            // 'book_number' => ['required'],
+            // 'book_rfid' => ['required'],
             'book_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -318,7 +318,7 @@ class BookController extends Controller
     public function newRFID(Request $request, $id)
     {
         $validated = $request->validate([
-            'book_number' => 'required|unique:books,book_number'
+            'book_rfid' => 'required|unique:books,book_rfid'
         ]);
 
         // Record Activity

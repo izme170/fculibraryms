@@ -11,8 +11,12 @@ class Book extends Model
     protected $table = 'books';
     protected $primaryKey = 'book_id';
     protected $fillable = [
-        'book_number',
+        'book_rfid',
+        'accession_number',
+        'call_number',
+        'isbn',
         'title',
+        'description',
         'category_id',
         'book_image',
         'is_available',

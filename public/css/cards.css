@@ -16,7 +16,7 @@
     box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.1), -4px -4px 12px rgba(0, 0, 0, 0.08);
 }
 
-.img {
+.card .img {
     width: 100%;
     height: 120px;
     background: linear-gradient(#32568F, #0E1133);
@@ -29,7 +29,7 @@
     height: 180px;
 }
 
-.text {
+.card .text {
     padding: 10px;
     display: flex;
     flex-direction: column;
@@ -195,6 +195,103 @@
 .legend-btn.overdue {
     background-color: #fdecea;
     color: #a72828;
+}
+
+.card-list {
+    position: relative;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 14px -2px #bebebe;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    margin-bottom: 10px;
+}
+
+.card-list:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1), -4px -4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.card-list .img {
+    width: 150px;
+    height: 150px;
+    background: linear-gradient(#32568F, #0E1133);
+    object-fit: cover;
+    border-radius: 5px;
+    transition: height 0.3s ease-in-out;
+}
+
+.card-list .text {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.card-list .text .h3 {
+    font-family: system-ui, sans-serif;
+    font-size: medium;
+    font-weight: 600;
+    color: black;
+    margin: 0;
+    text-align: left;
+}
+
+.card-list .text .p {
+    font-family: system-ui, sans-serif;
+    color: #4a4a4a;
+    font-size: 13px;
+    margin: 0;
+    text-align: left;
+}
+
+.card-list .ml-5.text {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 5px;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.card-list .ml-5.text .p {
+    margin: 0;
+    text-align: left;
+}
+
+
+/* Hover on the card */
+.card-list:hover .status-indicator {
+    width: 60px; /* Expanded width */
+}
+
+.card-list:hover .status-indicator::after {
+    opacity: 1; /* Show the text when hovered */
+}
+
+/* Keep the indicator’s border radius when expanded */
+.card-list:hover .status-indicator {
+    border-radius: 10px;
+}
+
+@media(max-width: 870px) {
+    .card-list .img {
+        width: 70px;
+        height: 70px;
+    }
+
+    .card-list .text .h3 {
+        font-size: small;
+        font-weight: 500;
+    }
 }
 
 @media(max-width: 870px){
