@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\BookCopyController;
 use App\Http\Controllers\BorrowBookController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataEntryController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Models\BookCopy;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -96,6 +98,10 @@ Route::middleware('auth')->group(function () {
         Route::put('/book/new_rfid/{id}', 'newRFID')->name('books.newRFID');
         Route::put('/book/update-image/{id}', 'updateImage')->name('books.update_image');
         Route::get('/books/export', 'export');
+    });
+
+    Route::controller(BookCopyController::class)->group(function (){
+        Route::get('/show-copy/{book_id}', 'show');
     });
 
     Route::controller(ReportController::class)->group(function(){

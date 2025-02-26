@@ -1,7 +1,7 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.topbar')
+    @include('include.topbar')
     <ul class="nav nav-tabs">
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/books">Books</a>
@@ -39,14 +39,18 @@
 
                     <!-- Status filter/legend -->
                     <div class="d-flex flex-row align-items-center gap-2">
-                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
+                        <a href="?status=all" class="legend-btn {{ $status === 'all' ? 'active' : '' }}">All</a>
+                        <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
+                        <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
+                        <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
+                        {{-- <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
                             data-status="all">All</a>
                         <a href="javascript:void(0);" class="legend-btn {{ $status === 'available' ? 'active' : '' }}"
                             data-status="available">Available</a>
                         <a href="javascript:void(0);" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}"
                             data-status="borrowed">Borrowed</a>
                         <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
-                            data-status="overdue">Overdue</a>
+                            data-status="overdue">Overdue</a> --}}
 
                         <div class="dropdown">
                             <button class="btn text-white dropdown-toggle" style="background-color: #0E1133" type="button"
@@ -74,7 +78,55 @@
                 </div>
             </div>
         </div>
-        <div class="d-flex flex-column gap-3 mt-3 justify-content-center">
+        @foreach ($books as $book)
+            <a class="row align-items-center mb-3 card-list" href="/book/show/{{ $book->book_id }}"
+                data-status="{{ $book->status }}">
+                <div class="col ps-0" style="max-width: fit-content">
+                    <div class="indicator-container">
+                        @php
+                            $availableCount = $book->bookCopies->where('status', 'Available')->count();
+                            $borrowedCount = $book->bookCopies->where('status', 'Borrowed')->count();
+                            $overdueCount = $book->bookCopies->where('status', 'Overdue')->count();
+                        @endphp
+
+                        @if ($availableCount > 0)
+                            <span class="badge bg-success"><span class="badge-label">Available:</span> {{ $availableCount }}</span>
+                        @endif
+                        @if ($borrowedCount > 0)
+                            <span class="badge bg-warning"><span class="badge-label">Borrowed:</span> {{ $borrowedCount }}</span>
+                        @endif
+                        @if ($overdueCount > 0)
+                            <span class="badge bg-danger"><span class="badge-label">Overdue:</span> {{ $overdueCount }}</span>
+                        @endif
+                    </div>
+                    {{-- <div class="indicator-container">
+                        <div class="status-indicator {{ $book->status }}"></div>
+                    </div> --}}
+                    <img class="img"
+                        src="{{ $book->book_image ? asset('storage/' . $book->book_image) : asset('img/default-book-image.png') }}"
+                        alt="">
+                </div>
+                <div class="col">
+                    <div class="row title">{{ $book->title }}</div>
+                    <div class="row data">Author(s): {{ $book->authors->pluck('name')->implode(', ') }}</div>
+                    <div class="row data">Isbn: {{ $book->isbn }}</div>
+                    <div class="row data">Category: {{ $book->category->category }}</div>
+                </div>
+                <div class="col">
+                    <div class="row data">Editors(s): {{ $book->editors->pluck('name')->implode(', ') }}</div>
+                    <div class="row data">Illustrator(s): {{ $book->illustrators->pluck('name')->implode(', ') }}</div>
+                    <div class="row data">Translator(s): {{ $book->translators->pluck('name')->implode(', ') }}</div>
+                    <div class="row data">Publisher: {{ $book->publisher }}</div>
+                </div>
+                <div class="col">
+                    <div class="row data">Publication Date: {{ $book->publication_date }}</div>
+                    <div class="row data">Edition: {{ $book->edition }}</div>
+                    <div class="row data">Volume: {{ $book->volume }}</div>
+                    <div class="row data">Pages: {{ $book->pages }}</div>
+                </div>
+            </a>
+        @endforeach
+        {{-- <div class="d-flex flex-column gap-3 mt-3 justify-content-center">
             @foreach ($books as $book)
                 <a class="card-list text-decoration-none" href="/book/show/{{ $book->book_id }}"
                     data-status="{{ $book->status }}">
@@ -85,13 +137,26 @@
                     <div class="text">
                         <p class="h3">{{ $book->title }}</p>
                         <p class="p">{{ $book->accession_number }}</p>
-                        <p class="p">{{ $book->authors->pluck('name')->implode(', ') }}</p>
+                        <p class="p">Author(s): {{$book->authors->pluck('name')->implode(', ')}}</p>
                         <p class="p">Isbn: {{ $book->isbn }}</p>
+                        <p class="p">Call Number: {{ $book->call_number }}</p>
+                    </div>
+                    <div class="text">
                         <p class="p">Category: {{ $book->category->category}}</p>
+                        <p class="p">Editors(s): {{$book->editors->pluck('name')->implode(', ')}}</p>
+                        <p class="p">Illustrator(s): {{$book->illustrators->pluck('name')->implode(', ')}}</p>
+                        <p class="p">Translator(s): {{$book->translators->pluck('name')->implode(', ')}}</p>
+                    </div>
+                    <div class="text">
+                        <p class="p">Publisher: {{ $book->publisher }}</p>
+                        <p class="p">Publication Date: {{ $book->publication_date }}</p>
+                        <p class="p">Edition: {{$book->edition}}</p>
+                        <p class="p">Volume: {{ $book->volume }}</p>
+                        <p class="p">Pages: {{ $book->pages}}</p>
                     </div>
                 </a>
             @endforeach
-        </div>
+        </div> --}}
 
         {{-- pagination --}}
         <div class="fixed-bottom mt-4 d-flex justify-content-center">
@@ -108,32 +173,32 @@
             document.getElementById('filterForm').submit();
         });
 
-        // Get all legend buttons
-        const legendButtons = document.querySelectorAll('.legend-btn');
+        // // Get all legend buttons
+        // const legendButtons = document.querySelectorAll('.legend-btn');
 
-        // Add event listener to each button
-        legendButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                // Get the status from the data-status attribute
-                const status = this.getAttribute('data-status');
+        // // Add event listener to each button
+        // legendButtons.forEach(button => {
+        //     button.addEventListener('click', function() {
+        //         // Get the status from the data-status attribute
+        //         const status = this.getAttribute('data-status');
 
-                // Remove 'active' class from all buttons
-                legendButtons.forEach(btn => btn.classList.remove('active'));
+        //         // Remove 'active' class from all buttons
+        //         legendButtons.forEach(btn => btn.classList.remove('active'));
 
-                // Add 'active' class to the clicked button
-                this.classList.add('active');
+        //         // Add 'active' class to the clicked button
+        //         this.classList.add('active');
 
-                // Update the status in the form and submit it
-                const form = document.getElementById('filterForm');
-                const statusInput = document.createElement('input');
-                statusInput.type = 'hidden';
-                statusInput.name = 'status';
-                statusInput.value = status;
+        //         // Update the status in the form and submit it
+        //         const form = document.getElementById('filterForm');
+        //         const statusInput = document.createElement('input');
+        //         statusInput.type = 'hidden';
+        //         statusInput.name = 'status';
+        //         statusInput.value = status;
 
-                // Append the status input to the form and submit the form
-                form.appendChild(statusInput);
-                form.submit();
-            });
-        });
+        //         // Append the status input to the form and submit the form
+        //         form.appendChild(statusInput);
+        //         form.submit();
+        //     });
+        // });
     </script>
 @endsection

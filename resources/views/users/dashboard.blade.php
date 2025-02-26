@@ -32,11 +32,11 @@
             <div class="widget-container">
                 <div class="widget">
                     <div class="w-text small">
-                        <span>Unreturned Books: {{ count($unreturned_books_list) }}</span>
+                        <span>Unreturned Books: {{ count($unreturnedBooks) }}</span>
                     </div>
                     <ol>
-                        @foreach ($unreturned_books_list as $book)
-                            <li><a href="/book/show/{{ $book->book_id }}" class="shortcut-link">{{ $book->title }}</a></li>
+                        @foreach ($unreturnedBooks as $borrowedBook)
+                            <li><a href="/book/show/{{ $borrowedBook->bookCopy->copy_id }}" class="shortcut-link">{{ $borrowedBook->bookCopy->book->title }}</a></li>
                         @endforeach
                     </ol>
                 </div>

@@ -11,28 +11,43 @@ class Book extends Model
     protected $table = 'books';
     protected $primaryKey = 'book_id';
     protected $fillable = [
-        'book_rfid',
-        'accession_number',
-        'call_number',
         'isbn',
         'title',
+        'publisher',
+        'publication_date',
+        'edition',
+        'volume',
+        'pages',
+        'references',
+        'bibliography',
         'description',
         'category_id',
         'book_image',
-        'is_available',
         'is_archived'
     ];
 
-    public function borrowedBooks()
-    {
-        return $this->hasMany(BorrowedBook::class, 'book_id', 'book_id');
+    public function bookCopies(){
+        return $this->hasMany(BookCopy::class, 'book_id');
     }
 
     public function category(){
         return $this->belongsTo(Category::class, 'category_id');
     }
-
     public function authors(){
         return $this->belongsToMany(Author::class, 'book_authors', 'book_id', 'author_id');
+    }
+
+    public function editors(){
+        return $this->belongsToMany(Editor::class, 'book_editors', 'book_id', 'editor_id');
+    }
+
+    public function illustrators(){
+        return $this->belongsToMany(Illustrator::class, 'book_illustrators', 'book_id', 'illustrator_id');
+    }
+    public function subjects(){
+        return $this->belongsToMany(Subject::class, 'book_subjects', 'book_id', 'subject_id');
+    }
+    public function translators(){
+        return $this->belongsToMany(Translator::class, 'book_translators', 'book_id', 'translator_id');
     }
 }

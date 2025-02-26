@@ -11,13 +11,24 @@ use App\Models\Patron;
 use App\Models\Category;
 use App\Models\Book;
 use App\Models\BookAuthor;
+use App\Models\BookCopy;
+use App\Models\BookEditor;
+use App\Models\BookIllustrator;
+use App\Models\BookSubject;
+use App\Models\BookTranslator;
 use App\Models\BorrowedBook;
 use App\Models\Course;
 use App\Models\Department;
+use App\Models\Editor;
+use App\Models\FundingSource;
+use App\Models\Illustrator;
 use App\Models\Marketer;
 use App\Models\PatronLogin;
 use App\Models\Purpose;
 use App\Models\Remark;
+use App\Models\Subject;
+use App\Models\Translator;
+use App\Models\Vendor;
 use Database\Factories\AuthorFactory;
 use Database\Factories\BookFactory;
 use Database\Factories\UnreturnedBookFactory;
@@ -175,6 +186,13 @@ class DatabaseSeeder extends Seeder
         Purpose::create(['purpose' => 'Passing of Requirements']);
         Purpose::create(['purpose' => 'Others']);
 
+        // seed funding sources
+        FundingSource::create(['name' => 'Library Budget']);
+        FundingSource::create(['name' => 'Donation']);
+
+        // seed vendors
+        Vendor::factory(20)->create();
+
         // Seed Books
         Book::factory(20)->create();
 
@@ -279,25 +297,25 @@ class DatabaseSeeder extends Seeder
             'is_archived' => false
         ]);
 
-        Book::create([
-            'book_rfid' => '3738229540',
-            'accession_number' => 'C-0001',
-            'title' => fake()->sentence(3),
-            'isbn' => fake()->isbn13(),
-            'call_number' => 'BOK 000 A1 2025',
-            'description' => fake()->sentence(10),
-            'category_id' => fake()->numberBetween(1, 4),
-        ]);
+        // Book::create([
+        //     'book_rfid' => '3738229540',
+        //     'accession_number' => 'C-0001',
+        //     'title' => fake()->sentence(3),
+        //     'isbn' => fake()->isbn13(),
+        //     'call_number' => 'BOK 000 A1 2025',
+        //     'description' => fake()->sentence(10),
+        //     'category_id' => fake()->numberBetween(1, 4),
+        // ]);
 
-        Book::create([
-            'book_rfid' => '3743346372',
-            'accession_number' => 'C-0002',
-            'title' => fake()->sentence(3),
-            'isbn' => fake()->isbn13(),
-            'description' => fake()->sentence(10),
-            'call_number' => 'BOK 000 A1 2025',
-            'category_id' => fake()->numberBetween(1, 4),
-        ]);
+        // Book::create([
+        //     'book_rfid' => '3743346372',
+        //     'accession_number' => 'C-0002',
+        //     'title' => fake()->sentence(3),
+        //     'isbn' => fake()->isbn13(),
+        //     'description' => fake()->sentence(10),
+        //     'call_number' => 'BOK 000 A1 2025',
+        //     'category_id' => fake()->numberBetween(1, 4),
+        // ]);
 
         //seed authors
         Author::factory(20)->create();
@@ -319,6 +337,86 @@ class DatabaseSeeder extends Seeder
             }
         }
 
+        //seed editors
+        Editor::factory(20)->create();
+
+        //seed book editors
+        for ($i = 0; $i <= 20; $i++) {
+            $book = Book::inRandomOrder()->first();
+            $editor = Editor::inRandomOrder()->first();
+
+            $existingRecord = BookEditor::where('book_id', $book->book_id)
+                ->where('editor_id', $editor->editor_id)
+                ->first();
+
+            if (!$existingRecord) {
+                BookEditor::create([
+                    'book_id' => $book->book_id,
+                    'editor_id' => $editor->editor_id
+                ]);
+            }
+        }
+
+        //seed illustrators
+        Illustrator::factory(20)->create();
+
+        //seed book illustrators
+        for ($i = 0; $i <= 20; $i++) {
+            $book = Book::inRandomOrder()->first();
+            $illustrator = Illustrator::inRandomOrder()->first();
+
+            $existingRecord = BookIllustrator::where('book_id', $book->book_id)
+                ->where('illustrator_id', $illustrator->illustrator_id)
+                ->first();
+
+            if (!$existingRecord) {
+                BookIllustrator::create([
+                    'book_id' => $book->book_id,
+                    'illustrator_id' => $illustrator->illustrator_id
+                ]);
+            }
+        }
+
+        //seed subjects
+        Subject::factory(20)->create();
+
+        //seed book subjects
+        for ($i = 0; $i <= 20; $i++) {
+            $book = Book::inRandomOrder()->first();
+            $subject = Subject::inRandomOrder()->first();
+
+            $existingRecord = BookSubject::where('book_id', $book->book_id)
+                ->where('subject_id', $subject->subject_id)
+                ->first();
+
+            if (!$existingRecord) {
+                BookSubject::create([
+                    'book_id' => $book->book_id,
+                    'subject_id' => $subject->subject_id
+                ]);
+            }
+        }
+
+        //seed translators
+        Translator::factory(20)->create();
+
+        //seed book translators
+        for ($i = 0; $i <= 20; $i++) {
+            $book = Book::inRandomOrder()->first();
+            $translator = Translator::inRandomOrder()->first();
+
+            $existingRecord = BookTranslator::where('book_id', $book->book_id)
+                ->where('translator_id', $translator->translator_id)
+                ->first();
+
+            if (!$existingRecord) {
+                BookTranslator::create([
+                    'book_id' => $book->book_id,
+                    'translator_id' => $translator->translator_id
+                ]);
+            }
+        }
+
         // Seed Remarks
         $remarks = [
             'Good',
@@ -330,14 +428,17 @@ class DatabaseSeeder extends Seeder
             Remark::create(['remark' => $remark]);
         }
 
+        // seed book copy
+        BookCopy::factory()->count(5)->create();
+
         // Seed Borrowed Books
         BorrowedBook::factory(20)->create();
 
         //Seed Unreturned Book
         for ($i = 0; $i <= 3; $i++) {
-            $book = Book::where('is_available', true)->inRandomOrder()->first();
+            $copy = BookCopy::where('is_available', true)->inRandomOrder()->first();
 
-            if (!$book) {
+            if (!$copy) {
                 continue;
             }
 
@@ -347,13 +448,13 @@ class DatabaseSeeder extends Seeder
             $created_at = fake()->dateTimeBetween(now()->startOfDay(), now());
             $due = (clone $created_at)->modify('+' . 60 . 'minutes');
 
-            $existingRecord = BorrowedBook::where('book_id', $book->book_id)
+            $existingRecord = BorrowedBook::where('copy_id', $copy->copy_id)
                 ->where('returned', false)
                 ->first();
 
             if (!$existingRecord) {
                 BorrowedBook::create([
-                    'book_id' => $book->book_id,
+                    'copy_id' => $copy->copy_id,
                     'patron_id' => $patron->patron_id,
                     'user_id' => $user->user_id,
                     'due_date' => $due,
@@ -361,7 +462,7 @@ class DatabaseSeeder extends Seeder
                 ]);
 
                 //This line will update the book status
-                $book->update(['is_available' => false]);
+                $copy->update(['is_available' => false]);
             }
         }
     }

@@ -18,14 +18,18 @@
             </form>
 
             <div class="d-flex flex-row align-items-center gap-2">
-                <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
+                <a href="?status=all" class="legend-btn {{ $status === 'all' ? 'active' : '' }}">All</a>
+                        <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
+                        <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
+                        <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
+                {{-- <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
                     data-status="all">All</a>
                 <a href="javascript:void(0);" class="legend-btn {{ $status === 'returned' ? 'active' : '' }}"
                     data-status="returned">Returned</a>
                 <a href="javascript:void(0);" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}"
                     data-status="borrowed">Borrowed</a>
                 <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
-                    data-status="overdue">Overdue</a>
+                    data-status="overdue">Overdue</a> --}}
             </div>
         </div>
         <table class="table table-bordered">
@@ -89,7 +93,7 @@
                     <tr onclick="window.location.href='/borrowed_book/show/{{ $borrowed_book->borrow_id }}';"
                         style="cursor:pointer;">
                         <td>{{ $borrowed_book->created_at->format('m/d/y h:i a') }}</td>
-                        <td>{{ $borrowed_book->book->title }}</td>
+                        <td>{{ $borrowed_book->bookCopy->book->title }}</td>
                         <td>{{ $borrowed_book->patron->first_name }} {{ $borrowed_book->patron->last_name }}</td>
                         <td>{{ $borrowed_book->user->first_name }} {{ $borrowed_book->user->last_name }}</td>
                         <td>₱{{ $borrowed_book->fine }}</td>

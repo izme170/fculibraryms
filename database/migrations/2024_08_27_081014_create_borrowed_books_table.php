@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('borrowed_books', function (Blueprint $table) {
             $table->id('borrow_id');
-            $table->unsignedBigInteger('book_id')->nullable();
+            $table->unsignedBigInteger('copy_id')->nullable();
             $table->unsignedBigInteger('patron_id')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->dateTime('due_date');
@@ -21,9 +21,9 @@ return new class extends Migration {
             $table->unsignedBigInteger('remark_id')->nullable();
             $table->timestamps();
 
-            $table->foreign('book_id')
-                ->references('book_id')
-                ->on('books')
+            $table->foreign('copy_id')
+                ->references('copy_id')
+                ->on('book_copies')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
             $table->foreign('patron_id')

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Book;
+use App\Models\BookCopy;
 use App\Models\Patron;
 use App\Models\Remark;
 use App\Models\User;
@@ -20,7 +20,7 @@ class BorrowedBookFactory extends Factory
      */
     public function definition(): array
     {
-        $book = Book::inRandomOrder()->first();
+        $copy = BookCopy::inRandomOrder()->first();
         $patron = Patron::inRandomOrder()->first();
         $user = User::where('role_id', 1)->inRandomOrder()->first();
         $created_at = fake()->dateTime();
@@ -28,7 +28,7 @@ class BorrowedBookFactory extends Factory
         $returned = (clone $due)->modify('-'. rand(20, 50) . 'minutes');
         $remark = Remark::inRandomOrder()->first();
         return [
-            'book_id' => $book->book_id,
+            'copy_id' => $copy->copy_id,
             'patron_id' => $patron->patron_id,
             'user_id' => $user->user_id,
             'due_date' => $due,

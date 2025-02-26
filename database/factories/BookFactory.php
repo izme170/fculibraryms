@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Book;
+use App\Models\BookCopy;
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,13 +21,29 @@ class BookFactory extends Factory
     {
         $category = Category::inRandomOrder()->first();
         return [
-            'book_rfid' => fake()->randomNumber(9),
-            'accession_number' => 'C-' . fake()->randomNumber(5),
-            'call_number' => 'BOK 000 A1 2025',
             'title' => fake()->sentence(3),
             'isbn' => fake()->isbn13(),
+            'publisher' => fake()->company(),
+            'publication_date' => fake()->year('now'),
+            'edition' => fake()->randomElement([
+                fake()->randomDigitNotNull() . 'th Edition',
+                fake()->year('now') . ' Edition',
+                fake()->randomElement(['Standard', 'Deluxe', 'Collector’s', 'Limited', 'Revised']) . ' Edition',
+                'Version ' . fake()->randomFloat(1, 1, 10)
+            ]),
+            'volume' => fake()->numberBetween(1, 10),
+            'pages' => fake()->numberBetween(100, 1000),
+            'references' => fake()->sentence(7),
+            'bibliography' => fake()->sentence(7),
             'description' => fake()->sentence(10),
             'category_id' => $category->category_id,
         ];
+    }
+
+    public function configure()
+    {
+        return $this->afterCreating(function(Book $book){
+            BookCopy::factory()->create(['book_id' => $book->book_id]);
+        });
     }
 }

@@ -25,27 +25,53 @@ class BookController extends Controller
         $direction = $request->query('direction', 'asc');
 
         // Create the query to get books
-        $query = Book::with(['category', 'authors'])
+        $query = Book::with(['category', 'authors', 'editors', 'illustrators', 'subjects', 'translators', 'bookCopies'])
             ->where('is_archived', '=', false);
 
-        // Apply the status filter if set
+        //Filter the book if it has one copy available, borrowed, or overdue
         if ($status !== 'all') {
             $query->where(function ($query) use ($status) {
                 if ($status === 'available') {
-                    $query->where('is_available', true);
+                    $query->whereHas('bookCopies', function ($subQuery) {
+                        $subQuery->where('is_available', true);
+                    });
                 } elseif ($status === 'borrowed') {
-                    $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
-                        $subQuery->where('due_date', '>=', now())
-                            ->whereNull('returned');
+                    $query->whereHas('bookCopies', function ($subQuery) {
+                        $subQuery->where('is_available', false)->whereHas('borrowedCopies', function ($subQuery) {
+                            $subQuery->where('due_date', '>=', now())
+                                ->whereNull('returned');
+                        });
                     });
                 } elseif ($status === 'overdue') {
-                    $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
-                        $subQuery->where('due_date', '<', now())
-                            ->whereNull('returned');;
+                    $query->whereHas('bookCopies', function ($subQuery) {
+                        $subQuery->where('is_available', false)->whereHas('borrowedCopies', function ($subQuery) {
+                            $subQuery->where('due_date', '<', now())
+                                ->whereNull('returned');
+                        });
                     });
                 }
             });
         }
+
+
+        // Apply the status filter if set
+        // if ($status !== 'all') {
+        //     $query->where(function ($query) use ($status) {
+        //         if ($status === 'available') {
+        //             $query->where('is_available', true);
+        //         } elseif ($status === 'borrowed') {
+        //             $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
+        //                 $subQuery->where('due_date', '>=', now())
+        //                     ->whereNull('returned');
+        //             });
+        //         } elseif ($status === 'overdue') {
+        //             $query->where('is_available', false)->whereHas('borrowedBooks', function ($subQuery) use ($status) {
+        //                 $subQuery->where('due_date', '<', now())
+        //                     ->whereNull('returned');;
+        //             });
+        //         }
+        //     });
+        // }
 
         // Apply the category filter if set
         if ($category !== 'all') {
@@ -165,45 +191,46 @@ class BookController extends Controller
             ->where('books.book_id', $id)
             ->first();
         $categories = Category::all();
-        $borrowed_book = BorrowedBook::all()->keyBy('book_id')->get($book->book_id);
+        // $borrowed_book = BorrowedBook::all()->keyBy('book_id')->get($book->book_id);
 
-        // This code will Assign the book's status
-        if ($book->is_available) {
-            $book->status = 'available';
-        } else {
+        // // This code will Assign the book's status
+        // if ($book->is_available) {
+        //     $book->status = 'available';
+        // } else {
 
-            // Check if the book is borrowed and returned
-            if ($borrowed_book && $borrowed_book->returned) {
-                $book->status = 'borrowed';
-            } else {
-                // Check if it's overdue or just borrowed
-                $dueDate = $borrowed_book ? Carbon::parse($borrowed_book->due_date) : null;
-                $book->status = $dueDate && Carbon::now()->gt($dueDate) ? 'overdue' : 'borrowed';
-            }
-        }
+        //     // Check if the book is borrowed and returned
+        //     if ($borrowed_book && $borrowed_book->returned) {
+        //         $book->status = 'borrowed';
+        //     } else {
+        //         // Check if it's overdue or just borrowed
+        //         $dueDate = $borrowed_book ? Carbon::parse($borrowed_book->due_date) : null;
+        //         $book->status = $dueDate && Carbon::now()->gt($dueDate) ? 'overdue' : 'borrowed';
+        //     }
+        // }
 
-        $previous_borrowers = BorrowedBook::with(['patron'])
-            ->where('book_id', $id)
-            ->get();
+        // $previous_borrowers = BorrowedBook::with(['patron'])
+        //     ->where('book_id', $id)
+        //     ->get();
 
-        $previous_borrowers->each(function ($borrowed_book) {
+        // $previous_borrowers->each(function ($borrowed_book) {
 
-            //Checks if the book is returned
-            if (!$borrowed_book->returned) {
-                $dueDate = Carbon::parse($borrowed_book->due_date);
-                $now = Carbon::now();
+        //     //Checks if the book is returned
+        //     if (!$borrowed_book->returned) {
+        //         $dueDate = Carbon::parse($borrowed_book->due_date);
+        //         $now = Carbon::now();
 
-                //Check if the book is overdue
-                if ($now->gt($dueDate)) {
-                    $hoursOverdue = $dueDate->diffInHours($now, false);
-                    $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
-                } else {
-                    $borrowed_book->fine = 0;
-                }
-            }
-        });
+        //         //Check if the book is overdue
+        //         if ($now->gt($dueDate)) {
+        //             $hoursOverdue = $dueDate->diffInHours($now, false);
+        //             $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+        //         } else {
+        //             $borrowed_book->fine = 0;
+        //         }
+        //     }
+        // });
 
-        return view('books.show', compact('book', 'categories', 'previous_borrowers'));
+        // return view('books.show', compact('book', 'categories', 'previous_borrowers'));
+        return view('books.show', compact('book', 'categories'));
     }
 
     public function update(Request $request, $id)

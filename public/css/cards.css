@@ -69,10 +69,34 @@
     color: #fff;
 }
 
-.indicator-container{
+.indicator-container {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 5px;
+    right: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.indicator-container .badge {
+    width: 22px;
+    gap: 5px;
+    border-radius: 100px;
+    transition: width 0.3s ease-in-out;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.indicator-container .badge .badge-label {
+    display: none;
+}
+
+.card-list:hover .badge {
+    width: 90px;
+}
+
+.card-list:hover .badge .badge-label {
+    display: inline-block;
 }
 
 .status-indicator {
@@ -196,7 +220,7 @@
     background-color: #fdecea;
     color: #a72828;
 }
-
+/*
 .card-list {
     position: relative;
     display: flex;
@@ -265,8 +289,34 @@
 .card-list .ml-5.text .p {
     margin: 0;
     text-align: left;
+} */
+
+
+.card-list{
+    position: relative;
+    text-decoration: none;
+    color: #0E1133;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 0px 14px -2px #bebebe;
 }
 
+.card-list .img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: height 0.3s ease-in-out;
+}
+
+.card-list .title{
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.card-list .data{
+    font-size: .9rem;
+}
 
 /* Hover on the card */
 .card-list:hover .status-indicator {
