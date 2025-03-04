@@ -15,7 +15,7 @@ class Category extends Model
         'show_in_forms'
     ];
 
-    public function books(){
-        return $this->hasMany(Book::class, 'category_id');
+    public function materials(){
+        return $this->hasMany(Material::class, 'category_id');
     }
 }

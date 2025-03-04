@@ -14,7 +14,7 @@ class Author extends Model
         'name',
     ];
 
-    public function books(){
-        return $this->hasMany(BookAuthor::class, 'author_id');
+    public function materials(){
+        return $this->hasMany(MaterialAuthor::class, 'author_id');
     }
 }

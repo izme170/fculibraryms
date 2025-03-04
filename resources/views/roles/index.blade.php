@@ -23,7 +23,7 @@
             <thead class="thead-dark">
                 <tr>
                     <th scope="col">Role</th>
-                    <th scope="col">Book Management</th>
+                    <th scope="col">Material Management</th>
                     <th scope="col">Patron Management</th>
                     <th scope="col">Reports</th>
                 </tr>
@@ -38,9 +38,9 @@
                             <td>
                                 <label class="switch">
                                     <div class="toggle-switch">
-                                        <input type="checkbox" id="books_access{{ $role->role_id }}" name="books_access"
-                                            {{ $role->books_access ? 'checked' : '' }} disabled>
-                                        <label for="books_access{{ $role->role_id }}"></label>
+                                        <input type="checkbox" id="materials_access{{ $role->role_id }}" name="materials_access"
+                                            {{ $role->materials_access ? 'checked' : '' }} disabled>
+                                        <label for="materials_access{{ $role->role_id }}"></label>
                                     </div>
                                 </label>
                             </td>

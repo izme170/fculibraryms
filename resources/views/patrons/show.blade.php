@@ -71,24 +71,24 @@
                 RFID</button>
         </div>
         <div>
-            <h5>Books borrowed</h5>
+            <h5>Materials borrowed</h5>
             <table class="table table-bordered">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Book</th>
+                        <th scope="col">Material</th>
                         <th scope="col">Date Returned</th>
                         <th scope="col">Fine</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($borrowed_books as $borrowed_book)
+                    @foreach ($borrowed_materials as $borrowed_material)
                         <tr>
-                            <td>{{ $borrowed_book->created_at->format('m/d/y h:i a') }}</td>
-                            <td>{{ $borrowed_book->book->title }}</td>
-                            <td>{{ $borrowed_book->returned ? $borrowed_book->returned->format('m/d/y h:i a') : 'Unreturned' }}
+                            <td>{{ $borrowed_material->created_at->format('m/d/y h:i a') }}</td>
+                            <td>{{ $borrowed_material->material->title }}</td>
+                            <td>{{ $borrowed_material->returned ? $borrowed_material->returned->format('m/d/y h:i a') : 'Unreturned' }}
                             </td>
-                            <td>₱{{ $borrowed_book->fine }}</td>
+                            <td>₱{{ $borrowed_material->fine }}</td>
                         </tr>
                     @endforeach
                 </tbody>

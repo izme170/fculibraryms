@@ -26,11 +26,11 @@
             </a>
         @endif
 
-        {{-- Checks if the user is allowed to access the book management --}}
-        @if ($user->role->books_access)
-            <a href="/books" class="nav-link {{ request()->routeIs('books.*') ? 'active' : '' }}">
+        {{-- Checks if the user is allowed to access the material management --}}
+        @if ($user->role->materials_access)
+            <a href="/materials" class="nav-link {{ request()->routeIs('materials.*') ? 'active' : '' }}">
                 <x-lucide-book-copy class="nav-link-icon" />
-                <span>Book Management</span>
+                <span>Material Management</span>
             </a>
         @endif
 

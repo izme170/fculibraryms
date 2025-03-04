@@ -14,7 +14,7 @@ class Illustrator extends Model
         'name',
     ];
 
-    public function books(){
-        return $this->hasMany(BookIllustrator::class, 'illustrator_id');
+    public function materials(){
+        return $this->hasMany(MaterialIllustrator::class, 'illustrator_id');
     }
 }

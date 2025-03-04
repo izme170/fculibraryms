@@ -12,14 +12,14 @@ class Activity extends Model
     protected $primaryKey = 'activity_id';
     protected $fillable = [
         'action',
-        'book_id',
+        'material_id',
         'patron_id',
         'user_id',
         'initiator_id'
     ];
 
-    public function book(){
-        return $this->belongsTo(Book::class, 'book_id');
+    public function material(){
+        return $this->belongsTo(Material::class, 'material_id');
     }
 
     public function patron(){

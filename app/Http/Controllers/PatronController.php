@@ -7,7 +7,7 @@ use App\Exports\UsersExport;
 use App\Mail\SendPatronQRCode;
 use App\Models\Activity;
 use App\Models\Adviser;
-use App\Models\BorrowedBook;
+use App\Models\BorrowedMaterial;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Patron;
@@ -137,29 +137,29 @@ class PatronController extends Controller
         $departments = Department::where('show_in_forms', true)->get();
         $advisers = Adviser::where('show_in_forms', true)->get();
 
-        $borrowed_books = BorrowedBook::with('patron')
+        $borrowed_materials = BorrowedMaterial::with('patron')
             ->where('patron_id', $id)
             ->orderBy('created_at', 'desc')
             ->get();
 
-        $borrowed_books->each(function ($borrowed_book) {
+        $borrowed_materials->each(function ($borrowed_material) {
 
-            //Checks if the book is returned
-            if (!$borrowed_book->returned) {
-                $dueDate = Carbon::parse($borrowed_book->due_date);
+            //Checks if the material is returned
+            if (!$borrowed_material->returned) {
+                $dueDate = Carbon::parse($borrowed_material->due_date);
                 $now = Carbon::now();
 
-                //Check if the book is overdue
+                //Check if the material is overdue
                 if ($now->gt($dueDate)) {
                     $hoursOverdue = $dueDate->diffInHours($now, false);
-                    $borrowed_book->fine = $this->finePerHour * (int)$hoursOverdue;
+                    $borrowed_material->fine = $this->finePerHour * (int)$hoursOverdue;
                 } else {
-                    $borrowed_book->fine = 0;
+                    $borrowed_material->fine = 0;
                 }
             }
         });
 
-        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'advisers', 'borrowed_books'));
+        return view('patrons.show', compact('patron', 'patron_types', 'departments', 'advisers', 'borrowed_materials'));
     }
 
     public function update(Request $request, $id)

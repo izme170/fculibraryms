@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BorrowedBook;
+use App\Models\BorrowedMaterial;
 use App\Models\PatronLogin;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -32,11 +32,11 @@ class DashboardController extends Controller
         // Get the total visit today
         $visits_today = PatronLogin::whereDate('login_at', Carbon::today())->count();
 
-        //$ List of Unreturned Books
-        $unreturnedBooks = BorrowedBook::with('bookCopy.book')
+        //$ List of Unreturned Materials
+        $unreturnedMaterials = BorrowedMaterial::with('materialCopy.material')
         ->whereNull('returned')
         ->get();
 
-        return view('users.dashboard', compact('visits', 'visits_today', 'unreturnedBooks'));
+        return view('users.dashboard', compact('visits', 'visits_today', 'unreturnedMaterials'));
     }
 }

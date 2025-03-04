@@ -15,7 +15,7 @@ class Remark extends Model
         'show_in_forms'
     ];
 
-    public function borrowedBooks(){
-        return $this->hasMany(BorrowedBook::class, 'remark_id');
+    public function borrowedMaterials(){
+        return $this->hasMany(BorrowedMaterial::class, 'remark_id');
     }
 }

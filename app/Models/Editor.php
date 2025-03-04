@@ -15,7 +15,7 @@ class Editor extends Model
         'name',
     ];
 
-    public function books(){
-        return $this->hasMany(BookEditor::class, 'editor_id');
+    public function materials(){
+        return $this->hasMany(MaterialEditor::class, 'editor_id');
     }
 }

@@ -14,13 +14,13 @@
             <a class="nav-link text-black" href="/monthly-login">Yearly Visit</a>
         </li>
         <li class="nav-item bg-secondary rounded-top">
-            <a class="nav-link text-black" href="/monthly-login">Daily Books Borrowed</a>
+            <a class="nav-link text-black" href="/monthly-login">Daily Materials Borrowed</a>
         </li>
         <li class="nav-item bg-secondary rounded-top">
-            <a class="nav-link text-black" href="/monthly-login">Monthly Books Borrowed</a>
+            <a class="nav-link text-black" href="/monthly-login">Monthly Materials Borrowed</a>
         </li>
         <li class="nav-item bg-secondary rounded-top">
-            <a class="nav-link text-black" href="/monthly-login">Yearly Books Borrowed</a>
+            <a class="nav-link text-black" href="/monthly-login">Yearly Materials Borrowed</a>
         </li>
     </ul>
 

@@ -116,23 +116,20 @@ label {
 }
 
 input:not([type="checkbox"], [type="radio"]),
-select {
-    display: block;
+select, textarea {
     width: 100%;
     padding: 5px;
     border-radius: 0;
     border: 0;
-    border-left: 3px solid var(--primary);
-    border-radius: 0;
-    box-shadow: 3px 3px 6px var(--disabled);
+    border-bottom: 2px solid #ccc;
+    border-radius: 5px;
     transition: 0.5s;
 }
 
 input:focus:not([type="checkbox"], [type="radio"]),
-select:focus {
-    border-radius: 5px;
+select:focus, textarea:focus {
     border-left: 10px solid var(--primary);
-    box-shadow: 3px 3px 6px var(--shadow);
+    border-bottom: 2px solid var(--primary);
     outline: 0;
 }
 
@@ -150,7 +147,6 @@ select:focus {
 
 .form-container {
     position: relative;
-    max-width: 700px;
     margin: auto;
 }
 

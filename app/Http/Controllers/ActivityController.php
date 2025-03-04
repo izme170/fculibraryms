@@ -11,14 +11,14 @@ class ActivityController extends Controller
         $search = $request->search;
         $date = $request->date;
 
-        $activities = Activity::with(['book:book_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name', 'initiator:user_id,first_name,last_name'])
+        $activities = Activity::with(['material:material_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name', 'initiator:user_id,first_name,last_name'])
         ->when($search, function ($query, $search) {
             $query->where(function ($query) use ($search) {
                 $query->whereHas('patron', function ($query) use ($search) {
                     $query->where('first_name', 'like', "%$search%")
                         ->orWhere('last_name', 'like', "%$search%");
                 })
-                    ->orWhereHas('book', function ($query) use ($search) {
+                    ->orWhereHas('material', function ($query) use ($search) {
                         $query->where('title', 'like', "%$search%");
                     })
                     ->orWhereHas('user', function ($query) use ($search) {

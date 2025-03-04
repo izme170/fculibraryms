@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\BookController;
-use App\Http\Controllers\BookCopyController;
-use App\Http\Controllers\BorrowBookController;
+use App\Http\Controllers\MaterialController;
+use App\Http\Controllers\MaterialCopyController;
+use App\Http\Controllers\BorrowMaterialController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DataEntryController;
 use App\Http\Controllers\PatronController;
@@ -12,7 +12,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
-use App\Models\BookCopy;
+use App\Models\MaterialCopy;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -88,32 +88,34 @@ Route::middleware('auth')->group(function () {
         Route::get('/api/courses/{department}', 'getCoursesByDepartment');
     });
 
-    Route::controller(BookController::class)->group(function () {
-        Route::get('/books', 'index')->name('books.index');
-        Route::get('/book/create', 'create')->name('books.create');
-        Route::post('/book/store', 'store')->name('books.store');
-        Route::get('/book/show/{id}', 'show')->name('books.show');
-        Route::put('/book/update/{id}', 'update')->name('books.update');
-        Route::put('/book/archive/{id}', 'archive')->name('books.archive');
-        Route::put('/book/new_rfid/{id}', 'newRFID')->name('books.newRFID');
-        Route::put('/book/update-image/{id}', 'updateImage')->name('books.update_image');
-        Route::get('/books/export', 'export');
+    Route::controller(MaterialController::class)->group(function () {
+        Route::get('/materials', 'index')->name('materials.index');
+        Route::get('/material/create', 'create')->name('materials.create');
+        Route::post('/material/store', 'store')->name('materials.store');
+        Route::get('/material/show/{id}', 'show')->name('materials.show');
+        Route::put('/material/update/{id}', 'update')->name('materials.update');
+        Route::put('/material/archive/{id}', 'archive')->name('materials.archive');
+        Route::put('/material/new_rfid/{id}', 'newRFID')->name('materials.newRFID');
+        Route::put('/material/update-image/{id}', 'updateImage')->name('materials.update_image');
+        Route::get('/materials/export', 'export');
     });
 
-    Route::controller(BookCopyController::class)->group(function (){
-        Route::get('/show-copy/{book_id}', 'show');
+    Route::controller(MaterialCopyController::class)->group(function (){
+        Route::get('/show-copy/{material_id}', 'show');
+        Route::get('/create-copy/{id}', 'create');
+        Route::post('/material/store-copy/{id}', 'store');
     });
 
     Route::controller(ReportController::class)->group(function(){
         Route::get('/reports', 'index')->name('reports.index');
     });
 
-    Route::controller(BorrowBookController::class)->group(function () {
-        Route::get('/borrowed-books', 'index')->name('books.borrowedBooks');
-        Route::get('/borrow-book', 'create')->name('books.borrowBook');
-        Route::post('/borrow-book/process', 'store');
-        Route::get('/return-book', 'edit')->name('books.returnBook');
-        Route::put('/return-book/process', 'update');
+    Route::controller(BorrowMaterialController::class)->group(function () {
+        Route::get('/borrowed-materials', 'index')->name('materials.borrowedMaterials');
+        Route::get('/borrow-material', 'create')->name('materials.borrowMaterial');
+        Route::post('/borrow-material/process', 'store');
+        Route::get('/return-material', 'edit')->name('materials.returnMaterial');
+        Route::put('/return-material/process', 'update');
     });
 
     Route::controller(PatronLoginController::class)->group(function () {

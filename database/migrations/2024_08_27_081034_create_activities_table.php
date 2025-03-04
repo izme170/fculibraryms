@@ -13,15 +13,15 @@ return new class extends Migration {
         Schema::create('activities', function (Blueprint $table) {
             $table->id('activity_id');
             $table->string('action');
-            $table->unsignedBigInteger("book_id")->nullable();
+            $table->unsignedBigInteger("material_id")->nullable();
             $table->unsignedBigInteger("patron_id")->nullable();
             $table->unsignedBigInteger("user_id")->nullable();
             $table->unsignedBigInteger("initiator_id")->nullable();
             $table->timestamps();
 
-            $table->foreign('book_id')
-                ->references('book_id')
-                ->on('books')
+            $table->foreign('material_id')
+                ->references('material_id')
+                ->on('materials')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
             $table->foreign('patron_id')

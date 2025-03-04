@@ -14,7 +14,7 @@ class Translator extends Model
         'name',
     ];
 
-    public function books(){
-        return $this->hasMany(BookTranslator::class, 'translator_id');
+    public function materials(){
+        return $this->hasMany(MaterialTranslator::class, 'translator_id');
     }
 }

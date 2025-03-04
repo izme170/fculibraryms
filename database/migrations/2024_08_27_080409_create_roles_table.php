@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->id('role_id');
             $table->string('role', 20);
-            $table->boolean('books_access')->default(false);
+            $table->boolean('materials_access')->default(false);
             $table->boolean('patrons_access')->default(false);
             $table->boolean('reports_access')->default(false);
             $table->timestamps();

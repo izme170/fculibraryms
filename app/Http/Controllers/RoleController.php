@@ -25,12 +25,12 @@ class RoleController extends Controller
 
     public function update(Request $request, $id)
     {
-        $books_access = $request->has('books_access') ? true : false;
+        $materials_access = $request->has('materials_access') ? true : false;
         $patrons_access = $request->has('patrons_access') ? true : false;
         $reports_access = $request->has('reports_access') ? true : false;
 
         Role::where('role_id', '=',$id)->update([
-            'books_access' => $books_access,
+            'materials_access' => $materials_access,
             'patrons_access' => $patrons_access,
             'reports_access' => $reports_access,
         ]);

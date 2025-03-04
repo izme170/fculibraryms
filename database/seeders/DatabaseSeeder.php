@@ -9,14 +9,15 @@ use App\Models\User;
 use App\Models\PatronType;
 use App\Models\Patron;
 use App\Models\Category;
-use App\Models\Book;
-use App\Models\BookAuthor;
-use App\Models\BookCopy;
-use App\Models\BookEditor;
-use App\Models\BookIllustrator;
-use App\Models\BookSubject;
-use App\Models\BookTranslator;
-use App\Models\BorrowedBook;
+use App\Models\Material;
+use App\Models\MaterialAuthor;
+use App\Models\MaterialCopy;
+use App\Models\MaterialEditor;
+use App\Models\MaterialIllustrator;
+use App\Models\MaterialSubject;
+use App\Models\MaterialTranslator;
+use App\Models\MaterialType;
+use App\Models\BorrowedMaterial;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Editor;
@@ -24,14 +25,15 @@ use App\Models\FundingSource;
 use App\Models\Illustrator;
 use App\Models\Marketer;
 use App\Models\PatronLogin;
+use App\Models\Publisher;
 use App\Models\Purpose;
 use App\Models\Remark;
 use App\Models\Subject;
 use App\Models\Translator;
 use App\Models\Vendor;
 use Database\Factories\AuthorFactory;
-use Database\Factories\BookFactory;
-use Database\Factories\UnreturnedBookFactory;
+use Database\Factories\MaterialFactory;
+use Database\Factories\UnreturnedMaterialFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -44,14 +46,14 @@ class DatabaseSeeder extends Seeder
         // Seed Roles
         Role::create([
             'role' => 'Admin',
-            'books_access' => true,
+            'materials_access' => true,
             'patrons_access' => true,
             'reports_access' => true
         ]);
 
         Role::create([
             'role' => 'Librarian',
-            'books_access' => true,
+            'materials_access' => true,
             'patrons_access' => true,
             'reports_access' => true
         ]);
@@ -118,6 +120,30 @@ class DatabaseSeeder extends Seeder
         // Seed Patrons
         Patron::factory(20)->create();
 
+        // Seed Publishers
+        Publisher::factory(20)->create();
+
+        // Seed Material Types
+        $materialTypes = [
+            'Book',
+            'Computer File',
+            'Video (Film, Filmstrip, Slide)',
+            'Picture, Study Print, Photograph, Chart',
+            'Kit (Book and Nonmusical Cassette)',
+            'Manuscript Language Material',
+            'Maps, Globes and Atlases',
+            'Mixed Materials',
+            'Music Printed',
+            'Three Dimensional Artifact, Object',
+            'Sound Recording(Nonmusical)',
+            'Serial (Printed Periodical, etc.)',
+            'Sound Recording (Musical)'
+        ];
+
+        foreach ($materialTypes as $materialType) {
+            MaterialType::create(['name' => $materialType]);
+        }
+
         // Seed Categories
         $categories = [
             'Filipiniana',
@@ -128,7 +154,7 @@ class DatabaseSeeder extends Seeder
             'Memoirs',
             'Self-Help',
             'Health & Wellness',
-            'Cookbooks',
+            'Cookmaterials',
             'Travel',
             'True Crime',
             'History',
@@ -179,7 +205,7 @@ class DatabaseSeeder extends Seeder
 
         // Seed Purposes
         Purpose::create(['purpose' => 'Read']);
-        Purpose::create(['purpose' => 'Borrow Books']);
+        Purpose::create(['purpose' => 'Borrow Materials']);
         Purpose::create(['purpose' => 'Research']);
         Purpose::create(['purpose' => 'WiFi/Internet']);
         Purpose::create(['purpose' => 'Signing of Clearance']);
@@ -193,8 +219,8 @@ class DatabaseSeeder extends Seeder
         // seed vendors
         Vendor::factory(20)->create();
 
-        // Seed Books
-        Book::factory(20)->create();
+        // Seed Materials
+        Material::factory(20)->create();
 
         // Seed Marketer
         Marketer::factory(10)->create();
@@ -297,8 +323,8 @@ class DatabaseSeeder extends Seeder
             'is_archived' => false
         ]);
 
-        // Book::create([
-        //     'book_rfid' => '3738229540',
+        // Material::create([
+        //     'material_rfid' => '3738229540',
         //     'accession_number' => 'C-0001',
         //     'title' => fake()->sentence(3),
         //     'isbn' => fake()->isbn13(),
@@ -307,8 +333,8 @@ class DatabaseSeeder extends Seeder
         //     'category_id' => fake()->numberBetween(1, 4),
         // ]);
 
-        // Book::create([
-        //     'book_rfid' => '3743346372',
+        // Material::create([
+        //     'material_rfid' => '3743346372',
         //     'accession_number' => 'C-0002',
         //     'title' => fake()->sentence(3),
         //     'isbn' => fake()->isbn13(),
@@ -320,18 +346,18 @@ class DatabaseSeeder extends Seeder
         //seed authors
         Author::factory(20)->create();
 
-        //seed book authors
+        //seed material authors
         for ($i = 0; $i <= 20; $i++) {
-            $book = Book::inRandomOrder()->first();
+            $material = Material::inRandomOrder()->first();
             $author = Author::inRandomOrder()->first();
 
-            $existingRecord = BookAuthor::where('book_id', $book->book_id)
+            $existingRecord = MaterialAuthor::where('material_id', $material->material_id)
                 ->where('author_id', $author->author_id)
                 ->first();
 
             if (!$existingRecord) {
-                BookAuthor::create([
-                    'book_id' => $book->book_id,
+                MaterialAuthor::create([
+                    'material_id' => $material->material_id,
                     'author_id' => $author->author_id
                 ]);
             }
@@ -340,18 +366,18 @@ class DatabaseSeeder extends Seeder
         //seed editors
         Editor::factory(20)->create();
 
-        //seed book editors
+        //seed material editors
         for ($i = 0; $i <= 20; $i++) {
-            $book = Book::inRandomOrder()->first();
+            $material = Material::inRandomOrder()->first();
             $editor = Editor::inRandomOrder()->first();
 
-            $existingRecord = BookEditor::where('book_id', $book->book_id)
+            $existingRecord = MaterialEditor::where('material_id', $material->material_id)
                 ->where('editor_id', $editor->editor_id)
                 ->first();
 
             if (!$existingRecord) {
-                BookEditor::create([
-                    'book_id' => $book->book_id,
+                MaterialEditor::create([
+                    'material_id' => $material->material_id,
                     'editor_id' => $editor->editor_id
                 ]);
             }
@@ -360,18 +386,18 @@ class DatabaseSeeder extends Seeder
         //seed illustrators
         Illustrator::factory(20)->create();
 
-        //seed book illustrators
+        //seed material illustrators
         for ($i = 0; $i <= 20; $i++) {
-            $book = Book::inRandomOrder()->first();
+            $material = Material::inRandomOrder()->first();
             $illustrator = Illustrator::inRandomOrder()->first();
 
-            $existingRecord = BookIllustrator::where('book_id', $book->book_id)
+            $existingRecord = MaterialIllustrator::where('material_id', $material->material_id)
                 ->where('illustrator_id', $illustrator->illustrator_id)
                 ->first();
 
             if (!$existingRecord) {
-                BookIllustrator::create([
-                    'book_id' => $book->book_id,
+                MaterialIllustrator::create([
+                    'material_id' => $material->material_id,
                     'illustrator_id' => $illustrator->illustrator_id
                 ]);
             }
@@ -380,18 +406,18 @@ class DatabaseSeeder extends Seeder
         //seed subjects
         Subject::factory(20)->create();
 
-        //seed book subjects
+        //seed material subjects
         for ($i = 0; $i <= 20; $i++) {
-            $book = Book::inRandomOrder()->first();
+            $material = Material::inRandomOrder()->first();
             $subject = Subject::inRandomOrder()->first();
 
-            $existingRecord = BookSubject::where('book_id', $book->book_id)
+            $existingRecord = MaterialSubject::where('material_id', $material->material_id)
                 ->where('subject_id', $subject->subject_id)
                 ->first();
 
             if (!$existingRecord) {
-                BookSubject::create([
-                    'book_id' => $book->book_id,
+                MaterialSubject::create([
+                    'material_id' => $material->material_id,
                     'subject_id' => $subject->subject_id
                 ]);
             }
@@ -400,18 +426,18 @@ class DatabaseSeeder extends Seeder
         //seed translators
         Translator::factory(20)->create();
 
-        //seed book translators
+        //seed material translators
         for ($i = 0; $i <= 20; $i++) {
-            $book = Book::inRandomOrder()->first();
+            $material = Material::inRandomOrder()->first();
             $translator = Translator::inRandomOrder()->first();
 
-            $existingRecord = BookTranslator::where('book_id', $book->book_id)
+            $existingRecord = MaterialTranslator::where('material_id', $material->material_id)
                 ->where('translator_id', $translator->translator_id)
                 ->first();
 
             if (!$existingRecord) {
-                BookTranslator::create([
-                    'book_id' => $book->book_id,
+                MaterialTranslator::create([
+                    'material_id' => $material->material_id,
                     'translator_id' => $translator->translator_id
                 ]);
             }
@@ -428,15 +454,15 @@ class DatabaseSeeder extends Seeder
             Remark::create(['remark' => $remark]);
         }
 
-        // seed book copy
-        BookCopy::factory()->count(5)->create();
+        // seed material copy
+        MaterialCopy::factory()->count(5)->create();
 
-        // Seed Borrowed Books
-        BorrowedBook::factory(20)->create();
+        // Seed Borrowed Materials
+        BorrowedMaterial::factory(20)->create();
 
-        //Seed Unreturned Book
+        //Seed Unreturned Material
         for ($i = 0; $i <= 3; $i++) {
-            $copy = BookCopy::where('is_available', true)->inRandomOrder()->first();
+            $copy = MaterialCopy::where('is_available', true)->inRandomOrder()->first();
 
             if (!$copy) {
                 continue;
@@ -448,12 +474,12 @@ class DatabaseSeeder extends Seeder
             $created_at = fake()->dateTimeBetween(now()->startOfDay(), now());
             $due = (clone $created_at)->modify('+' . 60 . 'minutes');
 
-            $existingRecord = BorrowedBook::where('copy_id', $copy->copy_id)
+            $existingRecord = BorrowedMaterial::where('copy_id', $copy->copy_id)
                 ->where('returned', false)
                 ->first();
 
             if (!$existingRecord) {
-                BorrowedBook::create([
+                BorrowedMaterial::create([
                     'copy_id' => $copy->copy_id,
                     'patron_id' => $patron->patron_id,
                     'user_id' => $user->user_id,
@@ -461,7 +487,7 @@ class DatabaseSeeder extends Seeder
                     'created_at' => $created_at
                 ]);
 
-                //This line will update the book status
+                //This line will update the material status
                 $copy->update(['is_available' => false]);
             }
         }

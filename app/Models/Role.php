@@ -12,7 +12,7 @@ class Role extends Model
     protected $primaryKey = 'role_id';
     protected $fillable = [
         'role',
-        'books_access',
+        'materials_access',
         'patrons_access',
         'reports_access'
     ];

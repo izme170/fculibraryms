@@ -6,11 +6,11 @@
         <div class="col">
             <div class="widget-container">
                 <div class="widget">
-                    <a class="btn-simple" href="/borrow-book">Borrow Book</a>
-                    <a class="btn-simple" href="/return-book">Return Book</a>
+                    <a class="btn-simple" href="/borrow-material">Borrow Material</a>
+                    <a class="btn-simple" href="/return-material">Return Material</a>
                 </div>
-                <a class="shortcut" href="/books">
-                    Go to Book List
+                <a class="shortcut" href="/materials">
+                    Go to Material List
                 </a>
             </div>
             <div class="widget-container">
@@ -32,15 +32,15 @@
             <div class="widget-container">
                 <div class="widget">
                     <div class="w-text small">
-                        <span>Unreturned Books: {{ count($unreturnedBooks) }}</span>
+                        <span>Unreturned Materials: {{ count($unreturnedMaterials) }}</span>
                     </div>
                     <ol>
-                        @foreach ($unreturnedBooks as $borrowedBook)
-                            <li><a href="/book/show/{{ $borrowedBook->bookCopy->copy_id }}" class="shortcut-link">{{ $borrowedBook->bookCopy->book->title }}</a></li>
+                        @foreach ($unreturnedMaterials as $borrowedMaterial)
+                            <li><a href="/material/show/{{ $borrowedMaterial->materialCopy->copy_id }}" class="shortcut-link">{{ $borrowedMaterial->materialCopy->material->title }}</a></li>
                         @endforeach
                     </ol>
                 </div>
-                <a href="/borrowed-books" class="shortcut">Go to Borrowed Books List</a>
+                <a href="/borrowed-materials" class="shortcut">Go to Borrowed Materials List</a>
             </div>
         </div>
     </div>

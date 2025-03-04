@@ -14,7 +14,7 @@ class Subject extends Model
         'name',
     ];
 
-    public function books(){
-        return $this->hasMany(BookSubject::class, 'subject_id');
+    public function materials(){
+        return $this->hasMany(MaterialSubject::class, 'subject_id');
     }
 }

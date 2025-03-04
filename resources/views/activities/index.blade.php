@@ -33,9 +33,9 @@
                                 {{ $activity->initiator->last_name }}</a>
                             {{ $activity->action }}</td>
                         <td>
-                            @isset($activity->book->title)
-                                <a href="/book/show/{{ $activity->book->book_id }}"
-                                    class="shortcut-link" draggable="false">{{ $activity->book->title }}</a>
+                            @isset($activity->material->title)
+                                <a href="/material/show/{{ $activity->material->material_id }}"
+                                    class="shortcut-link" draggable="false">{{ $activity->material->title }}</a>
                             @endisset
                             @isset($activity->patron->first_name)
                                 <a href="/patron/show/{{ $activity->patron->patron_id }}"
@@ -47,7 +47,7 @@
                                     class="shortcut-link" draggable="false">{{ $activity->user->first_name }}
                                     {{ $activity->user->last_name }}</a>
                             @endisset
-                            {{-- {{ $activity->book->title ?? '' }}{{ $activity->patron->first_name ?? '' }}
+                            {{-- {{ $activity->material->title ?? '' }}{{ $activity->patron->first_name ?? '' }}
                             {{ $activity->patron->last_name ?? '' }}{{ $activity->user->first_name ?? '' }}
                             {{ $activity->user->last_name ?? '' }} --}}
                         </td>

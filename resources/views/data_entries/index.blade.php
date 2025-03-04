@@ -50,7 +50,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab" tabindex="0">
-                    <h1>Book Categories</h1>
+                    <h1>Material Categories</h1>
                     <div class="list-container mb-3">
                         <table>
                             <tbody>
@@ -65,7 +65,7 @@
                     <form action="/category/store" method="post">
                         @csrf
                         <div class="d-flex">
-                            <input type="text" name="category" placeholder="Enter new book category here..." required>
+                            <input type="text" name="category" placeholder="Enter new material category here..." required>
                             <button type="submit" class="btn-rectangle">Add</button>
                         </div>
                     </form>
