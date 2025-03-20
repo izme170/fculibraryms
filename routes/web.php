@@ -97,13 +97,20 @@ Route::middleware('auth')->group(function () {
         Route::put('/material/archive/{id}', 'archive')->name('materials.archive');
         Route::put('/material/new_rfid/{id}', 'newRFID')->name('materials.newRFID');
         Route::put('/material/update-image/{id}', 'updateImage')->name('materials.update_image');
+        Route::get('/materials/archives', 'archives')->name('materials.archives');
+        Route::get('/material/unarchive/{id}', 'unarchive')->name('materials.unarchive');
         Route::get('/materials/export', 'export');
     });
 
     Route::controller(MaterialCopyController::class)->group(function (){
-        Route::get('/show-copy/{material_id}', 'show');
+        Route::get('/material-copies', 'index');
+        Route::get('/copy/show/{material_id}', 'show');
         Route::get('/create-copy/{id}', 'create');
         Route::post('/material/store-copy/{id}', 'store');
+        Route::put('/material/update/copy/{id}', 'update');
+        Route::put('/material/archive/copy/{id}', 'archive');
+        Route::get('/material/unarchive/copy/{id}', 'unarchive');
+        Route::put('/material/copy/update_rfid/{id}', 'updateRFID');
     });
 
     Route::controller(ReportController::class)->group(function(){

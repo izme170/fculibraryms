@@ -5,17 +5,28 @@
     <div class="row"><h1>{{ $copy->material->title }}</h1></div>
     <div class="row mb-3">
         <div class="col">
-            <div><span class="fw-bold">Copy No.: </span>{{ $copy->rfid }}</div>
-            <div><span class="fw-bold">Accession No.: </span>{{ $copy->accession_number }}</div>
-            <div><span class="fw-bold">Call No.: </span>{{ $copy->call_number }}</div>
-            <div><span class="fw-bold">Price: </span>{{ $copy->price }}</div>
+            <div><span class="fw-bold">Copy No.: </span>{{ $copy->copy_number }}</div>
+            <div><span class="fw-bold">Accession No.: </span>{{ $copy->accession_number ?? "None" }}</div>
+            <div><span class="fw-bold">Call No.: </span>{{ $copy->call_number ?? "None" }}</div>
+            <div><span class="fw-bold">Price: </span>{{ $copy->price ?? "None" }}</div>
         </div>
         <div class="col">
             <div><span class="fw-bold">Vendor: </span>{{ $copy->vendor->name }}</div>
-            <div><span class="fw-bold">Funding Source: </span>{{ $copy->fundingSource->name }}</div>
-            <div><span class="fw-bold">Acquisition Date: </span>{{ $copy->date_acquired->format('M d, Y') }}</div>
+            <div><span class="fw-bold">Funding Source: </span>{{ $copy->fund->name ?? "None" }}</div>
+            <div><span class="fw-bold">Acquisition Date: </span>{{ $copy->date_acquired ? $copy->date_acquired->format('M d, Y') : "None"}}</div>
             <div><span class="fw-bold">RFID: </span>{{ $copy->rfid }}</div>
         </div>
+    </div>
+    <div class="d-flex gap-1 mb-3">
+        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editMaterialCopy">Update</button>
+        @if (!$copy->is_archived)
+            <button class="btn-simple" type="button" data-bs-toggle="modal"
+                data-bs-target="#archiveMaterialCopy">Archive</button>
+        @else
+            <a class="btn-simple" href="/material/unarchive/copy/{{ $copy->copy_id }}">Unarchive</a>
+        @endif
+        <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#updateMaterialCopyRFID">Assign new
+            RFID</button>
     </div>
     <div class="row">
         <div>
@@ -45,5 +56,7 @@
             </table>
         </div>
     </div>
-    {{-- @include('modals.material.new_rfid') --}}
+    @include('modals.material_copy.edit')
+    @include('modals.material_copy.archive')
+    @include('modals.material_copy.new_rfid')
 @endsection

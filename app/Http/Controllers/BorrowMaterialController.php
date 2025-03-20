@@ -28,7 +28,7 @@ class BorrowMaterialController extends Controller
             if($status == 'returned'){
                 $query = BorrowedMaterial::whereNotNull('returned');
             }elseif($status == 'borrowed'){
-                $query = BorrowedMaterial::whereNull('returned')->where('due_date', '>=', now());
+                $query = BorrowedMaterial::whereNull('returned');
             }elseif($status == 'overdue'){
                 $query = BorrowedMaterial::whereNull('returned')->where('due_date', '<', now());
             }

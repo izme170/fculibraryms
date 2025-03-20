@@ -101,3 +101,27 @@
         padding: 4px 8px;
     }
 }
+
+.btn-trash{
+    position: absolute;
+    right: 0px;
+    background-color: transparent;
+    color: #0E1133;
+    border: none;
+}
+
+.btn-trash:hover{
+    color: #e91f1f;
+}
+
+.btn-add{
+    background-color: #27e33d;
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 5 20px
+}
+
+.btn-add:hover{
+    background-color: #31cf43;
+}

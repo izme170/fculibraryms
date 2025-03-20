@@ -255,6 +255,17 @@ select:focus, textarea:focus {
     width: 30px;
 }
 
+.list-item{
+    padding: 0;
+}
+
+.item{
+    position: relative;
+    padding: 3px 10px;
+    list-style: none;
+    background-color: white;
+}
+
 
 @media (max-width: 870px) {
     .login-container .brand {

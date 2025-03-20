@@ -6,8 +6,14 @@
         <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="/materials">Materials</a>
         </li>
-        <li class="nav-item bg-secondary rounded-top">
+        <li class="nav-item rounded-top">
+            <a class="nav-link text-black" href="/material-copies">Material Copies</a>
+        </li>
+        <li class="nav-item rounded-top">
             <a class="nav-link text-black" href="/borrowed-materials">Borrowed Materials</a>
+        </li>
+        <li class="nav-item rounded-top">
+            <a class="nav-link text-black" href="/materials/archives">Archived Materials</a>
         </li>
     </ul>
     <div class="bg-white p-3" style="min-width: fit-content">
@@ -21,7 +27,8 @@
             <div>
                 <div class="d-flex flex-column justify-content-between align-items-end mb-3">
                     <!-- Form to filter materials -->
-                    <form method="GET" action="/materials" class="d-flex flex-row align-items-center gap-2" id="filterForm">
+                    <form method="GET" action="/materials" class="d-flex flex-row align-items-center gap-2"
+                        id="filterForm">
                         <input type="text" name="search" placeholder="Search by title or author"
                             value="{{ $search }}">
 
@@ -39,39 +46,26 @@
 
                     <!-- Status filter/legend -->
                     <div class="d-flex flex-row align-items-center gap-2">
-                        <a href="?status=all" class="legend-btn {{ $status === 'all' ? 'active' : '' }}">All</a>
-                        <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
-                        <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
-                        <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
-                        {{-- <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
-                            data-status="all">All</a>
-                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'available' ? 'active' : '' }}"
-                            data-status="available">Available</a>
-                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}"
-                            data-status="borrowed">Borrowed</a>
-                        <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
-                            data-status="overdue">Overdue</a> --}}
-
+                        @foreach (['all', 'available', 'borrowed', 'overdue'] as $item)
+                        <a href="?status={{ $item }}" class="legend-btn {{ $status === $item ? 'active' : '' }}">
+                            {{ ucfirst($item) }}
+                        </a>
+                    @endforeach
                         <div class="dropdown">
                             <button class="btn text-white dropdown-toggle" style="background-color: #0E1133" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
                                 Sort
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item"
+                                <li>
+                                    <a class="dropdown-item"
                                         href="?sort=title&direction={{ $direction === 'asc' && $sort === 'title' ? 'desc' : 'asc' }}">
                                         Title
                                         @if ($sort === 'title')
                                             <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
                                         @endif
-                                    </a></li>
-                                {{-- <li><a class="dropdown-item"
-                                        href="?sort=author&direction={{ $direction === 'asc' && $sort === 'author' ? 'desc' : 'asc' }}">
-                                        Author
-                                        @if ($sort === 'author')
-                                            <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
-                                        @endif
-                                    </a></li> --}}
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                     </div>
@@ -90,13 +84,16 @@
                         @endphp
 
                         @if ($availableCount > 0)
-                            <span class="badge bg-success"><span class="badge-label">Available:</span> {{ $availableCount }}</span>
+                            <span class="badge bg-success"><span class="badge-label">Available:</span>
+                                {{ $availableCount }}</span>
                         @endif
                         @if ($borrowedCount > 0)
-                            <span class="badge bg-warning"><span class="badge-label">Borrowed:</span> {{ $borrowedCount }}</span>
+                            <span class="badge bg-warning"><span class="badge-label">Borrowed:</span>
+                                {{ $borrowedCount }}</span>
                         @endif
                         @if ($overdueCount > 0)
-                            <span class="badge bg-danger"><span class="badge-label">Overdue:</span> {{ $overdueCount }}</span>
+                            <span class="badge bg-danger"><span class="badge-label">Overdue:</span>
+                                {{ $overdueCount }}</span>
                         @endif
                     </div>
                     {{-- <div class="indicator-container">
@@ -108,22 +105,30 @@
                 </div>
                 <div class="col">
                     <div class="row title">{{ $material->title }}</div>
-                    <div class="row data">Author(s): {{ $material->authors->isNotEmpty() ? $material->authors->pluck('name')->implode(', ') : "None"}}</div>
-                    <div class="row data">Isbn: {{ $material->isbn ?? "None" }}</div>
-                    <div class="row data">Issn: {{ $material->issn ?? "None"}}</div>
-                    <div class="row data">Category: {{ $material->category->category ?? "None"}}</div>
+                    <div class="row data">Author(s):
+                        {{ $material->authors->isNotEmpty() ? $material->authors->pluck('name')->implode(', ') : 'None' }}
+                    </div>
+                    <div class="row data">Isbn: {{ $material->isbn ?? 'None' }}</div>
+                    <div class="row data">Issn: {{ $material->issn ?? 'None' }}</div>
+                    <div class="row data">Category: {{ $material->category->category ?? 'None' }}</div>
                 </div>
                 <div class="col">
-                    <div class="row data">Editors(s): {{ $material->editors->isNotEmpty() ? $material->editors->pluck('name')->implode(', ') : "None"}}</div>
-                    <div class="row data">Illustrator(s): {{ $material->illustrators->isNotEmpty() ? $material->illustrators->pluck('name')->implode(', ') : "None"}}</div>
-                    <div class="row data">Translator(s): {{ $material->translators->isNotEmpty() ? $material->translators->pluck('name')->implode(', ') : "None"}}</div>
-                    <div class="row data">Publisher: {{ $material->publisher->name ?? "None"}}</div>
+                    <div class="row data">Editors(s):
+                        {{ $material->editors->isNotEmpty() ? $material->editors->pluck('name')->implode(', ') : 'None' }}
+                    </div>
+                    <div class="row data">Illustrator(s):
+                        {{ $material->illustrators->isNotEmpty() ? $material->illustrators->pluck('name')->implode(', ') : 'None' }}
+                    </div>
+                    <div class="row data">Translator(s):
+                        {{ $material->translators->isNotEmpty() ? $material->translators->pluck('name')->implode(', ') : 'None' }}
+                    </div>
+                    <div class="row data">Publisher: {{ $material->publisher->name ?? 'None' }}</div>
                 </div>
                 <div class="col">
-                    <div class="row data">Publication Year: {{ $material->publication_year ?? "None"}}</div>
-                    <div class="row data">Edition: {{ $material->edition ?? "None"}}</div>
-                    <div class="row data">Volume: {{ $material->volume ?? "None"}}</div>
-                    <div class="row data">Pages: {{ $material->pages ?? "None"}}</div>
+                    <div class="row data">Publication Year: {{ $material->publication_year ?? 'None' }}</div>
+                    <div class="row data">Edition: {{ $material->edition ?? 'None' }}</div>
+                    <div class="row data">Volume: {{ $material->volume ?? 'None' }}</div>
+                    <div class="row data">Pages: {{ $material->pages ?? 'None' }}</div>
                 </div>
             </a>
         @endforeach

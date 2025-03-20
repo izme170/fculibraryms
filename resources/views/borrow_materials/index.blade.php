@@ -3,11 +3,17 @@
 @section('user-content')
 @include('include.topbar')
     <ul class="nav nav-tabs">
-        <li class="nav-item bg-secondary rounded-top">
+        <li class="nav-item rounded-top">
             <a class="nav-link text-black" aria-current="page" href="/materials">Materials</a>
+        </li>
+        <li class="nav-item rounded-top">
+            <a class="nav-link text-black" href="/material-copies">Material Copies</a>
         </li>
         <li class="nav-item">
             <a class="nav-link active" href="/borrowed-materials">Borrowed Materials</a>
+        </li>
+        <li class="nav-item rounded-top">
+            <a class="nav-link text-black" href="/materials/archives">Archived Materials</a>
         </li>
     </ul>
     <div class="bg-white p-3" style="min-width: fit-content">
@@ -22,14 +28,6 @@
                         <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
                         <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
                         <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
-                {{-- <a href="javascript:void(0);" class="legend-btn {{ $status === 'all' ? 'active' : '' }}"
-                    data-status="all">All</a>
-                <a href="javascript:void(0);" class="legend-btn {{ $status === 'returned' ? 'active' : '' }}"
-                    data-status="returned">Returned</a>
-                <a href="javascript:void(0);" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}"
-                    data-status="borrowed">Borrowed</a>
-                <a href="javascript:void(0);" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}"
-                    data-status="overdue">Overdue</a> --}}
             </div>
         </div>
         <table class="table table-bordered">

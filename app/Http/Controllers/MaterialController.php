@@ -8,7 +8,11 @@ use App\Models\Author;
 use App\Models\Material;
 use App\Models\BorrowedMaterial;
 use App\Models\Category;
+use App\Models\Editor;
+use App\Models\Illustrator;
 use App\Models\MaterialType;
+use App\Models\Subject;
+use App\Models\Translator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
@@ -39,8 +43,7 @@ class MaterialController extends Controller
                 } elseif ($status === 'borrowed') {
                     $query->whereHas('materialCopies', function ($subQuery) {
                         $subQuery->where('is_available', false)->whereHas('borrowedCopies', function ($subQuery) {
-                            $subQuery->where('due_date', '>=', now())
-                                ->whereNull('returned');
+                            $subQuery->whereNull('returned');
                         });
                     });
                 } elseif ($status === 'overdue') {
@@ -54,26 +57,6 @@ class MaterialController extends Controller
             });
         }
 
-
-        // Apply the status filter if set
-        // if ($status !== 'all') {
-        //     $query->where(function ($query) use ($status) {
-        //         if ($status === 'available') {
-        //             $query->where('is_available', true);
-        //         } elseif ($status === 'borrowed') {
-        //             $query->where('is_available', false)->whereHas('borrowedMaterials', function ($subQuery) use ($status) {
-        //                 $subQuery->where('due_date', '>=', now())
-        //                     ->whereNull('returned');
-        //             });
-        //         } elseif ($status === 'overdue') {
-        //             $query->where('is_available', false)->whereHas('borrowedMaterials', function ($subQuery) use ($status) {
-        //                 $subQuery->where('due_date', '<', now())
-        //                     ->whereNull('returned');;
-        //             });
-        //         }
-        //     });
-        // }
-
         // Apply the category filter if set
         if ($category !== 'all') {
             $query->where('category_id', $category);
@@ -85,7 +68,27 @@ class MaterialController extends Controller
                 $query->where('materials.title', 'like', "%{$search}%")
                     ->orWhereHas('authors', function ($subQuery) use ($search) {
                         $subQuery->where('name', 'like', "%{$search}%");
-                    });
+                    })
+                    ->orWhereHas('editors', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('illustrators', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('translators', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('subjects', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('publisher', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('isbn', 'like', "%{$search}%")
+                    ->orWhere('issn', 'like', "%{$search}%")
+                    ->orWhere('publication_year', 'like', "%{$search}%")
+                    ->orWhere('edition', 'like', "%{$search}%")
+                    ->orWhere('volume', 'like', "%{$search}%");
             });
         }
 
@@ -141,14 +144,26 @@ class MaterialController extends Controller
     public function store(Request $request)
     {
         $request['authors'] = json_decode($request['authors'], true);
+        $request['editors'] = json_decode($request['editors'], true);
+        $request['illustrators'] = json_decode($request['illustrators'], true);
+        $request['translators'] = json_decode($request['translators'], true);
+        $request['subjects'] = json_decode($request['subjects'], true);
         $validated = $request->validate([
             'isbn' => ['nullable'],
             'issn' => ['nullable'],
             'title' => ['required'],
-            'authors' => ['required', 'array'],
-            'authors.*' => ['required', 'string'],
+            'authors' => ['array'],
+            'authors.*' => ['nullable'],
+            'editors' => ['array'],
+            'editors.*' => ['nullable'],
+            'illustrators' => ['array'],
+            'illustrators.*' => ['nullable'],
+            'translators' => ['array'],
+            'translators.*' => ['nullable'],
+            'subjects' => ['array'],
+            'subjects.*' => ['nullable'],
             'type_id' => ['required'],
-            'publisher_id' => ['nullable'],
+            'publisher' => ['nullable'],
             'publication_year' => ['nullable'],
             'edition' => ['nullable'],
             'volume' => ['nullable'],
@@ -186,6 +201,22 @@ class MaterialController extends Controller
             $author = Author::firstOrCreate(['name' => $authorName]);
             $material->authors()->attach($author->author_id);
         }
+        foreach ($validated['editors'] as $editorName) {
+            $editor = Editor::firstOrCreate(['name' => $editorName]);
+            $material->editors()->attach($editor->editor_id);
+        }
+        foreach ($validated['illustrators'] as $illustratorName) {
+            $illustrator = Illustrator::firstOrCreate(['name' => $illustratorName]);
+            $material->illustrators()->attach($illustrator->illustrator_id);
+        }
+        foreach ($validated['translators'] as $translatorName) {
+            $translator = Translator::firstOrCreate(['name' => $translatorName]);
+            $material->translators()->attach($translator->translator_id);
+        }
+        foreach ($validated['subjects'] as $subjectName) {
+            $subject = Subject::firstOrCreate(['name' => $subjectName]);
+            $material->subjects()->attach($subject->subject_id);
+        }
 
         // Record Activity
         $data = [
@@ -195,7 +226,7 @@ class MaterialController extends Controller
         ];
         Activity::create($data);
 
-        return redirect('/materials');
+        return redirect('/material/show/' . $material->material_id);
     }
 
     private $finePerHour = 5;
@@ -206,56 +237,31 @@ class MaterialController extends Controller
             ->where('materials.material_id', $id)
             ->first();
         $categories = Category::all();
-        // $borrowed_material = BorrowedMaterial::all()->keyBy('material_id')->get($material->material_id);
-
-        // // This code will Assign the material's status
-        // if ($material->is_available) {
-        //     $material->status = 'available';
-        // } else {
-
-        //     // Check if the material is borrowed and returned
-        //     if ($borrowed_material && $borrowed_material->returned) {
-        //         $material->status = 'borrowed';
-        //     } else {
-        //         // Check if it's overdue or just borrowed
-        //         $dueDate = $borrowed_material ? Carbon::parse($borrowed_material->due_date) : null;
-        //         $material->status = $dueDate && Carbon::now()->gt($dueDate) ? 'overdue' : 'borrowed';
-        //     }
-        // }
-
-        // $previous_borrowers = BorrowedMaterial::with(['patron'])
-        //     ->where('material_id', $id)
-        //     ->get();
-
-        // $previous_borrowers->each(function ($borrowed_material) {
-
-        //     //Checks if the material is returned
-        //     if (!$borrowed_material->returned) {
-        //         $dueDate = Carbon::parse($borrowed_material->due_date);
-        //         $now = Carbon::now();
-
-        //         //Check if the material is overdue
-        //         if ($now->gt($dueDate)) {
-        //             $hoursOverdue = $dueDate->diffInHours($now, false);
-        //             $borrowed_material->fine = $this->finePerHour * (int)$hoursOverdue;
-        //         } else {
-        //             $borrowed_material->fine = 0;
-        //         }
-        //     }
-        // });
-
-        // return view('materials.show', compact('material', 'categories', 'previous_borrowers'));
-        return view('materials.show', compact('material', 'categories'));
+        $material_types = MaterialType::all();
+        return view('materials.show', compact('material', 'categories', 'material_types'));
     }
 
     public function update(Request $request, $id)
     {
+        $request['authors'] = json_decode($request['authors'], true);
+        $request['editors'] = json_decode($request['editors'], true);
+        $request['illustrators'] = json_decode($request['illustrators'], true);
+        $request['translators'] = json_decode($request['translators'], true);
+        $request['subjects'] = json_decode($request['subjects'], true);
+
         $validated = $request->validate([
             'title' => ['required'],
-            'author' => ['required', 'array'],
-            'author.*' => ['required', 'string'],
+            'authors' => ['array'],
+            'authors.*' => ['nullable', 'string'],
+            'editors' => ['array'],
+            'editors.*' => ['nullable', 'string'],
+            'illustrators' => ['array'],
+            'illustrators.*' => ['nullable', 'string'],
+            'translators' => ['array'],
+            'translators.*' => ['nullable', 'string'],
+            'subjects' => ['array'],
+            'subjects.*' => ['nullable', 'string'],
             'category_id' => ['required'],
-            // 'material_rfid' => ['required'],
             'material_image' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif,svg', 'max:2048']
         ]);
 
@@ -281,11 +287,43 @@ class MaterialController extends Controller
 
         // Sync authors
         $authorIds = [];
-        foreach ($validated['author'] as $authorName) {
+        foreach ($validated['authors'] as $authorName) {
             $author = Author::firstOrCreate(['name' => $authorName]);
             $authorIds[] = $author->author_id;
         }
         $material->authors()->sync($authorIds);
+
+        // Sync editors
+        $editorIds = [];
+        foreach ($validated['editors'] as $editorName) {
+            $editor = Editor::firstOrCreate(['name' => $editorName]);
+            $editorIds[] = $editor->editor_id;
+        }
+        $material->editors()->sync($editorIds);
+
+        // Sync illustrators
+        $illustratorIds = [];
+        foreach ($validated['illustrators'] as $illustratorName) {
+            $illustrator = Illustrator::firstOrCreate(['name' => $illustratorName]);
+            $illustratorIds[] = $illustrator->illustrator_id;
+        }
+        $material->illustrators()->sync($illustratorIds);
+
+        // Sync translators
+        $translatorIds = [];
+        foreach ($validated['translators'] as $translatorName) {
+            $translator = Translator::firstOrCreate(['name' => $translatorName]);
+            $translatorIds[] = $translator->translator_id;
+        }
+        $material->translators()->sync($translatorIds);
+
+        // Sync subjects
+        $subjectIds = [];
+        foreach ($validated['subjects'] as $subjectName) {
+            $subject = Subject::firstOrCreate(['name' => $subjectName]);
+            $subjectIds[] = $subject->subject_id;
+        }
+        $material->subjects()->sync($subjectIds);
 
         // Record Activity
         $data = [
@@ -354,7 +392,22 @@ class MaterialController extends Controller
         ];
         Activity::create($data);
 
-        return redirect('/materials');
+        return redirect('/materials')->with('message_success', 'Material has been archived.');
+    }
+
+    public function unarchive($id)
+    {
+        Material::find($id)->update(['is_archived' => false]);
+
+        // Record Activity
+        $data = [
+            'action' => 'unarchived a material.',
+            'material_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect()->back()->with('message_success', 'Material has been unarchived.');
     }
 
     public function newRFID(Request $request, $id)
@@ -377,5 +430,46 @@ class MaterialController extends Controller
     public function export()
     {
         return Excel::download(new MaterialsExport, 'materials-library-management-system' . now() . '.xlsx');
+    }
+
+    public function archives(Request $request)
+    {
+        $query = Material::where('is_archived', true);
+        $search = $request->query('search', '');
+
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('materials.title', 'like', "%{$search}%")
+                    ->orWhereHas('authors', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('editors', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('illustrators', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('translators', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('subjects', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('publisher', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('category', function ($subQuery) use ($search) {
+                        $subQuery->where('category', 'like', "%{$search}%");
+                    })
+                    ->orWhere('isbn', 'like', "%{$search}%")
+                    ->orWhere('issn', 'like', "%{$search}%")
+                    ->orWhere('publication_year', 'like', "%{$search}%")
+                    ->orWhere('edition', 'like', "%{$search}%")
+                    ->orWhere('volume', 'like', "%{$search}%");
+            });
+        }
+
+        $materials = $query->paginate(15);
+        return view('materials.archives', compact('materials', 'search'));
     }
 }

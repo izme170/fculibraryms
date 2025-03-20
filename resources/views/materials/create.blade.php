@@ -33,35 +33,91 @@
                                 <input type="text" id="title" name="title" value="{{ old('title') }}">
                             </div>
                         </div>
-                        <div class="col">
-                            <input type="text" id="author">
-                            <button type="button" onclick="addAuthor()">Add Author</button>
-                            <ol id="authorList">
-                            </ol>
-                            <input type="text" name="authors" id="authorsInput" hidden>
-                        </div>
-                        {{-- <div class="col">
-                            <div>
-                                <label class="form-label" for="author">Author</label>
-                                <div id="author-container">
-                                    <input class="mb-1" type="text" id="author" name="author[]"
-                                        value="{{ old('author') }}">
-                                </div>
-                            </div>
-                            <div class="mb-3">
-                                <button class="btn-rectangle" type="button" onclick="addAuthorInput()">Add Another
-                                    Author</button>
-                            </div>
-                        </div> --}}
                     </div>
                     <div class="row">
+                        <div class="col">
+                            <div class="row">
+                                <label class="form-label" for="author">Author</label>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <input type="text" id="author">
+                                    </div>
+                                    <div class="col p-0" style="max-width: fit-content;">
+                                        <button class="btn-add" type="button"
+                                            onclick="authorHandler.addItem()">Add</button>
+                                    </div>
+                                </div>
+                                <ol class="list-item" id="authorList">
+                                </ol>
+                                <input type="text" name="authors" id="authorsInput" hidden>
+                            </div>
+                            <div class="row">
+                                <label class="form-label" for="editor">Editor</label>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <input type="text" id="editor">
+                                    </div>
+                                    <div class="col p-0" style="max-width: fit-content;">
+                                        <button class="btn-add" type="button"
+                                            onclick="editorHandler.addItem()">Add</button>
+                                    </div>
+                                </div>
+                                <ol class="list-item" id="editorList">
+                                </ol>
+                                <input type="text" name="editors" id="editorsInput" hidden>
+                            </div>
+                            <div class="row">
+                                <label class="form-label" for="illustrator">Illustrator</label>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <input type="text" id="illustrator">
+                                    </div>
+                                    <div class="col p-0" style="max-width: fit-content;">
+                                        <button class="btn-add" type="button"
+                                            onclick="illustratorHandler.addItem()">Add</button>
+                                    </div>
+                                </div>
+                                <ol class="list-item" id="illustratorList">
+                                </ol>
+                                <input type="text" name="illustrators" id="illustratorsInput" hidden>
+                            </div>
+                            <div class="row">
+                                <label class="form-label" for="translator">Translator</label>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <input type="text" id="translator">
+                                    </div>
+                                    <div class="col p-0" style="max-width: fit-content;">
+                                        <button class="btn-add" type="button"
+                                            onclick="translatorHandler.addItem()">Add</button>
+                                    </div>
+                                </div>
+                                <ol class="list-item" id="translatorList">
+                                </ol>
+                                <input type="text" name="translators" id="translatorsInput" hidden>
+                            </div>
+                            <div class="row">
+                                <label class="form-label" for="subject">Subject</label>
+                                <div class="row mb-3">
+                                    <div class="col">
+                                        <input type="text" id="subject">
+                                    </div>
+                                    <div class="col p-0" style="max-width: fit-content;">
+                                        <button class="btn-add" type="button"
+                                            onclick="subjectHandler.addItem()">Add</button>
+                                    </div>
+                                </div>
+                                <ol class="list-item" id="subjectList">
+                                </ol>
+                                <input type="text" name="subjects" id="subjectsInput" hidden>
+                            </div>
+                        </div>
                         <div class="col">
                             <div class="mb-3">
                                 <label class="form-label" for="type_id">Material Type</label>
                                 <select id="type_id" name="type_id">
-                                    <option value="">Select material type</option>
                                     @foreach ($material_types as $type)
-                                        <option value="{{ $type->type_id }}"
+                                        <option value="{{ $type->type_id }}" {{ $type->type_id == 1 ? 'selected' : '' }}
                                             {{ old('type_id') == $type->type_id ? 'selected' : '' }}>
                                             {{ $type->name }}
                                         </option>
@@ -90,12 +146,12 @@
                                 <label class="form-label" for="pages">Pages</label>
                                 <input type="text" id="pages" name="pages" value="{{ old('pages') }}">
                             </div>
+                        </div>
+                        <div class="col">
                             <div class="mb-3">
                                 <label class="form-label" for="size">Size</label>
                                 <input type="text" id="size" name="size" value="{{ old('size') }}">
                             </div>
-                        </div>
-                        <div class="col">
                             <div class="mb-3">
                                 <label class="form-label" for="includes">Includes</label>
                                 <input type="text" id="includes" name="includes" value="{{ old('includes') }}">
@@ -124,7 +180,6 @@
                             <button class="btn-simple btn-right" type="submit">Submit</button>
                         </div>
                     </div>
-
                 </div>
             </form>
         </div>
@@ -139,70 +194,61 @@
             reader.readAsDataURL(event.target.files[0]);
         }
 
-        let authors = [];
+        function handleList(listName, inputId, listId, hiddenInputId) {
+            let list = [];
 
-        let oldAuthors = {!! json_encode(old('authors') ? old('authors') : []) !!};
-        if (oldAuthors.length > 0) {
-            authors = oldAuthors;
-            updateAuthorList();
-        }
-
-        function addAuthor() {
-            //get the author from the input
-            let author = document.getElementById('author');
-
-            //add the author to the array
-            if (author.value.trim() !== "") {
-                authors.push(author.value);
-
-                updateAuthorList()
-
-                //clear the input
-                author.value = "";
+            // Fetch old input data for the specific list
+            let oldList = {!! json_encode(old('listName') ? old('listName') : []) !!};
+            if (oldList.length > 0) {
+                list = oldList;
+                updateList();
             }
+
+            function addItem() {
+                let item = document.getElementById(inputId);
+
+                if (item.value.trim() !== "") {
+                    list.push(item.value);
+                    updateList();
+                    item.value = "";
+                }
+            }
+
+            function updateList() {
+                let listElement = document.getElementById(listId);
+                listElement.innerHTML = "";
+
+                list.forEach((item, index) => {
+                    let li = document.createElement('li');
+                    li.className = 'item';
+                    li.innerHTML = `
+                        <span>${item}</span>
+                        <button class="btn-trash" type="button"><x-lucide-x width="25" /></button>
+                    `;
+                    li.querySelector('button').addEventListener('click', () => removeItem(index));
+                    listElement.appendChild(li);
+                });
+            }
+
+            function removeItem(index) {
+                list.splice(index, 1);
+                updateList();
+            }
+
+            document.getElementById("material-form").addEventListener("submit", function(event) {
+                document.getElementById(hiddenInputId).value = JSON.stringify(list);
+            });
+
+            return {
+                addItem,
+                removeItem
+            };
         }
 
-        function updateAuthorList() {
-            //get the author list element then clear it
-            let authorList = document.getElementById('authorList');
-            authorList.innerHTML = "";
-
-            //loop through the array then create a new element then append it to the  author list element
-            authors.forEach((author, index) => {
-                let li = document.createElement('li');
-                li.innerHTML = `
-                ${author} <button type="button" onclick="removeAuthor(${index})">Remove</button>`;
-                authorList.appendChild(li);
-            })
-            console.log(authors);
-        }
-
-        function removeAuthor(index){
-            authors.splice(index, 1);
-            updateAuthorList();
-        }
-
-        document.getElementById("material-form").addEventListener("submit", function(event){
-            document.getElementById("authorsInput").value = JSON.stringify(authors);
-        })
-
-        // function addAuthorInput() {
-        //     var container = document.getElementById('author-container');
-        //     var div = document.createElement('div');
-        //     div.className = 'author-input-group mt-2';
-        //     var input = document.createElement('input');
-        //     input.type = 'text';
-        //     input.name = 'author[]';
-        //     var button = document.createElement('button');
-        //     button.type = 'button';
-        //     button.className = 'btn-rectangle btn-sm my-1';
-        //     button.innerText = 'Remove';
-        //     button.onclick = function() {
-        //         container.removeChild(div);
-        //     };
-        //     div.appendChild(input);
-        //     div.appendChild(button);
-        //     container.appendChild(div);
-        // }
+        const authorHandler = handleList('authors', 'author', 'authorList', 'authorsInput');
+        const editorHandler = handleList('editors', 'editor', 'editorList', 'editorsInput');
+        const illustratorHandler = handleList('illustrators', 'illustrator', 'illustratorList', 'illustratorsInput');
+        const translatorHandler = handleList('translators', 'translator', 'translatorList', 'translatorsInput');
+        const subjectHandler = handleList('subjects', 'subject', 'subjectList', 'subjectsInput');
     </script>
 @endsection
