@@ -2,7 +2,10 @@
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
-    <div class="">
+    <div class="bg-white p-3 rounded" style="min-width: fit-content">
+        <a href="{{ route('materials.index') }}" class="text-decoration-none text-dark">
+            <x-lucide-arrow-left width="30" class="mb-2" />
+        </a>
         <div class="form-container">
             <form action="/material/store" method="post" enctype="multipart/form-data" id="material-form">
                 @csrf

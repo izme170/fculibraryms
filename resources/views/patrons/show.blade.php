@@ -1,9 +1,12 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.topbar')
+    @include('include.topbar')
     <div class="bg-white p-3 rounded d-flex gap-3 flex-wrap flex-column justify-content-center"
         style="min-width: fit-content">
+        <a href="{{ route('patrons.index') }}" class="text-decoration-none text-dark">
+            <x-lucide-arrow-left width="30" class="mb-2" />
+        </a>
         <div class="d-flex gap-3 flex-row justify-content-start">
             <div>
                 <form action="/patron/update-image/{{ $patron->patron_id }}" method="post" enctype="multipart/form-data">
@@ -65,8 +68,12 @@
         </div>
         <div class="mb-3">
             <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editPatron">Update</button>
-            <button class="btn-simple" type="button" data-bs-toggle="modal"
-                data-bs-target="#archivePatron">Archive</button>
+            @if (!$patron->is_archived)
+                <button class="btn-simple" type="button" data-bs-toggle="modal"
+                    data-bs-target="#archivePatron">Archive</button>
+            @else
+                <a class="btn-simple" href="/patron/unarchive/{{ $patron->patron_id }}">Unarchive</a>
+            @endif
             <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#newPatronRFID">Assign new
                 RFID</button>
         </div>
@@ -85,7 +92,7 @@
                     @foreach ($borrowed_materials as $borrowed_material)
                         <tr>
                             <td>{{ $borrowed_material->created_at->format('m/d/y h:i a') }}</td>
-                            <td>{{ $borrowed_material->material->title }}</td>
+                            <td>{{ $borrowed_material->materialCopy->material->title }}</td>
                             <td>{{ $borrowed_material->returned ? $borrowed_material->returned->format('m/d/y h:i a') : 'Unreturned' }}
                             </td>
                             <td>₱{{ $borrowed_material->fine }}</td>

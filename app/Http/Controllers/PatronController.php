@@ -71,6 +71,56 @@ class PatronController extends Controller
         return view('patrons.index', compact('patrons', 'search', 'sort', 'direction', 'courses', 'departments', 'types'));
     }
 
+    public function archives(Request $request)
+    {
+        $search = $request->query('search', '');
+        $sort = $request->query('sort', 'first_name');
+        $direction = $request->query('direction', 'asc');
+        $course_filter = $request->query('course_filter', '');
+        $department_filter = $request->query('deparment_filter', '');
+        $type_filter = $request->query('type_filter', '');
+
+        $query = Patron::with('type', 'department')
+            ->where('is_archived', '=', true);
+
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('patrons.first_name', 'like', "%{$search}%")
+                    ->orWhere('patrons.last_name', 'like', "%{$search}%");
+            });
+        }
+
+        if (!empty($course_filter)) {
+            $query->where('course_id', '=', $course_filter);
+        }
+
+        if (!empty($department_filter)) {
+            $query->where('department_id', '=', $department_filter);
+        }
+
+        if (!empty($type_filter)) {
+            $query->where('type_id', '=', $type_filter);
+        }
+
+        $patrons = $query->orderBy($sort, $direction)
+            ->paginate(15)
+            ->appends(['search', 'sort', 'direction', 'course_filter', 'department_filter', 'type_filter']);
+
+        $patrons->each(function ($patron) use ($patrons) {
+            $words = explode(' ', $patron->department->department);
+            $ignoreWords = ['of', 'and', 'the', 'a', 'an', 'in'];
+            $patron->department_acronym = implode('', array_map(function ($word) use ($ignoreWords) {
+                return !in_array(strtolower($word), $ignoreWords) ? strtoupper($word[0]) : '';
+            }, $words));
+        });
+
+        $courses = Course::all();
+        $departments = Department::all();
+        $types = PatronType::all();
+
+        return view('patrons.archives', compact('patrons', 'search', 'sort', 'direction', 'courses', 'departments', 'types'));
+    }
+
     public function create()
     {
         $patron_types = PatronType::all();
@@ -238,6 +288,20 @@ class PatronController extends Controller
     public function archive($id)
     {
         Patron::find($id)->update(['is_archived' => true]);
+
+        // Record Activity
+        $data = [
+            'action' => 'archives patron profile',
+            'patron_id' => $id,
+            'initiator_id' => Auth::id()
+        ];
+        Activity::create($data);
+
+        return redirect('/patrons')->with('message_success', 'The patron\'s profile has been archived.');
+    }
+
+    public function unarchive($id){
+        Patron::find($id)->update(['is_archived' => false]);
 
         // Record Activity
         $data = [

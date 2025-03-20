@@ -2,20 +2,7 @@
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
-    <ul class="nav nav-tabs">
-        <li class="nav-item rounded-top">
-            <a class="nav-link text-black" aria-current="page" href="/materials">Materials</a>
-        </li>
-        <li class="nav-item rounded-top">
-            <a class="nav-link text-black" href="/material-copies">Material Copies</a>
-        </li>
-        <li class="nav-item rounded-top">
-            <a class="nav-link text-black" href="/borrowed-materials">Borrowed Materials</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="/materials/archives">Archived Materials</a>
-        </li>
-    </ul>
+    @include('include.material_tabs')
     <div class="bg-white p-3" style="min-width: fit-content">
         <form method="GET" action="/materials/archives" class="d-flex flex-row align-items-center gap-2" id="filterForm">
             <input type="text" name="search" placeholder="Search..."

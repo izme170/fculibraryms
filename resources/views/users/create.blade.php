@@ -3,6 +3,9 @@
 @section('user-content')
 @include('include.topbar')
 <div class="widget">
+    <a href="{{ route('users.index') }}" class="text-decoration-none text-dark">
+        <x-lucide-arrow-left width="30" class="mb-3" />
+    </a>
     <div class="form-container">
         <form action="/user/store" method="post" enctype="multipart/form-data">
             @csrf

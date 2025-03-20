@@ -3,7 +3,7 @@
         position: sticky;
         top: 0;
         display: flex;
-        justify-content: space-between;
+        justify-content: end;
         align-items: center;
         z-index: 1000;
         background-color: white;
@@ -13,10 +13,6 @@
 </style>
 
 <div class="topbar rounded p-1">
-    {{-- Back button --}}
-    <a href="javascript:history.back()" class="btn btn-light">
-        <x-lucide-arrow-left width="30" />
-    </a>
 
     {{-- User dropdown --}}
     <div class="dropdown rounded p-1">

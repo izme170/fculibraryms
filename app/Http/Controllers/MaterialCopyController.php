@@ -13,7 +13,7 @@ class MaterialCopyController extends Controller
     {
         $search = $request->query('search');
         $status = $request->query('status', 'all');
-        $copies = MaterialCopy::where('is_archived' , false);
+        $copies = MaterialCopy::where('is_archived', false);
         if ($search) {
             $copies = MaterialCopy::where('copy_number', 'like', '%' . $search . '%')
                 ->orWhere('accession_number', 'like', '%' . $search . '%')
@@ -82,7 +82,8 @@ class MaterialCopyController extends Controller
         return redirect('material/show/' . $id)->with('success', 'Material copy added successfully');
     }
 
-    public function update(Request $request, $id){
+    public function update(Request $request, $id)
+    {
         $validated = $request->validate([
             'copy_number' => 'nullable',
             'call_number' => 'nullable',
@@ -99,7 +100,8 @@ class MaterialCopyController extends Controller
         return redirect()->back()->with('success', 'Material copy updated successfully');
     }
 
-    public function archive($id){
+    public function archive($id)
+    {
         $copy = MaterialCopy::findOrFail($id);
         $copy->is_archived = true;
         $copy->save();
@@ -107,7 +109,8 @@ class MaterialCopyController extends Controller
         return redirect()->back()->with('success', 'Material copy archived successfully');
     }
 
-    public function unarchive($id){
+    public function unarchive($id)
+    {
         $copy = MaterialCopy::findOrFail($id);
         $copy->is_archived = false;
         $copy->save();
@@ -115,7 +118,8 @@ class MaterialCopyController extends Controller
         return redirect()->back()->with('success', 'Material copy unarchived successfully');
     }
 
-    public function updateRFID($id){
+    public function updateRFID($id)
+    {
 
         $validated = request()->validate([
             'rfid' => 'required'
@@ -125,5 +129,37 @@ class MaterialCopyController extends Controller
         $copy->update($validated);
 
         return redirect()->back()->with('success', 'RFID updated successfully');
+    }
+
+    public function archives(Request $request)
+    {
+        $search = $request->query('search');
+        $status = $request->query('status', 'all');
+        $copies = MaterialCopy::where('is_archived', true);
+        if ($search) {
+            $copies = MaterialCopy::where('copy_number', 'like', '%' . $search . '%')
+                ->orWhere('accession_number', 'like', '%' . $search . '%')
+                ->orWhere('call_number', 'like', '%' . $search . '%')
+                ->orWhere('rfid', 'like', '%' . $search . '%')
+                ->orWhereHas('material', function ($query) use ($search) {
+                    $query->where('title', 'like', '%' . $search . '%');
+                });
+        }
+
+        if ($status !== 'all') {
+            if ($status === 'available') {
+                $copies = $copies->where('is_available', true);
+            } elseif ($status === 'borrowed') {
+                $copies = $copies->where('is_available', false);
+            } elseif ($status === 'overdue') {
+                $copies = $copies->where('is_available', false)
+                    ->whereHas('borrowedCopies', function ($query) {
+                        $query->where('due_date', '<', now());
+                    });
+            }
+        }
+
+        $copies = $copies->paginate(10);
+        return view('material_copies.index', compact('copies', 'search', 'status'));
     }
 }

@@ -1,33 +1,19 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.topbar')
-    <ul class="nav nav-tabs">
-        <li class="nav-item rounded-top">
-            <a class="nav-link text-black" aria-current="page" href="/materials">Materials</a>
-        </li>
-        <li class="nav-item rounded-top">
-            <a class="nav-link text-black" href="/material-copies">Material Copies</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="/borrowed-materials">Borrowed Materials</a>
-        </li>
-        <li class="nav-item rounded-top">
-            <a class="nav-link text-black" href="/materials/archives">Archived Materials</a>
-        </li>
-    </ul>
+    @include('include.topbar')
+    @include('include.material_tabs')
     <div class="bg-white p-3" style="min-width: fit-content">
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
             <form method="GET" action="/borrowed-materials" id="filterForm" class="m-0">
-                <input type="text" name="search" class="form-control" placeholder="Search..."
-                    value="{{ $search }}">
+                <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ $search }}">
             </form>
 
             <div class="d-flex flex-row align-items-center gap-2">
                 <a href="?status=all" class="legend-btn {{ $status === 'all' ? 'active' : '' }}">All</a>
-                        <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
-                        <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
-                        <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
+                <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
+                <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
+                <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
             </div>
         </div>
         <table class="table table-bordered">
@@ -105,7 +91,7 @@
                                 <span class="badge bg-danger">Overdue</span>
                             @endif
                         </td>
-                        <td>{{ $borrowed_material->remark->remark ?? 'No remark'}}</td>
+                        <td>{{ $borrowed_material->remark->remark ?? 'No remark' }}</td>
                     </tr>
                 @endforeach
             </tbody>

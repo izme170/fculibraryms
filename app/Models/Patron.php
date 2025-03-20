@@ -47,4 +47,8 @@ class Patron extends Model
     public function adviser(){
         return $this->belongsTo(Adviser::class, 'adviser_id');
     }
+
+    public function borrowedBooks(){
+        return $this->hasMany(BorrowedMaterial::class, 'patron_id');
+    }
 }

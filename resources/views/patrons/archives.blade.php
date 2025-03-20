@@ -5,9 +5,55 @@
     @include('include.patron_tabs')
     <div class="bg-white rounded p-3" style="min-width: fit-content">
         <div class="d-flex flex-row flex-wrap justify-content-between gap-2">
-            <div>
-                <a class="btn-simple" href="/patron/create">Add Patron</a>
-                <a class="btn-simple" href="/patrons/export">Export</a>
+            <div class="d-flex">
+                <div class="dropdown">
+                    <button class="btn text-secondary dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Course
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="?course_filter=">All</a>
+                            @foreach ($courses as $course)
+                                <a class="dropdown-item" href="?course_filter={{ $course->course_id }}">
+                                    {{ $course->course }}
+                                </a>
+                            @endforeach
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="btn text-secondary dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Department
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="?department_filter=">All</a>
+                            @foreach ($departments as $department)
+                                <a class="dropdown-item" href="?department_filter={{ $department->department_id }}">
+                                    {{ $department->department }}
+                                </a>
+                            @endforeach
+                        </li>
+                    </ul>
+                </div>
+                <div class="dropdown">
+                    <button class="btn text-secondary dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        Patron Type
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="?type_filter=">All</a>
+                            @foreach ($types as $type)
+                                <a class="dropdown-item" href="?type_filter={{ $type->type_id }}">
+                                    {{ $type->type }}
+                                </a>
+                            @endforeach
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="d-flex gap-3">
                 <div class="d-flex flex-column justify-content-between align-items-end">
@@ -34,57 +80,6 @@
                         </li>
                     </ul>
                 </div>
-            </div>
-        </div>
-
-        <div class="d-flex">
-            <div class="dropdown">
-                <button class="btn text-secondary dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Course
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="?course_filter=">All</a>
-                        @foreach ($courses as $course)
-                            <a class="dropdown-item" href="?course_filter={{ $course->course_id }}">
-                                {{ $course->course }}
-                            </a>
-                        @endforeach
-                    </li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <button class="btn text-secondary dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Department
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="?department_filter=">All</a>
-                        @foreach ($departments as $department)
-                            <a class="dropdown-item" href="?department_filter={{ $department->department_id }}">
-                                {{ $department->department }}
-                            </a>
-                        @endforeach
-                    </li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <button class="btn text-secondary dropdown-toggle border-0" type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Patron Type
-                </button>
-                <ul class="dropdown-menu">
-                    <li>
-                        <a class="dropdown-item" href="?type_filter=">All</a>
-                        @foreach ($types as $type)
-                            <a class="dropdown-item" href="?type_filter={{ $type->type_id }}">
-                                {{ $type->type }}
-                            </a>
-                        @endforeach
-                    </li>
-                </ul>
             </div>
         </div>
 

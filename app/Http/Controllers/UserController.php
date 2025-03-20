@@ -86,6 +86,31 @@ class UserController extends Controller
         return view('users.index', compact(['users', 'search', 'roles']));
     }
 
+    public function archives(Request $request){
+        $search = $request->search;
+        $role_filter = $request->role_filter;
+        $users = User::with('role:role_id,role')
+        ->orderBy('users.role_id')
+        ->orderBy('first_name')
+        ->where('is_archived', true)
+        ->when($search, function($query, $search){
+            return $query->where('first_name', 'like', "%$search%")
+            ->orWhere('middle_name', 'like', "%$search%")
+            ->orWhere('last_name', 'like', "%$search%")
+            ->orWhere('email', 'like', "%$search%")
+            ->orWhere('contact_number', 'like', "%$search%")
+            ->orWhere('username', 'like', "%$search%");
+        })
+        ->when($role_filter, function($query, $role_filter){
+            return $query->where('role_id', $role_filter);
+        })
+        ->paginate(15);
+
+        $roles = Role::all();
+
+        return view('users.archives', compact(['users', 'search', 'roles']));
+    }
+
     public function create(){
         $roles = Role::all();
 
@@ -209,18 +234,25 @@ class UserController extends Controller
         return redirect()->back()->with('message_success', 'User image has been updated.');
     }
 
-    public function archive($id){
-        User::find($id)->update(['is_archived' => true, 'is_active' => false]);
+    public function toggleArchive($id){
+        $user = User::find($id);
+
+        // If user is archive, restore it. If not, archive.
+        if($user->is_archived){
+            $user->update(['is_archived' => false]);
+        } else {
+            $user->update(['is_archived' => true, 'is_active' => false]);
+        }
 
         // Record Activity
         $data = [
-            'action' => 'archived a user in the system.',
+            'action' => $user->is_archived ? 'archived a user in the system.' : 'restored a user in the system.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 
-        return redirect('/users')->with('message_success', 'User has been archived and deactivated!');
+        return redirect()->back()->with('message_success', 'User has been ' . ($user->is_archived ? 'archived and deactivated!' : 'restored'));
     }
 
     public function changePassword(Request $request, $id){
@@ -263,32 +295,23 @@ class UserController extends Controller
         return Excel::download(new UsersExport, 'users-library-management-system.xlsx');
     }
 
-    public function deactivate($id){
-        $user = User::findOrFail($id);
-        $user->update(['is_active' => false]);
+    public function toggleStatus($id){
+        $user = User::find($id);
+
+        if($user->is_active){
+            $user->update(['is_active' => false]);
+        } else {
+            $user->update(['is_active' => true]);
+        }
 
         // Record Activity
         $data = [
-            'action' => 'deactivated a user account.',
+            'action' => $user->is_active ? 'activated a user account.' : 'deactivated a user account.',
             'user_id' => $id,
             'initiator_id' => Auth::id()
         ];
         Activity::create($data);
 
-        return redirect()->back()->with('message_success', 'User account has been deactivated!');
-    }
-
-    public function activate($id){
-        User::find($id)->update(['is_active' => true]);
-
-        // Record Activity
-        $data = [
-            'action' => 'activated a user account.',
-            'user_id' => $id,
-            'initiator_id' => Auth::id()
-        ];
-        Activity::create($data);
-
-        return redirect()->back()->with('message_success', 'User account has been activated!');
+        return redirect()->back()->with('message_success', 'User account has been ' . ($user->is_active ? 'activated!' : 'deactivated!'));
     }
 }

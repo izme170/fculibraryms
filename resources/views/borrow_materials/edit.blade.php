@@ -1,8 +1,11 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.topbar')
+    @include('include.topbar')
     <div class="widget">
+        <a href="{{ route('materials.index') }}" class="text-decoration-none text-dark">
+            <x-lucide-arrow-left width="30" class="mb-2" />
+        </a>
         <div class="form-container">
             <form action="/return-material/process" method="post">
                 @method('PUT')

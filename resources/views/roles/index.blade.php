@@ -2,15 +2,8 @@
 @include('include.sidenav')
 @section('user-content')
 @include('include.topbar')
+@include('include.user_tabs')
     <link rel="stylesheet" href="{{ asset('css/buttons.css') }}">
-    <ul class="nav nav-tabs">
-        <li class="nav-item bg-secondary rounded-top">
-            <a class="nav-link text-black" aria-current="page" href="/users">Users</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link active" href="/roles">Roles</a>
-        </li>
-    </ul>
     <div class="container">
         <form action="/role/store" method="post">
             @csrf

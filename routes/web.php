@@ -38,16 +38,16 @@ Route::middleware('adminMiddleware')->group(function () {
 
     Route::controller(UserController::class)->group(function () {
         Route::get('/users', 'index')->name('users.index');
+        Route::get('/users/archives', 'archives')->name('users.archives');
         Route::get('/user/create', 'create')->name('users.create');
         Route::post('/user/store', 'store');
         Route::get('/user/show/{id}', 'show')->name('users.show');
         Route::put('/user/update/{id}', 'update');
         Route::put('/user/update-image/{id}', 'updateImage');
-        Route::put('/user/archive/{id}', 'archive');
+        Route::put('/user/toggle/archive/{id}', 'toggleArchive');
         Route::put('/user/change-password/{id}', 'changePassword');
         Route::get('/users/export', 'export')->name('users.export');
-        Route::put('/user/deactivate/{id}', 'deactivate');
-        Route::put('/user/activate/{id}', 'activate');
+        Route::put('/user/toggle/status/{id}', 'toggleStatus');
     });
 
     Route::controller(RoleController::class)->group(function(){
@@ -76,12 +76,14 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(PatronController::class)->group(function () {
         Route::get('/patrons', 'index')->name('patrons.index');
+        Route::get('/patrons/archives', 'archives')->name('patrons.archives');
         Route::get('/patron/create', 'create')->name('patrons.create');
         Route::get('/courses/{department_id}', 'getCoursesByDepartment');
         Route::post('/patron/store', 'store');
         Route::get('/patron/show/{id}', 'show')->name('patrons.show');
         Route::put('/patron/update/{id}', 'update');
         Route::put('/patron/archive/{id}', 'archive');
+        Route::get('/patron/unarchive/{id}', 'unarchive');
         Route::put('/patron/new_rfid/{id}', 'newRFID');
         Route::put('/patron/update-image/{id}', 'updateImage');
         Route::get('/patrons/export', 'export')->name('patrons.export');
@@ -103,7 +105,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(MaterialCopyController::class)->group(function (){
-        Route::get('/material-copies', 'index');
+        Route::get('/material-copies', 'index')->name('material-copies.index');
+        Route::get('/material-copies/archives', 'archives')->name('material-copies.archives');
         Route::get('/copy/show/{material_id}', 'show');
         Route::get('/create-copy/{id}', 'create');
         Route::post('/material/store-copy/{id}', 'store');

@@ -1,39 +1,42 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.topbar')
-<div class="widget">
-    <div class="form-container">
-        <form action="/borrow-material/process" method="post">
-            @csrf
-            <div class="row">
-                <div class="col">
-                    <div class="mb-3">
-                        <label class="form-label" for="library_id">Patron RFID</label>
-                        <input type="text" id="library_id" name="library_id" autofocus>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="material_rfid">Material RFID</label>
-                        <input type="text" id="material_rfid" name="material_rfid">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="due">Due</label>
-                        <select id="due" name="due">
-                            <option value="oneHour" selected>1 Hour</option>
-                            <option value="oneDay">1 Day</option>
-                        </select>
+    @include('include.topbar')
+    <div class="widget">
+        <a href="{{ route('materials.index') }}" class="text-decoration-none text-dark">
+            <x-lucide-arrow-left width="30" class="mb-3" />
+        </a>
+        <div class="form-container">
+            <form action="/borrow-material/process" method="post">
+                @csrf
+                <div class="row">
+                    <div class="col">
+                        <div class="mb-3">
+                            <label class="form-label" for="library_id">Patron RFID</label>
+                            <input type="text" id="library_id" name="library_id" autofocus>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="material_rfid">Material RFID</label>
+                            <input type="text" id="material_rfid" name="material_rfid">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label" for="due">Due</label>
+                            <select id="due" name="due">
+                                <option value="oneHour" selected>1 Hour</option>
+                                <option value="oneDay">1 Day</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <button class="btn-simple btn-right" type="submit">Submit</button>
-        </form>
+                <button class="btn-simple btn-right" type="submit">Submit</button>
+            </form>
+        </div>
     </div>
-</div>
 
-<script>
-    document.addEventListener('keydown', function(event){
-        if(event.key === 'Enter')
-        event.preventDefault();
-    });
-</script>
+    <script>
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter')
+                event.preventDefault();
+        });
+    </script>
 @endsection
