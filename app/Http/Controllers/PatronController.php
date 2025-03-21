@@ -27,7 +27,7 @@ class PatronController extends Controller
         $sort = $request->query('sort', 'first_name');
         $direction = $request->query('direction', 'asc');
         $course_filter = $request->query('course_filter', '');
-        $department_filter = $request->query('deparment_filter', '');
+        $department_filter = $request->query('department_filter', '');
         $type_filter = $request->query('type_filter', '');
 
         $query = Patron::with('type', 'department')

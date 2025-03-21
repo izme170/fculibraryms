@@ -13,7 +13,12 @@ class MaterialCopyController extends Controller
     {
         $search = $request->query('search');
         $status = $request->query('status', 'all');
-        $copies = MaterialCopy::where('is_archived', false);
+        $copies = MaterialCopy::join('materials', 'material_copies.material_id', '=', 'materials.material_id')
+            ->where('material_copies.is_archived', false)
+            ->orderBy('materials.title')
+            ->select('material_copies.*');
+
+
         if ($search) {
             $copies = MaterialCopy::where('copy_number', 'like', '%' . $search . '%')
                 ->orWhere('accession_number', 'like', '%' . $search . '%')
@@ -37,7 +42,7 @@ class MaterialCopyController extends Controller
             }
         }
 
-        $copies = $copies->paginate(10);
+        $copies = $copies->paginate(10)->appends(request()->query());
         return view('material_copies.index', compact('copies', 'search', 'status'));
     }
     public function show($id)
