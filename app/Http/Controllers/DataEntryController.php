@@ -4,11 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Adviser;
 use App\Models\Category;
+use App\Models\Condition;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Marketer;
 use App\Models\Purpose;
-use App\Models\Remark;
 use Illuminate\Http\Request;
 
 class DataEntryController extends Controller
@@ -21,7 +21,7 @@ class DataEntryController extends Controller
         $departments = Department::orderBy('department')->get();
         $marketers = Marketer::orderBy('marketer')->get();
         $purposes = Purpose::orderBy('purpose')->get();
-        $remarks = Remark::orderBy('remark')->get();
+        $conditions = Condition::orderBy('name')->get();
 
         return view('data_entries.index', compact([
             'advisers',
@@ -30,7 +30,7 @@ class DataEntryController extends Controller
             'departments',
             'marketers',
             'purposes',
-            'remarks'
+            'conditions'
         ]));
     }
 
@@ -95,13 +95,13 @@ class DataEntryController extends Controller
         return redirect()->back();
     }
 
-    public function storeRemark(Request $request)
+    public function storeCondition(Request $request)
     {
         $validated = $request->validate([
-            'remark' => 'required'
+            'condition' => 'required'
         ]);
 
-        Remark::create($validated);
+        Condition::create($validated);
         return redirect()->back();
     }
 }

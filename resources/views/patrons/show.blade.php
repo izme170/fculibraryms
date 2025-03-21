@@ -79,22 +79,27 @@
         </div>
         <div>
             <h5>Materials borrowed</h5>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Material</th>
                         <th scope="col">Date Returned</th>
+                        <th scope="col">Before</th>
+                        <th scope="col">After</th>
                         <th scope="col">Fine</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($borrowed_materials as $borrowed_material)
-                        <tr>
+                        <tr onclick="window.location.href='/borrowed-material/show/{{ $borrowed_material->borrow_id }}';"
+                            style="cursor:pointer;">
                             <td>{{ $borrowed_material->created_at->format('m/d/y h:i a') }}</td>
                             <td>{{ $borrowed_material->materialCopy->material->title }}</td>
                             <td>{{ $borrowed_material->returned ? $borrowed_material->returned->format('m/d/y h:i a') : 'Unreturned' }}
                             </td>
+                            <td>{{ $borrowed_material->conditionBefore->name ?? 'Not indicated' }}</td>
+                            <td>{{ $borrowed_material->returned ?($borrowed_material->conditionAfter->name ?? 'Not indicated') : "Pending" }}</td>
                             <td>₱{{ $borrowed_material->fine }}</td>
                         </tr>
                     @endforeach

@@ -18,7 +18,8 @@ class BorrowedMaterial extends Model
         'due_date',
         'returned',
         'fine',
-        'remark_id'
+        'condition_before',
+        'condition_after'
     ];
 
     protected $casts = [
@@ -31,8 +32,8 @@ class BorrowedMaterial extends Model
 
     public function getFineAttribute()
     {
-        if ($this->returned) {
-            return 0;
+        if (!is_null($this->attributes['fine'])) {
+            return $this->attributes['fine'];
         }
 
         $dueDate = Carbon::parse($this->due_date);
@@ -61,8 +62,13 @@ class BorrowedMaterial extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
-    public function remark()
+    public function conditionBefore()
     {
-        return $this->belongsTo(Remark::class, 'remark_id');
+        return $this->belongsTo(Condition::class, 'condition_before', 'condition_id');
+    }
+
+    public function conditionAfter()
+    {
+        return $this->belongsTo(Condition::class, 'condition_after', 'condition_id');
     }
 }

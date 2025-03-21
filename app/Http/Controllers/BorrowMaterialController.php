@@ -4,8 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Material;
 use App\Models\BorrowedMaterial;
+use App\Models\Condition;
+use App\Models\MaterialCopy;
 use App\Models\Patron;
-use App\Models\Remark;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,103 +23,64 @@ class BorrowMaterialController extends Controller
         $sort = $request->query('sort', 'created_at');
         $direction = $request->query('direction', 'desc');
 
-        $query = BorrowedMaterial::query();
+        $query = BorrowedMaterial::query()
+            ->when($status === 'returned', fn($q) => $q->whereNotNull('returned'))
+            ->when($status === 'borrowed', fn($q) => $q->whereNull('returned'))
+            ->when($status === 'overdue', fn($q) => $q->whereNull('returned')->where('due_date', '<', now()));
 
-        if($status != 'all'){
-            if($status == 'returned'){
-                $query = BorrowedMaterial::whereNotNull('returned');
-            }elseif($status == 'borrowed'){
-                $query = BorrowedMaterial::whereNull('returned');
-            }elseif($status == 'overdue'){
-                $query = BorrowedMaterial::whereNull('returned')->where('due_date', '<', now());
-            }
-        }
 
-        if(!empty($search)){
-            $query->whereHas('materialCopy.material', function ($q) use ($search){
-                $q->where('title', 'like', "%{$search}%" );
-            })->orWhereHas('patron', function ($q) use ($search){
+        if (!empty($search)) {
+            $query->whereHas('materialCopy.material', function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%");
+            })->orWhereHas('patron', function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                ->orWhere('last_name', 'like', "%{$search}%");
-            })->orWhereHas('user', function ($q) use ($search){
+                    ->orWhere('last_name', 'like', "%{$search}%");
+            })->orWhereHas('user', function ($q) use ($search) {
                 $q->where('first_name', 'like', "%{$search}%")
-                ->orWhere('last_name', 'like', "%{$search}%");
+                    ->orWhere('last_name', 'like', "%{$search}%");
             });
         }
 
         $borrowed_materials = $query->orderBy($sort, $direction)->paginate(10);
-
-        // $query = BorrowedMaterial::with(['material:material_id,title', 'patron:patron_id,first_name,last_name', 'user:user_id,first_name,last_name'])
-        // ->join('materials', 'borrowed_materials.material_id', '=', 'materials.material_id')
-        // ->join('patrons', 'borrowed_materials.patron_id', '=', 'patrons.patron_id')
-        // ->join('users', 'borrowed_materials.user_id', '=', 'users.user_id')
-        // ->select('borrowed_materials.*', 'materials.title', 'patrons.first_name as patrons_name', 'users.first_name as users_name');
-
-        // if (!empty($search)) {
-        //     $query->whereHas('material', function ($query) use ($search) {
-        //         $query->where('title', 'like', "%{$search}%");
-        //     })->orWhereHas('patron', function ($query) use ($search) {
-        //         $query->where('first_name', 'like', "%{$search}%")
-        //             ->orWhere('first_name', 'like', "%{$search}%");
-        //     })->orWhereHas('user', function ($q) use ($search) {
-        //         $q->where('first_name', 'like', "%{$search}%")
-        //             ->orWhere('last_name', 'like', "%{$search}%");
-        //     });
-        // }
-
-        // if ($status !== 'all') {
-        //     if ($status === 'returned') {
-        //         $query->whereNotNull('returned');
-        //     } elseif ($status === 'borrowed') {
-        //         $query->whereNull('returned')
-        //             ->where('due_date', '>=', now());
-        //     } elseif ($status === 'overdue') {
-        //         $query->whereNull('returned')
-        //             ->where('due_date', '<', now());
-        //     }
-        // }
-
-        // $borrowed_materials = $query->orderBy($sort, $direction)
-        //     ->paginate(10)
-        //     ->appends(['search' => $search, 'status' => $status, 'sort' => $sort, 'direction' => $direction]);
-
-        // $borrowed_materials->each(function ($borrowed_material) {
-        //     //Checks if the material is returned
-        //     if (!$borrowed_material->returned) {
-        //         $dueDate = Carbon::parse($borrowed_material->due_date);
-        //         $now = Carbon::now();
-        //         //Check if the material is overdue
-        //         if ($now->gt($dueDate)) {
-        //             $hoursOverdue = $dueDate->diffInHours($now, false);
-        //             $borrowed_material->fine = $this->finePerHour * (int)$hoursOverdue;
-        //         } else {
-        //             $borrowed_material->fine = 0;
-        //         }
-        //     }
-        // });
-
         return view('borrow_materials.index', compact(['borrowed_materials', 'search', 'status', 'sort', 'direction']));
+    }
+
+    public function show($id)
+    {
+        $borrowed_material = BorrowedMaterial::findOrFail($id);
+        return view('borrow_materials.show', compact('borrowed_material'));
     }
 
     public function create()
     {
-        return view('borrow_materials.create');
+        $conditions = Condition::all();
+        return view('borrow_materials.create', compact('conditions'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
             'library_id' => 'required|exists:patrons,library_id',
-            'material_rfid' => 'required|exists:materials,material_rfid'
+            'rfid' => 'required|exists:material_copies,rfid',
+            'condition_id' => 'nullable|exists:conditions,condition_id',
         ]);
 
         $patron = Patron::where('library_id', '=', $validated['library_id'])->first();
-        $material = Material::where('material_rfid', '=', $validated['material_rfid'])->first();
+        $copy = MaterialCopy::where('rfid', '=', $validated['rfid'])->first();
+
+        if (!$copy->is_available) {
+            return redirect()->back()->withErrors('This material is currently not available for borrowing.');
+        }
+
         $data = [
             'patron_id' => $patron->patron_id,
-            'material_id' => $material->material_id,
+            'copy_id' => $copy->copy_id,
             'user_id' => Auth::id(),
         ];
+
+        if ($validated['condition_id'] != null) {
+            $data['condition_before'] = $validated['condition_id'];
+        }
 
         if ($request['due'] == 'oneHour') {
             $data['due_date'] = Carbon::now()->addHours(1);
@@ -127,25 +89,25 @@ class BorrowMaterialController extends Controller
         }
 
         BorrowedMaterial::create($data);
-        $material->update(['is_available' => false]);
-        return redirect()->back();
+        $copy->update(['is_available' => false]);
+        return redirect()->back()->with('message_success', 'Material borrowed successfully');
     }
 
     public function edit()
     {
-        $remarks = Remark::all();
-        return view('borrow_materials.edit', compact('remarks'));
+        $conditions = Condition::all();
+        return view('borrow_materials.edit', compact('conditions'));
     }
 
     public function update(Request $request)
     {
         $validated = $request->validate([
-            'material_rfid' => 'required|exists:materials,material_rfid',
-            'remark_id' => 'required|exists:remarks,remark_id'
+            'rfid' => 'required|exists:material_copies,rfid',
+            'condition_id' => 'required|exists:conditions,condition_id'
         ]);
 
-        $material = Material::where('material_rfid', '=', $validated['material_rfid'])->first();
-        $borrowed_material = BorrowedMaterial::where('material_id', '=', $material->material_id)->whereNull('returned')->first();
+        $copy = MaterialCopy::where('rfid', '=', $validated['rfid'])->first();
+        $borrowed_material = BorrowedMaterial::where('copy_id', '=', $copy->copy_id)->whereNull('returned')->first();
 
         if ($borrowed_material) {
             $dueDate = Carbon::parse($borrowed_material->due_date);
@@ -160,15 +122,15 @@ class BorrowMaterialController extends Controller
                 $borrowed_material->fine = 0;
             }
 
-            $borrowed_material->remark_id = $validated['remark_id'];
+            $borrowed_material->condition_after = $validated['condition_id'];
 
             $borrowed_material->save();
 
             // Make the material available
-            $material->update(['is_available' => true]);
+            $copy->update(['is_available' => true]);
         } else {
             return redirect()->back()->with('message_error', 'Material is not found in the Borrowed List');
         }
-        return redirect('/materials');
+        return redirect()->back()->with('message_success', 'Material returned successfully');
     }
 }

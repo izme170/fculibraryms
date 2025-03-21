@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Condition;
 use App\Models\MaterialCopy;
 use App\Models\Patron;
-use App\Models\Remark;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -26,7 +26,7 @@ class BorrowedMaterialFactory extends Factory
         $created_at = fake()->dateTime();
         $due = (clone $created_at)->modify('+'. 60 . 'minutes');
         $returned = (clone $due)->modify('-'. rand(20, 50) . 'minutes');
-        $remark = Remark::inRandomOrder()->first();
+        $condition = Condition::inRandomOrder()->first();
         return [
             'copy_id' => $copy->copy_id,
             'patron_id' => $patron->patron_id,
@@ -34,7 +34,8 @@ class BorrowedMaterialFactory extends Factory
             'due_date' => $due,
             'fine' => 0,
             'returned' => $returned,
-            'remark_id' => $remark->remark_id,
+            'condition_before' => $condition->condition_id,
+            'condition_after' => $condition->condition_id,
             'created_at' => $created_at
         ];
     }

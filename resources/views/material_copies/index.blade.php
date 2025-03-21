@@ -42,6 +42,7 @@
                     <div class="row data">Vendor: {{ $copy->vendor->name ?? 'None' }}</div>
                     <div class="row data">Fund: {{ $copy->fund->name ?? 'None' }}</div>
                     <div class="row data">Date Acquired: {{ $copy->date_acquired ?? 'None' }}</div>
+                    <div class="row data">Condition: {{ $copy->condition->name ?? 'None' }}</div>
                 </div>
             </a>
         @endforeach

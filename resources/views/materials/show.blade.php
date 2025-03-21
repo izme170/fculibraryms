@@ -165,13 +165,14 @@
         </div>
         <div class="row">
             <span class="fs-4 fw-bold">Copies: {{ $material->materialCopies->count() }}</span>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Copy No.</th>
                         <th scope="col">Call No.</th>
                         <th scope="col">Accession No.</th>
                         <th scope="col">RFID</th>
+                        <th scope="col">Condition</th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
@@ -182,6 +183,7 @@
                             <td>{{ $copy->call_number }}</td>
                             <td>{{ $copy->accession_number }}</td>
                             <td>{{ $copy->rfid }}</td>
+                            <td>{{ $copy->condition->name }}</td>
                             @if ($copy->status == 'Available')
                                 <td><span class="badge bg-success">Available</span></td>
                             @elseif ($copy->status == 'Borrowed')

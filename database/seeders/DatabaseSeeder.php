@@ -18,6 +18,7 @@ use App\Models\MaterialSubject;
 use App\Models\MaterialTranslator;
 use App\Models\MaterialType;
 use App\Models\BorrowedMaterial;
+use App\Models\Condition;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Editor;
@@ -27,13 +28,9 @@ use App\Models\Marketer;
 use App\Models\PatronLogin;
 use App\Models\Publisher;
 use App\Models\Purpose;
-use App\Models\Remark;
 use App\Models\Subject;
 use App\Models\Translator;
 use App\Models\Vendor;
-use Database\Factories\AuthorFactory;
-use Database\Factories\MaterialFactory;
-use Database\Factories\UnreturnedMaterialFactory;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -211,6 +208,17 @@ class DatabaseSeeder extends Seeder
         Purpose::create(['purpose' => 'Signing of Clearance']);
         Purpose::create(['purpose' => 'Passing of Requirements']);
         Purpose::create(['purpose' => 'Others']);
+
+        // Seed Conditions
+        $conditions = [
+            'Good',
+            'Damaged',
+            'Missing Pages',
+        ];
+
+        foreach ($conditions as $condition) {
+            Condition::create(['name' => $condition]);
+        }
 
         // seed funding sources
         FundingSource::create(['name' => 'Library Budget']);
@@ -441,17 +449,6 @@ class DatabaseSeeder extends Seeder
                     'translator_id' => $translator->translator_id
                 ]);
             }
-        }
-
-        // Seed Remarks
-        $remarks = [
-            'Good',
-            'Damaged',
-            'Missing Pages',
-        ];
-
-        foreach ($remarks as $remark) {
-            Remark::create(['remark' => $remark]);
         }
 
         // seed material copy

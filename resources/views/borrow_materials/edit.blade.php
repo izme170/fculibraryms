@@ -14,17 +14,17 @@
                     <div class="col">
                         <div class="mb-3">
                             <h1>Please scan the material's RFID</h1>
-                            <!-- <label class="form-label" for="material_rfid">Please scan the material's RFID</label> -->
-                            <input type="text" id="material_rfid" name="material_rfid" autofocus>
+                            <!-- <label class="form-label" for="rfid">Please scan the material's RFID</label> -->
+                            <input type="text" id="rfid" name="rfid" autofocus>
                         </div>
                         <div class="mb-3">
-                            <h3>Remark</h3>
+                            <h3>Condition</h3>
                             <div class="align-items-center">
-                                @foreach ($remarks as $remark)
+                                @foreach ($conditions as $condition)
                                     <div class="d-flex align-items-center gap-2">
-                                        <input type="radio" id="{{ $remark->remark }}" name="remark_id"
-                                            value="{{ $remark->remark_id }}" {{ $remark->remark_id == 1 ? 'checked' : '' }}>
-                                        <label for="{{ $remark->remark }}">{{ $remark->remark }}</label>
+                                        <input type="radio" id="{{ $condition->name }}" name="condition_id"
+                                            value="{{ $condition->condition_id }}">
+                                        <label for="{{ $condition->name }}">{{ $condition->name }}</label>
                                     </div>
                                 @endforeach
                             </div>

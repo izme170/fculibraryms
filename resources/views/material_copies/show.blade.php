@@ -2,6 +2,10 @@
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
+    <div class="bg-white p-3 rounded" style="min-width: fit-content">
+        <a href="/material/show/{{ $copy->material->material_id }}" class="text-decoration-none text-dark">
+            <x-lucide-arrow-left width="30" class="mb-2" />
+        </a>
     <div class="row"><h1>{{ $copy->material->title }}</h1></div>
     <div class="row mb-3">
         <div class="col">
@@ -31,24 +35,29 @@
     <div class="row">
         <div>
             <h5>Previous Borrowers</h5>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-hover">
                 <thead class="table-dark">
                     <tr>
                         <th scope="col">Type</th>
                         <th scope="col">Name</th>
                         <th scope="col">Date</th>
                         <th scope="col">Date Returned</th>
+                        <th scope="col">Before</th>
+                        <th scope="col">After</th>
                         <th scope="col">Fine</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($copy->borrowedCopies as $borrower)
-                        <tr>
+                        <tr onclick="window.location.href='/borrowed-material/show/{{ $borrower->borrow_id }}';"
+                            style="cursor:pointer;">
                             <td>{{ $borrower->patron->type->type }}</td>
                             <td>{{ $borrower->patron->first_name }} {{ $borrower->patron->last_name }}</td>
                             <td>{{ $borrower->created_at->format('m/d/y h:i a') }}</td>
                             <td>{{ $borrower->returned ? $borrower->returned->format('m/d/y h:i a') : 'Unreturned' }}
                             </td>
+                            <td>{{ $borrower->conditionBefore->name ?? 'Not indicated' }}</td>
+                            <td>{{ $borrower->returned ?($borrowed_material->conditionAfter->name ?? 'Not indicated') : "Pending" }}</td>
                             <td>₱{{ $borrower->fine }}</td>
                         </tr>
                     @endforeach

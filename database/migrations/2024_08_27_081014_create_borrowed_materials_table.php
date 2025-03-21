@@ -17,8 +17,9 @@ return new class extends Migration {
             $table->unsignedBigInteger('user_id')->nullable();
             $table->dateTime('due_date');
             $table->double("fine")->nullable();
+            $table->unsignedBigInteger('condition_before')->nullable();
+            $table->unsignedBigInteger('condition_after')->nullable();
             $table->dateTime('returned')->nullable();
-            $table->unsignedBigInteger('remark_id')->nullable();
             $table->timestamps();
 
             $table->foreign('copy_id')
@@ -26,19 +27,28 @@ return new class extends Migration {
                 ->on('material_copies')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
+
             $table->foreign('patron_id')
                 ->references('patron_id')
                 ->on('patrons')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
+
             $table->foreign('user_id')
                 ->references('user_id')
                 ->on('users')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
-            $table->foreign('remark_id')
-                ->references('remark_id')
-                ->on('remarks')
+
+            $table->foreign('condition_before')
+                ->references('condition_id')
+                ->on('conditions')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+
+            $table->foreign('condition_after')
+                ->references('condition_id')
+                ->on('conditions')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
         });

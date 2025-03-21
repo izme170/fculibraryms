@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('remarks', function (Blueprint $table) {
-            $table->id('remark_id');
-            $table->string('remark');
+        Schema::create('conditions', function (Blueprint $table) {
+            $table->id('condition_id');
+            $table->string('name')->unique();
             $table->boolean('show_in_forms')->default(1);
             $table->timestamps();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('remarks');
+        Schema::dropIfExists('conditions');
     }
 };

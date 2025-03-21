@@ -122,6 +122,7 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(BorrowMaterialController::class)->group(function () {
         Route::get('/borrowed-materials', 'index')->name('materials.borrowedMaterials');
+        Route::get('/borrowed-material/show/{material_id}', 'show');
         Route::get('/borrow-material', 'create')->name('materials.borrowMaterial');
         Route::post('/borrow-material/process', 'store');
         Route::get('/return-material', 'edit')->name('materials.returnMaterial');

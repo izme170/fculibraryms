@@ -23,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('fund_id')->nullable();
             $table->date('date_acquired')->nullable();
             $table->string('notes')->nullable();
+            $table->unsignedBigInteger('condition_id')->nullable();
             $table->boolean('is_available')->default(true);
             $table->boolean('is_archived')->default(false);
             $table->timestamps();
@@ -42,6 +43,12 @@ return new class extends Migration
             $table->foreign('fund_id')
                 ->references('fund_id')
                 ->on('funding_sources')
+                ->onUpdate('cascade')
+                ->onDelete('set null');
+
+            $table->foreign('condition_id')
+                ->references('condition_id')
+                ->on('conditions')
                 ->onUpdate('cascade')
                 ->onDelete('set null');
         });

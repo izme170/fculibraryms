@@ -11,7 +11,7 @@
 
             <div class="d-flex flex-row align-items-center gap-2">
                 <a href="?status=all" class="legend-btn {{ $status === 'all' ? 'active' : '' }}">All</a>
-                <a href="?status=available" class="legend-btn {{ $status === 'available' ? 'active' : '' }}">Available</a>
+                <a href="?status=returned" class="legend-btn {{ $status === 'returned' ? 'active' : '' }}">Returned</a>
                 <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
                 <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
             </div>
@@ -68,30 +68,34 @@
                         Status
                     </th>
                     <th scope="col">
-                        Remark
+                        Before
+                    </th>
+                    <th scope="col">
+                        After
                     </th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($borrowed_materials as $borrowed_material)
-                    <tr onclick="window.location.href='/borrowed_material/show/{{ $borrowed_material->borrow_id }}';"
+                    <tr onclick="window.location.href='/borrowed-material/show/{{ $borrowed_material->borrow_id }}';"
                         style="cursor:pointer;">
                         <td>{{ $borrowed_material->created_at->format('m/d/y h:i a') }}</td>
                         <td>{{ $borrowed_material->materialCopy->material->title }}</td>
                         <td>{{ $borrowed_material->patron->first_name }} {{ $borrowed_material->patron->last_name }}</td>
                         <td>{{ $borrowed_material->user->first_name }} {{ $borrowed_material->user->last_name }}</td>
                         <td>₱{{ $borrowed_material->fine }}</td>
-                        <td>
+                        <td class="d-flex gap-1">
                             <span
                                 class="badge
                                     {{ $borrowed_material->returned ? 'bg-success' : 'bg-warning' }}">
-                                {{ $borrowed_material->returned ? 'Returned' : 'Not Returned' }}
+                                {{ $borrowed_material->returned ? 'Returned' : 'Checked Out' }}
                             </span>
                             @if ($borrowed_material->fine)
                                 <span class="badge bg-danger">Overdue</span>
                             @endif
                         </td>
-                        <td>{{ $borrowed_material->remark->remark ?? 'No remark' }}</td>
+                        <td>{{ $borrowed_material->conditionBefore->name ?? 'Not indicated' }}</td>
+                        <td>{{ $borrowed_material->returned ?($borrowed_material->conditionAfter->name ?? 'Not indicated') : "Pending" }}</td>
                     </tr>
                 @endforeach
             </tbody>

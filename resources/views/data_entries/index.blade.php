@@ -18,8 +18,8 @@
                     role="tab" aria-controls="marketers" aria-selected="false">Marketers</button>
                 <button class="tab-link" id="purposes-tab" data-bs-toggle="pill" data-bs-target="#purposes" type="button"
                     role="tab" aria-controls="purposes" aria-selected="false">Purposes</button>
-                <button class="tab-link" id="remarks-tab" data-bs-toggle="pill" data-bs-target="#remarks" type="button"
-                    role="tab" aria-controls="remarks" aria-selected="false">Remarks</button>
+                <button class="tab-link" id="conditions-tab" data-bs-toggle="pill" data-bs-target="#conditions" type="button"
+                    role="tab" aria-controls="conditions" aria-selected="false">Conditions</button>
             </div>
 
 
@@ -169,23 +169,23 @@
                     </form>
                 </div>
 
-                <div class="tab-pane fade" id="remarks" role="tabpanel" aria-labelledby="remarks-tab" tabindex="0">
-                    <h1>Remarks</h1>
+                <div class="tab-pane fade" id="conditions" role="tabpanel" aria-labelledby="conditions-tab" tabindex="0">
+                    <h1>Conditions</h1>
                     <div class="list-container mb-3">
                         <table>
                             <tbody>
-                                @foreach ($remarks as $remark)
+                                @foreach ($conditions as $condition)
                                     <tr>
-                                        <td>{{ $remark->remark }} @livewire('remark-toggle', ['remark' => $remark])</td>
+                                        <td>{{ $condition->name }} @livewire('condition-toggle', ['condition' => $condition])</td>
                                     </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
-                    <form action="/remark/store" method="post">
+                    <form action="/condition/store" method="post">
                         @csrf
                         <div class="d-flex">
-                            <input type="text" name="remark" placeholder="Type new remark here..." required>
+                            <input type="text" name="condition" placeholder="Type new condition here..." required>
                             <button type="submit" class="btn-rectangle">Add</button>
                         </div>
                     </form>

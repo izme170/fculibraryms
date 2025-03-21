@@ -21,6 +21,8 @@ class MaterialCopy extends Model
         'vendor_id',
         'funding_source_id',
         'notes',
+        'condition_id',
+        'date_acquired',
         'is_available',
         'is_archived'
     ];
@@ -42,6 +44,10 @@ class MaterialCopy extends Model
             }
             return 'Borrowed';
         }
+    }
+
+    public function condition(){
+        return $this->belongsTo(Condition::class, 'condition_id');
     }
 
     public function material(){

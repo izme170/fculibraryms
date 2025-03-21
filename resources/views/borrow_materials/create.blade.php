@@ -16,8 +16,20 @@
                             <input type="text" id="library_id" name="library_id" autofocus>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label" for="material_rfid">Material RFID</label>
-                            <input type="text" id="material_rfid" name="material_rfid">
+                            <label class="form-label" for="rfid">Material RFID</label>
+                            <input type="text" id="rfid" name="rfid">
+                        </div>
+                        <div class="mb-3">
+                            <h3>Condition</h3>
+                            <div class="align-items-center">
+                                @foreach ($conditions as $condition)
+                                    <div class="d-flex align-items-center gap-2">
+                                        <input type="radio" id="{{ $condition->name }}" name="condition_id"
+                                            value="{{ $condition->condition_id }}">
+                                        <label for="{{ $condition->name }}">{{ $condition->name }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label" for="due">Due</label>
