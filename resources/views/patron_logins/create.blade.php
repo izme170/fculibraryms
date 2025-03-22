@@ -1,34 +1,37 @@
 @extends('layout.main')
 @section('patron-content')
+    <div class="mb-3 p-3 d-flex flex-row justify-content-start align-items-center gap-3" style="background-color: #0e1133">
+        <img src="{{ asset('img/fcu-logo.png') }}" alt="fcu-logo" width="100">
+        <h1 class="text-white">Library Patron Login</h1>
+    </div>
+
     <div class="container">
         <input type="text" id="rfid_input" name="library_id" placeholder="Scan RFID here">
         <input type="hidden" id="patron_id" name="patron_id">
-        <div>
-            <h1>Patron Login</h1>
+        <div class="mb-3">
+            <h2 id="message">Please Scan Your RFID</h2>
+        </div>
+        <div id="patron_details" style="display:none;">
+            <img id="patron_image" src="" alt="Patron Photo" width="150">
             <div class="mb-3">
-                <h1 id="message">Please Scan Your RFID</h1>
+                <label for="purpose_id">Purpose</label>
+                <select id="purpose_id" name="purpose_id">
+                    <option value="">Select Purpose</option>
+                    @foreach ($purposes as $purpose)
+                        <option value="{{ $purpose->purpose_id }}">{{ $purpose->purpose }}</option>
+                    @endforeach
+                </select>
             </div>
-            <div id="patron_details" style="display:none;">
-                <div class="mb-3">
-                    <label for="purpose_id">Purpose</label>
-                    <select id="purpose_id" name="purpose_id">
-                        <option value="">Select Purpose</option>
-                        @foreach ($purposes as $purpose)
-                            <option value="{{ $purpose->purpose_id }}">{{ $purpose->purpose }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="marketer_id">Marketer</label>
-                    <select id="marketer_id" name="marketer_id">
-                        <option value="">Select Marketer</option>
-                        @foreach ($marketers as $marketer)
-                            <option value="{{ $marketer->marketer_id }}">{{ $marketer->marketer }}</option>
-                        @endforeach
-                    </select>
-                </div>
-                <button id="submit_login" class="btn-simple mb-3">Submit</button>
+            <div class="mb-3">
+                <label for="marketer_id">Marketer</label>
+                <select id="marketer_id" name="marketer_id">
+                    <option value="">Select Marketer</option>
+                    @foreach ($marketers as $marketer)
+                        <option value="{{ $marketer->marketer_id }}">{{ $marketer->marketer }}</option>
+                    @endforeach
+                </select>
             </div>
+            <button id="submit_login" class="btn-simple mb-3">Submit</button>
         </div>
     </div>
 
@@ -68,9 +71,10 @@
                             .then(data => {
                                 console.log(data); // Debugging: log the response
                                 if (data.success) {
-                                    message.textContent = 'Welcome, ' + data.patron_name;
+                                    message.textContent = 'Welcome, ' + data.patron.name;
                                     // Assuming patron_id is a hidden input
-                                    document.getElementById('patron_id').value = data.patron_id;
+                                    document.getElementById('patron_id').value = data.patron.id;
+                                    document.getElementById("patron_image").src = data.patron.image;
                                     patron_details.style.display =
                                         "block"; // Show the patron details form
                                 } else {

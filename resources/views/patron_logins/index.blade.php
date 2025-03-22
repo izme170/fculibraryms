@@ -33,7 +33,7 @@
                     <tr>
                         <td>{{ $patron_login->login_at->format('d/m/y') }}</td>
                         <td><a class="shortcut-link" href="/patron/show/{{$patron_login->patron_id}}">{{ $patron_login->patron->first_name . ' ' . $patron_login->patron->last_name }}</a></td>
-                        <td>{{ $patron_login->purpose->purpose }}</td>
+                        <td>{{ $patron_login->purpose->purpose ?? 'Not indicated'}}</td>
                         <td>{{ $patron_login->marketer->marketer ?? 'None' }}</td>
                         <td>{{ $patron_login->login_at->format('g:i a') }}</td>
                         <td>{{ $patron_login->logout_at ? $patron_login->logout_at->format('g:i a') : 'Not logged out' }}

@@ -70,8 +70,15 @@ class PatronLoginController extends Controller
                 ]);
                 return response()->json([
                     'success' => true,
-                    'patron_name' => $patron->first_name . ' ' . $patron->last_name,
-                    'patron_id' => $patron->patron_id
+                    // 'patron_name' => $patron->first_name . ' ' . $patron->last_name,
+                    // 'patron_id' => $patron->patron_id
+                    'patron' => [
+                        'image' => $patron->patron_image
+                            ? asset('storage/' . $patron->patron_image)
+                            : asset('img/default-patron-image.png'),
+                        'name' => $patron->first_name . ' ' . $patron->last_name,
+                        'id' => $patron->patron_id
+                    ]
                 ]);
             } else {
                 return response()->json([

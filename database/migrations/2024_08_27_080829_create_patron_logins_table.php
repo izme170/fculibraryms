@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::create('patron_logins', function (Blueprint $table) {
             $table->id('login_id');
             $table->unsignedBigInteger('patron_id')->nullable();
-            $table->unsignedBigInteger('purpose_id')->nullable()->default(1);
+            $table->unsignedBigInteger('purpose_id')->nullable();
             $table->unsignedBigInteger('marketer_id')->nullable();
             $table->dateTime('login_at');
             $table->dateTime('logout_at')->nullable();
