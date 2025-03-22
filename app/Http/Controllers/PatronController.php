@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PatronExport;
-use App\Exports\UsersExport;
-use App\Mail\SendPatronQRCode;
 use App\Models\Activity;
 use App\Models\Adviser;
 use App\Models\BorrowedMaterial;
 use App\Models\Course;
 use App\Models\Department;
 use App\Models\Patron;
-use App\Models\PatronLogin;
 use App\Models\PatronType;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
