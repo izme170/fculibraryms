@@ -4,10 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\BorrowedMaterial;
 use App\Models\Department;
-use App\Models\Patron;
+use App\Models\Material;
+use App\Models\MaterialCopy;
 use App\Models\PatronLogin;
-use App\Models\PatronType;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,15 +17,18 @@ class ReportController extends Controller
         $request->merge([
             'year' => $request->input('year', now()->year),
             'month' => $request->input('month', null),
+            'limit' => $request->input('limit', '10')
         ]);
 
         $validated = $request->validate([
             'year' => 'required|integer|between:2000,' . now()->year,
             'month' => 'nullable|integer|between:1,12',
+            'limit' => 'required|integer|between:1,100'
         ]);
 
         $year = $validated['year'];
         $month = $validated['month'] ?? null;
+        $limit = $validated['limit'];
 
         // Base query for both top patrons, marketers, and departments
         $query = PatronLogin::whereYear('login_at', $year);
@@ -44,7 +46,7 @@ class ReportController extends Controller
             ->selectRaw('CONCAT(first_name, " ", last_name) AS full_name, COUNT(login_id) as logins')
             ->groupBy('patron_logins.patron_id', 'full_name')
             ->orderByDesc('logins')
-            ->limit(10)
+            ->limit($limit)
             ->get();
 
         // Get top marketers
@@ -52,7 +54,7 @@ class ReportController extends Controller
             ->selectRaw('marketers.marketer, COUNT(login_id) as marketerCounts')
             ->groupBy('marketers.marketer_id', 'marketers.marketer')
             ->orderByDesc('marketerCounts')
-            ->limit(10)
+            ->limit($limit)
             ->get();
 
         // Get top departments
@@ -81,7 +83,8 @@ class ReportController extends Controller
             'departmentNames',
             'departmentCounts',
             'year',
-            'month'
+            'month',
+            'limit'
         ));
     }
 
@@ -251,9 +254,84 @@ class ReportController extends Controller
         ));
     }
 
-    public function unreturnedMaterials(){
+    public function unreturnedMaterials()
+    {
         $unreturned_materials = BorrowedMaterial::orderBy('created_at')->whereNull('returned')->get();
 
         return view('reports.unreturned_materials', compact('unreturned_materials'));
+    }
+
+    public function borrowedMaterial()
+    {
+        // Most Borrowed Materials
+        $most_borrowed_materials = BorrowedMaterial::select('material_copies.material_id', DB::raw('COUNT(borrowed_materials.copy_id) as borrowed_count'))
+            ->join('material_copies', 'borrowed_materials.copy_id', '=', 'material_copies.copy_id')
+            ->groupBy('material_copies.material_id')
+            ->orderByDesc('borrowed_count')
+            ->limit(10)
+            ->get();
+
+        $material_ids = $most_borrowed_materials->pluck('material_id')->toArray();
+        $borrowed_counts = $most_borrowed_materials->pluck('borrowed_count')->toArray();
+        $materials = Material::whereIn('material_id', $material_ids)->get();
+
+        // Top Borrower Departments
+        $departmentData = BorrowedMaterial::join('patrons', 'borrowed_materials.patron_id', '=', 'patrons.patron_id')
+            ->join('departments', 'patrons.department_id', '=', 'departments.department_id')
+            ->select('departments.department', DB::raw('COUNT(borrowed_materials.copy_id) as count'))
+            ->groupBy('departments.department')
+            ->orderByDesc('count')
+            ->get();
+
+        $departmentNames = $departmentData->pluck('department')->toArray();
+        $departmentCounts = $departmentData->pluck('count')->toArray();
+
+        // Top Patron Borrowers
+        $topPatrons = BorrowedMaterial::join('patrons', 'borrowed_materials.patron_id', '=', 'patrons.patron_id')
+            ->selectRaw('CONCAT(patrons.first_name, " ", patrons.last_name) AS full_name, COUNT(borrowed_materials.copy_id) as borrowed_count')
+            ->groupBy('borrowed_materials.patron_id', 'full_name')
+            ->orderByDesc('borrowed_count')
+            ->limit(10)
+            ->get();
+
+        $patronNames = $topPatrons->pluck('full_name')->toArray();
+        $patronBorrowCounts = $topPatrons->pluck('borrowed_count')->toArray();
+
+        // Most Borrowed Material Categories
+        $categoryData = BorrowedMaterial::join('material_copies', 'borrowed_materials.copy_id', '=', 'material_copies.copy_id')
+            ->join('materials', 'material_copies.material_id', '=', 'materials.material_id')
+            ->join('categories', 'materials.category_id', '=', 'categories.category_id')
+            ->select('categories.category', DB::raw('COUNT(borrowed_materials.copy_id) as count'))
+            ->groupBy('categories.category')
+            ->orderByDesc('count')
+            ->get();
+
+        $categoryNames = $categoryData->pluck('category')->toArray();
+        $categoryCounts = $categoryData->pluck('count')->toArray();
+
+        // Most Borrowed Material Types
+        $typeData = BorrowedMaterial::join('material_copies', 'borrowed_materials.copy_id', '=', 'material_copies.copy_id')
+            ->join('materials', 'material_copies.material_id', '=', 'materials.material_id')
+            ->join('material_types', 'materials.type_id', '=', 'material_types.type_id')
+            ->select('material_types.name', DB::raw('COUNT(borrowed_materials.copy_id) as count'))
+            ->groupBy('material_types.name')
+            ->orderByDesc('count')
+            ->get();
+            
+        $typeNames = $typeData->pluck('name')->toArray();
+        $typeCounts = $typeData->pluck('count')->toArray();
+
+        return view('reports.borrowed_materials', compact(
+            'materials',
+            'borrowed_counts',
+            'departmentNames',
+            'departmentCounts',
+            'patronNames',
+            'patronBorrowCounts',
+            'categoryNames',
+            'categoryCounts',
+            'typeNames',
+            'typeCounts'
+        ));
     }
 }
