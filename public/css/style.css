@@ -211,16 +211,16 @@ select:focus, textarea:focus {
     border-radius: 0 0 15px 15px;
     background-color: var(--primary);
     color: var(--secondary);
-    height: 30px;
     transition: 0.2s;
     text-decoration: none;
     text-align: center;
+    padding: 5px;
 }
 
 .shortcut:hover {
-    background-color: var(--secondary);
-    color: var(--primary);
-    height: 40px;
+    background-color: #161a4d;
+    color: white;
+    padding: 10px;
 }
 
 .shortcut-link {

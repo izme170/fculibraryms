@@ -118,6 +118,9 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(ReportController::class)->group(function(){
         Route::get('/reports', 'index')->name('reports.index');
+        Route::get('/reports/login-statistics', 'loginStatistics')->name('reports.loginStatistics');
+        Route::get('/reports/monthly-login-statistics', [ReportController::class, 'monthlyLoginStatistics'])->name('reports.monthly_login_statistics');
+        Route::get('/reports/unreturned-materials', 'unreturnedMaterials')->name('reports.unreturnedMaterials');
     });
 
     Route::controller(BorrowMaterialController::class)->group(function () {

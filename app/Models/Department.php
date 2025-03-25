@@ -15,6 +15,17 @@ class Department extends Model
         'show_in_forms'
     ];
 
+    public function getDepartmentAcronymAttribute()
+    {
+        $departmentName = $this->department;
+        $words = explode(' ', $departmentName);
+        $ignoreWords = ['of', 'and', 'the', 'a', 'an', 'in'];
+
+        return implode('', array_map(function ($word) use ($ignoreWords) {
+            return (!in_array(strtolower($word), $ignoreWords) && isset($word[0])) ? strtoupper($word[0]) : '';
+        }, $words));
+    }
+
     public function patrons(){
         return $this->hasMany(Patron::class, 'department_id');
     }
