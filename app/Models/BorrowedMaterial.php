@@ -32,7 +32,7 @@ class BorrowedMaterial extends Model
 
     public function getFineAttribute()
     {
-        if (!is_null($this->attributes['fine'])) {
+        if (!is_null($this->attributes['fine'] ?? null)) {
             return $this->attributes['fine'];
         }
 

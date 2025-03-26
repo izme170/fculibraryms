@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\BorrowedMaterialsExport;
 use App\Models\Material;
 use App\Models\BorrowedMaterial;
 use App\Models\Condition;
@@ -10,6 +11,7 @@ use App\Models\Patron;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 use function PHPUnit\Framework\isNull;
 
@@ -20,6 +22,8 @@ class BorrowMaterialController extends Controller
     {
         $status = $request->query('status', 'all');
         $search = $request->query('search', '');
+        $startDate = $request->query('startDate', '');
+        $endDate = $request->query('endDate', '');
         $sort = $request->query('sort', 'created_at');
         $direction = $request->query('direction', 'desc');
 
@@ -41,8 +45,21 @@ class BorrowMaterialController extends Controller
             });
         }
 
-        $borrowed_materials = $query->orderBy($sort, $direction)->paginate(10);
-        return view('borrow_materials.index', compact(['borrowed_materials', 'search', 'status', 'sort', 'direction']));
+        if (!empty($startDate) || !empty($endDate)) {
+            $start = !empty($startDate) ? Carbon::parse($startDate)->startOfDay() : null;
+            $end = !empty($endDate) ? Carbon::parse($endDate)->endOfDay() : null;
+
+            if ($start && $end) {
+                $query->whereBetween('created_at', [$start, $end]);
+            } elseif ($start) {
+                $query->where('created_at', '>=', $start);
+            } elseif ($end) {
+                $query->where('created_at', '<=', $end);
+            }
+        }
+
+        $borrowed_materials = $query->orderBy($sort, $direction)->paginate(10)->appends(['search', 'status', 'sort', 'direction', 'startDate', 'endDate']);
+        return view('borrow_materials.index', compact(['borrowed_materials', 'search', 'status', 'sort', 'direction', 'startDate', 'endDate']));
     }
 
     public function show($id)
@@ -132,5 +149,18 @@ class BorrowMaterialController extends Controller
             return redirect()->back()->with('message_error', 'Material is not found in the Borrowed List');
         }
         return redirect()->back()->with('message_success', 'Material returned successfully');
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(
+            new BorrowedMaterialsExport(
+                $request->query('status', 'all'),
+                $request->query('search', ''),
+                $request->query('startDate', ''),
+                $request->query('endDate', '')
+            ),
+            'borrowed_materials.xlsx'
+        );
     }
 }

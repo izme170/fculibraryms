@@ -125,12 +125,14 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(BorrowMaterialController::class)->group(function () {
-        Route::get('/borrowed-materials', 'index')->name('materials.borrowedMaterials');
+        Route::get('/borrowed-materials', 'index')->name('borrowed-materials.index');
         Route::get('/borrowed-material/show/{material_id}', 'show');
-        Route::get('/borrow-material', 'create')->name('materials.borrowMaterial');
+        Route::get('/borrow-material', 'create')->name('borrowed-materials.borrowMaterial');
         Route::post('/borrow-material/process', 'store');
         Route::get('/return-material', 'edit')->name('materials.returnMaterial');
         Route::put('/return-material/process', 'update');
+        Route::get('/borrowed-materials/export', 'export')->name('borrowed-materials.export');
+
     });
 
     Route::controller(PatronLoginController::class)->group(function () {

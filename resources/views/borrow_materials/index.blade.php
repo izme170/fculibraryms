@@ -5,8 +5,15 @@
     @include('include.material_tabs')
     <div class="bg-white p-3" style="min-width: fit-content">
         <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+            <div>
+                <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#filterDate">Filter
+                    Date</button>
+                <a class="btn-simple" href="{{ route('borrowed-materials.export', request()->query()) }}">Export</a>
+            </div>
+
             <form method="GET" action="/borrowed-materials" id="filterForm" class="m-0">
-                <input type="text" name="search" class="form-control" placeholder="Search..." value="{{ $search }}">
+                <input type="text" name="search" class="form-control" placeholder="Search..."
+                    value="{{ $search }}">
             </form>
 
             <div class="d-flex flex-row align-items-center gap-2">
@@ -15,6 +22,8 @@
                 <a href="?status=borrowed" class="legend-btn {{ $status === 'borrowed' ? 'active' : '' }}">Borrowed</a>
                 <a href="?status=overdue" class="legend-btn {{ $status === 'overdue' ? 'active' : '' }}">Overdue</a>
             </div>
+
+            <a href="{{ route('borrowed-materials.index') }}" type="submit" class="btn">Show All</a>
         </div>
         <table class="table table-bordered">
             <thead class="table-dark">
@@ -94,8 +103,9 @@
                                 <span class="badge bg-danger">Overdue</span>
                             @endif
                         </td>
-                        <td>{{ $borrowed_material->conditionBefore->name ?? 'Not indicated' }}</td>
-                        <td>{{ $borrowed_material->returned ?($borrowed_material->conditionAfter->name ?? 'Not indicated') : "Pending" }}</td>
+                        <td>{{ $borrowed_material->conditionBefore->name ?? 'Not Specified' }}</td>
+                        <td>{{ $borrowed_material->returned ? $borrowed_material->conditionAfter->name ?? 'Not specified' : 'Pending' }}
+                        </td>
                     </tr>
                 @endforeach
             </tbody>
@@ -103,6 +113,7 @@
         <div class="mt-4 d-flex justify-content-center">
             {{ $borrowed_materials->links() }}
         </div>
+        @include('modals.filter_date')
     </div>
     <script>
         // Get all legend buttons
