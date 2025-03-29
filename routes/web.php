@@ -13,7 +13,9 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Models\MaterialCopy;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 
 Route::get('/', function () {
     return view('login');
@@ -50,7 +52,7 @@ Route::middleware('adminMiddleware')->group(function () {
         Route::put('/user/toggle/status/{id}', 'toggleStatus');
     });
 
-    Route::controller(RoleController::class)->group(function(){
+    Route::controller(RoleController::class)->group(function () {
         Route::get('/roles', 'index')->name('users.roles');
         Route::post('/role/store', 'store');
         Route::put('/role/update/{id}', 'update');
@@ -104,7 +106,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/materials/export', 'export');
     });
 
-    Route::controller(MaterialCopyController::class)->group(function (){
+    Route::controller(MaterialCopyController::class)->group(function () {
         Route::get('/material-copies', 'index')->name('material-copies.index');
         Route::get('/material-copies/archives', 'archives')->name('material-copies.archives');
         Route::get('/copy/show/{material_id}', 'show');
@@ -116,12 +118,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/material/copy/update_rfid/{id}', 'updateRFID');
     });
 
-    Route::controller(ReportController::class)->group(function(){
+    Route::controller(ReportController::class)->group(function () {
         Route::get('/reports', 'index')->name('reports.index');
         Route::get('/reports/login-statistics', 'loginStatistics')->name('reports.loginStatistics');
-        Route::get('/reports/monthly-login-statistics', [ReportController::class, 'monthlyLoginStatistics'])->name('reports.monthlyLoginStatistics');
+        Route::get('/reports/monthly-login-statistics', 'monthlyLoginStatistics')->name('reports.monthlyLoginStatistics');
         Route::get('/reports/unreturned-materials', 'unreturnedMaterials')->name('reports.unreturnedMaterials');
         Route::get('/reports/borrowed-materials', 'borrowedMaterial')->name('reports.borrowedMaterials');
+        Route::post('/reports/export/top-library-users', 'exportTopLibraryUsers')->name('export.topLibraryUsers');
+        Route::post('/reports/export/top-marketers', 'exportTopMarketers')->name('export.topMarketers');
+        Route::post('/reports/export/top-departments', 'exportTopDepartments')->name('export.topDepartments');
     });
 
     Route::controller(BorrowMaterialController::class)->group(function () {
@@ -132,7 +137,6 @@ Route::middleware('auth')->group(function () {
         Route::get('/return-material', 'edit')->name('materials.returnMaterial');
         Route::put('/return-material/process', 'update');
         Route::get('/borrowed-materials/export', 'export')->name('borrowed-materials.export');
-
     });
 
     Route::controller(PatronLoginController::class)->group(function () {

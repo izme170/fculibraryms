@@ -7,6 +7,7 @@ use App\Models\Department;
 use App\Models\Material;
 use App\Models\MaterialCopy;
 use App\Models\PatronLogin;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -317,7 +318,7 @@ class ReportController extends Controller
             ->groupBy('material_types.name')
             ->orderByDesc('count')
             ->get();
-            
+
         $typeNames = $typeData->pluck('name')->toArray();
         $typeCounts = $typeData->pluck('count')->toArray();
 
@@ -333,5 +334,59 @@ class ReportController extends Controller
             'typeNames',
             'typeCounts'
         ));
+    }
+
+    public function exportTopLibraryUsers(Request $request)
+    {
+        $title = $request->input('title', 'Top Departments');
+        $labels = json_decode($request->input('labels', '[]'), true); // Decode JSON to array
+        $values = json_decode($request->input('values', '[]'), true); // Decode JSON to array
+        $chartImage = $request->input('chartImage'); // Base64 chart image
+
+        $data = [
+            'labels' => $labels,
+            'values' => $values,
+            'title' => $title,
+            'chartImage' => $chartImage, // Pass chart image to the view
+        ];
+
+        $pdf = Pdf::loadView('reports.pdf_chart', $data);
+        return $pdf->download('top_library_users.pdf');
+    }
+
+    public function exportTopMarketers(Request $request)
+    {
+        $title = $request->input('title', 'Top Departments');
+        $labels = json_decode($request->input('labels', '[]'), true); // Decode JSON to array
+        $values = json_decode($request->input('values', '[]'), true); // Decode JSON to array
+        $chartImage = $request->input('chartImage'); // Base64 chart image
+
+        $data = [
+            'labels' => $labels,
+            'values' => $values,
+            'title' => $title,
+            'chartImage' => $chartImage, // Pass chart image to the view
+        ];
+
+        $pdf = Pdf::loadView('reports.pdf_chart', $data);
+        return $pdf->download('top_marketers.pdf');
+    }
+
+    public function exportTopDepartments(Request $request)
+    {
+        $title = $request->input('title', 'Top Departments');
+        $labels = json_decode($request->input('labels', '[]'), true); // Decode JSON to array
+        $values = json_decode($request->input('values', '[]'), true); // Decode JSON to array
+        $chartImage = $request->input('chartImage'); // Base64 chart image
+
+        $data = [
+            'labels' => $labels,
+            'values' => $values,
+            'title' => $title,
+            'chartImage' => $chartImage, // Pass chart image to the view
+        ];
+
+        $pdf = Pdf::loadView('reports.pdf_chart', $data);
+        return $pdf->download('top_departments.pdf');
     }
 }
