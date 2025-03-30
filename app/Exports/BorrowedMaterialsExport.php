@@ -3,6 +3,7 @@
 namespace App\Exports;
 
 use App\Models\BorrowedMaterial;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
@@ -18,30 +19,30 @@ class BorrowedMaterialsExport implements FromQuery, WithHeadings, WithMapping
     {
         $this->status = $status;
         $this->search = $search;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
+        $this->startDate = !empty($startDate) ? Carbon::parse($startDate)->startOfDay() : null;
+        $this->endDate = !empty($endDate) ? Carbon::parse($endDate)->endOfDay() : null;
     }
 
     public function query()
     {
         return BorrowedMaterial::query()
-            ->when($this->status === 'returned', fn($q) => $q->whereNotNull('returned'))
-            ->when($this->status === 'borrowed', fn($q) => $q->whereNull('returned'))
-            ->when($this->status === 'overdue', fn($q) => $q->whereNull('returned')->where('due_date', '<', now()))
-            ->when(!empty($this->search), function ($q) {
-                $q->whereHas('materialCopy.material', function ($q) {
-                    $q->where('title', 'like', "%{$this->search}%");
-                })->orWhereHas('patron', function ($q) {
-                    $q->where('first_name', 'like', "%{$this->search}%")
+            ->when($this->status === 'returned', fn($query) => $query->whereNotNull('returned'))
+            ->when($this->status === 'borrowed', fn($query) => $query->whereNull('returned'))
+            ->when($this->status === 'overdue', fn($query) => $query->whereNull('returned')->where('due_date', '<', now()))
+            ->when(!empty($this->search), function ($query) {
+                $query->whereHas('materialCopy.material', function ($query) {
+                    $query->where('title', 'like', "%{$this->search}%");
+                })->orWhereHas('patron', function ($query) {
+                    $query->where('first_name', 'like', "%{$this->search}%")
                         ->orWhere('last_name', 'like', "%{$this->search}%");
-                })->orWhereHas('user', function ($q) {
-                    $q->where('first_name', 'like', "%{$this->search}%")
+                })->orWhereHas('user', function ($query) {
+                    $query->where('first_name', 'like', "%{$this->search}%")
                         ->orWhere('last_name', 'like', "%{$this->search}%");
                 });
             })
-            ->when(!empty($this->startDate) && empty($this->endDate), fn($q) => $q->where('created_at', '>=', $this->startDate))
-            ->when(empty($this->startDate) && !empty($this->endDate), fn($q) => $q->where('created_at', '<=', $this->endDate))
-            ->when(!empty($this->startDate) && !empty($this->endDate), fn($q) => $q->whereBetween('created_at', [$this->startDate, $this->endDate]));
+            ->when(!empty($this->startDate) && empty($this->endDate), fn($query) => $query->where('created_at', '>=', $this->startDate))
+            ->when(empty($this->startDate) && !empty($this->endDate), fn($query) => $query->where('created_at', '<=', $this->endDate))
+            ->when(!empty($this->startDate) && !empty($this->endDate), fn($query) => $query->whereBetween('created_at', [$this->startDate, $this->endDate]));
     }
 
     public function headings(): array

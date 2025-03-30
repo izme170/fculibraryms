@@ -141,5 +141,6 @@ Route::middleware('auth')->group(function () {
 
     Route::controller(PatronLoginController::class)->group(function () {
         Route::get('/patron-logins', 'index')->name('patron-logins.index');
+        Route::get('/patron-logins/export', 'export')->name('patron-logins.export');
     });
 });

@@ -1,4 +1,5 @@
 @extends('layout.main')
+@extends('modals.filter_date')
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
@@ -113,7 +114,6 @@
         <div class="mt-4 d-flex justify-content-center">
             {{ $borrowed_materials->links() }}
         </div>
-        @include('modals.filter_date')
     </div>
     <script>
         // Get all legend buttons

@@ -6,6 +6,6 @@
         <a class="nav-link {{ request()->is('roles') ? 'active' : 'text-black' }}" href="{{ route('users.roles') }}">Roles</a>
     </li>
     <li class="nav-item rounded-top">
-        <a class="nav-link {{ request()->is('users/archives') ? 'active' : 'text-black' }}" href="{{ route('users.archives') }}">Archives</a>
+        <a class="nav-link {{ request()->is('users/archives') ? 'active' : 'text-black' }}" href="{{ route('users.archives') }}">Archived Users</a>
     </li>
 </ul>

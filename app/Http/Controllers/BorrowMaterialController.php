@@ -24,6 +24,8 @@ class BorrowMaterialController extends Controller
         $search = $request->query('search', '');
         $startDate = $request->query('startDate', '');
         $endDate = $request->query('endDate', '');
+        $startDate = !empty($startDate) ? Carbon::parse($startDate)->startOfDay() : null;
+        $endDate = !empty($endDate) ? Carbon::parse($endDate)->endOfDay() : null;
         $sort = $request->query('sort', 'created_at');
         $direction = $request->query('direction', 'desc');
 
