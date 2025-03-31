@@ -472,4 +472,112 @@ class MaterialController extends Controller
         $materials = $query->paginate(15);
         return view('materials.archives', compact('materials', 'search'));
     }
+
+    public function opac(Request $request){
+        $status = $request->query('status', 'all');
+        $category = $request->query('category', 'all');
+        $search = $request->query('search', '');
+        $sort = $request->query('sort', 'title');
+        $direction = $request->query('direction', 'asc');
+        
+        // Create the query to get materials
+        $query = Material::with(['category', 'authors', 'editors', 'illustrators', 'subjects', 'translators', 'materialCopies'])
+            ->where('is_archived', '=', false);
+
+        //Filter the material if it has one copy available, borrowed, or overdue
+        if ($status !== 'all') {
+            $query->where(function ($query) use ($status) {
+                if ($status === 'available') {
+                    $query->whereHas('materialCopies', function ($subQuery) {
+                        $subQuery->where('is_available', true);
+                    });
+                } elseif ($status === 'borrowed') {
+                    $query->whereHas('materialCopies', function ($subQuery) {
+                        $subQuery->where('is_available', false)->whereHas('borrowedCopies', function ($subQuery) {
+                            $subQuery->whereNull('returned');
+                        });
+                    });
+                } elseif ($status === 'overdue') {
+                    $query->whereHas('materialCopies', function ($subQuery) {
+                        $subQuery->where('is_available', false)->whereHas('borrowedCopies', function ($subQuery) {
+                            $subQuery->where('due_date', '<', now())
+                                ->whereNull('returned');
+                        });
+                    });
+                }
+            });
+        }
+
+        // Apply the category filter if set
+        if ($category !== 'all') {
+            $query->where('category_id', $category);
+        }
+
+        // Apply the search filter if set
+        if (!empty($search)) {
+            $query->where(function ($query) use ($search) {
+                $query->where('materials.title', 'like', "%{$search}%")
+                    ->orWhereHas('authors', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('editors', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('illustrators', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('translators', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('subjects', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhereHas('publisher', function ($subQuery) use ($search) {
+                        $subQuery->where('name', 'like', "%{$search}%");
+                    })
+                    ->orWhere('isbn', 'like', "%{$search}%")
+                    ->orWhere('issn', 'like', "%{$search}%")
+                    ->orWhere('publication_year', 'like', "%{$search}%")
+                    ->orWhere('edition', 'like', "%{$search}%")
+                    ->orWhere('volume', 'like', "%{$search}%");
+            });
+        }
+
+        // Get the materials with pagination
+        $materials = $query->orderBy($sort, $direction)->paginate(15)->appends([
+            'status' => $status,
+            'category' => $category,
+            'search' => $search,
+            'sort' => $sort,
+            'direction' => $direction
+        ]);
+
+        // Get all categories for the filter dropdown
+        $categories = Category::orderBy('category')->get();
+
+        // Get all borrowed materials
+        $borrowed_materials = BorrowedMaterial::all()->keyBy('material_id');
+
+        // Compute status for each material
+        $materials->each(function ($material) use ($borrowed_materials) {
+            // Check if the material is available
+            if ($material->is_available) {
+                $material->status = 'available';
+            } else {
+                // Find if the material is borrowed and check the status
+                $borrowed_material = $borrowed_materials->get($material->material_id);
+
+                // Check if the material is borrowed and returned
+                if ($borrowed_material && $borrowed_material->returned) {
+                    $material->status = 'borrowed';
+                } else {
+                    // Check if it's overdue or just borrowed
+                    $dueDate = $borrowed_material ? Carbon::parse($borrowed_material->due_date) : null;
+                    $material->status = $dueDate && Carbon::now()->gt($dueDate) ? 'overdue' : 'borrowed';
+                }
+            }
+        });
+
+        return view('OPAC.index', compact('materials', 'categories', 'status', 'category', 'search', 'sort', 'direction'));
+    }
 }

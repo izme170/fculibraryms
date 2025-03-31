@@ -34,10 +34,11 @@
                     <!-- Status filter/legend -->
                     <div class="d-flex flex-row align-items-center gap-2">
                         @foreach (['all', 'available', 'borrowed', 'overdue'] as $item)
-                        <a href="?status={{ $item }}" class="legend-btn {{ $status === $item ? 'active' : '' }}">
-                            {{ ucfirst($item) }}
-                        </a>
-                    @endforeach
+                            <a href="?status={{ $item }}"
+                                class="legend-btn {{ $status === $item ? 'active' : '' }}">
+                                {{ ucfirst($item) }}
+                            </a>
+                        @endforeach
                         <div class="dropdown">
                             <button class="btn text-white dropdown-toggle" style="background-color: #0E1133" type="button"
                                 data-bs-toggle="dropdown" aria-expanded="false">
@@ -46,7 +47,7 @@
                             <ul class="dropdown-menu">
                                 <li>
                                     <a class="dropdown-item"
-                                        href="?sort=title&direction={{ $direction === 'asc' && $sort === 'title' ? 'desc' : 'asc' }}">
+                                        href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'direction' => $direction === 'asc' && $sort === 'title' ? 'desc' : 'asc']) }}">
                                         Title
                                         @if ($sort === 'title')
                                             <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
@@ -119,38 +120,6 @@
                 </div>
             </a>
         @endforeach
-        {{-- <div class="d-flex flex-column gap-3 mt-3 justify-content-center">
-            @foreach ($materials as $material)
-                <a class="card-list text-decoration-none" href="/material/show/{{ $material->material_id }}"
-                    data-status="{{ $material->status }}">
-                    <div class="indicator-container">
-                        <div class="status-indicator {{ $material->status }}"></div>
-                    </div>
-                    <img class="img" src="{{ $material->material_image ? asset('storage/' . $material->material_image) : asset('img/default-material-image.png') }}" alt="">
-                    <div class="text">
-                        <p class="h3">{{ $material->title }}</p>
-                        <p class="p">{{ $material->accession_number }}</p>
-                        <p class="p">Author(s): {{$material->authors->pluck('name')->implode(', ')}}</p>
-                        <p class="p">Isbn: {{ $material->isbn }}</p>
-                        <p class="p">Call Number: {{ $material->call_number }}</p>
-                    </div>
-                    <div class="text">
-                        <p class="p">Category: {{ $material->category->category}}</p>
-                        <p class="p">Editors(s): {{$material->editors->pluck('name')->implode(', ')}}</p>
-                        <p class="p">Illustrator(s): {{$material->illustrators->pluck('name')->implode(', ')}}</p>
-                        <p class="p">Translator(s): {{$material->translators->pluck('name')->implode(', ')}}</p>
-                    </div>
-                    <div class="text">
-                        <p class="p">Publisher: {{ $material->publisher }}</p>
-                        <p class="p">Publication Date: {{ $material->publication_date }}</p>
-                        <p class="p">Edition: {{$material->edition}}</p>
-                        <p class="p">Volume: {{ $material->volume }}</p>
-                        <p class="p">Pages: {{ $material->pages}}</p>
-                    </div>
-                </a>
-            @endforeach
-        </div> --}}
-
         {{-- pagination --}}
         <div class="fixed-bottom mt-4 d-flex justify-content-center">
             {{ $materials->links() }}
@@ -165,33 +134,5 @@
             // Get the form by its ID and submit it
             document.getElementById('filterForm').submit();
         });
-
-        // // Get all legend buttons
-        // const legendButtons = document.querySelectorAll('.legend-btn');
-
-        // // Add event listener to each button
-        // legendButtons.forEach(button => {
-        //     button.addEventListener('click', function() {
-        //         // Get the status from the data-status attribute
-        //         const status = this.getAttribute('data-status');
-
-        //         // Remove 'active' class from all buttons
-        //         legendButtons.forEach(btn => btn.classList.remove('active'));
-
-        //         // Add 'active' class to the clicked button
-        //         this.classList.add('active');
-
-        //         // Update the status in the form and submit it
-        //         const form = document.getElementById('filterForm');
-        //         const statusInput = document.createElement('input');
-        //         statusInput.type = 'hidden';
-        //         statusInput.name = 'status';
-        //         statusInput.value = status;
-
-        //         // Append the status input to the form and submit the form
-        //         form.appendChild(statusInput);
-        //         form.submit();
-        //     });
-        // });
     </script>
 @endsection
