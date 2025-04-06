@@ -91,6 +91,7 @@ Route::middleware('auth')->group(function () {
         Route::put('/patron/new_rfid/{id}', 'newRFID');
         Route::put('/patron/update-image/{id}', 'updateImage');
         Route::get('/patrons/export', 'export')->name('patrons.export');
+        Route::post('/patrons/import', 'import')->name('patrons.import');
         Route::get('/api/courses/{department}', 'getCoursesByDepartment');
     });
 
@@ -106,6 +107,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/materials/archives', 'archives')->name('materials.archives');
         Route::get('/material/unarchive/{id}', 'unarchive')->name('materials.unarchive');
         Route::get('/materials/export', 'export');
+        Route::post('/materials/import', 'import')->name('materials.import');
     });
 
     Route::controller(MaterialCopyController::class)->group(function () {

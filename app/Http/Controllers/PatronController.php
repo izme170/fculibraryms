@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PatronExport;
+use App\Imports\PatronImport;
 use App\Models\Activity;
 use App\Models\Adviser;
 use App\Models\BorrowedMaterial;
@@ -338,5 +339,16 @@ class PatronController extends Controller
     public function export()
     {
         return Excel::download(new PatronExport, 'patrons-library-management-system.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+
+        Excel::import(new PatronImport, $request->file('file'));
+
+        return back()->with('success', 'User imported successfully');
     }
 }

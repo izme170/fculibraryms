@@ -1,4 +1,5 @@
 @extends('layout.main')
+@extends('modals.material.import')
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
@@ -9,6 +10,7 @@
                 <a class="btn-simple" href="/material/create">Add material</a>
                 <a class="btn-simple" href="/borrow-material">Borrow Material</a>
                 <a class="btn-simple" href="/return-material">Return Material</a>
+                <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#importMaterials">Import</button>
                 <a class="btn-simple" href="/materials/export">Export</a>
             </div>
             <div>

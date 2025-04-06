@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\MaterialsExport;
+use App\Imports\MaterialImport;
 use App\Models\Activity;
 use App\Models\Author;
 use App\Models\Material;
@@ -430,6 +431,17 @@ class MaterialController extends Controller
     public function export()
     {
         return Excel::download(new MaterialsExport, 'materials-library-management-system' . now() . '.xlsx');
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv,ods',
+        ]);
+
+        Excel::import(new MaterialImport, $request->file('file'));
+
+        return redirect()->back()->with('success', 'Materials imported successfully.');
     }
 
     public function archives(Request $request)

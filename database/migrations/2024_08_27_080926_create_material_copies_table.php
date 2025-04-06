@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('copy_id');
             $table->unsignedBigInteger('material_id')->nullable();
             $table->string('copy_number')->unique();
-            $table->string('rfid')->unique();
+            $table->string('rfid')->unique()->nullable();
             $table->string('accession_number')->nullable();
             $table->string('call_number')->nullable();
             $table->string('price')->nullable();
