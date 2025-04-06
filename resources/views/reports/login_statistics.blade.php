@@ -4,8 +4,10 @@
     @include('include.topbar')
     @include('include.report_tabs')
     <div class="container">
-        <h5 class="mb-3">Login Statistics – {{ \Carbon\Carbon::createFromDate($year, $month)->format('F Y') }}</h5>
-    
+        <h5 class="mb-3">Login Statistics {{ \Carbon\Carbon::createFromDate($year, $month)->format('F Y') }}</h5>
+        <a href="{{ route('reports.login_statistics.export', ['year' => $year, 'month' => $month]) }}" class="btn-simple">
+            Export
+        </a>
         <form method="GET">
             <div class="d-flex gap-3" style="width: 500px">
                 <select name="year">

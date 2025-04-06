@@ -1,4 +1,3 @@
-{{-- filepath: c:\xampp\htdocs\fculibraryms\resources\views\reports\pdf_chart.blade.php --}}
 <!DOCTYPE html>
 <html>
 <head>

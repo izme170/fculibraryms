@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LoginStatisticsExport;
 use App\Models\BorrowedMaterial;
 use App\Models\Department;
 use App\Models\Material;
@@ -10,6 +11,7 @@ use App\Models\PatronLogin;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
 {
@@ -388,5 +390,45 @@ class ReportController extends Controller
 
         $pdf = Pdf::loadView('reports.pdf_chart', $data);
         return $pdf->download('top_departments.pdf');
+    }
+
+    public function exportLoginStatistics(Request $request)
+    {
+        $year = (int) $request->input('year', now()->year);
+        $month = (int) $request->input('month', now()->month);
+
+        // Fetch the data (this should match the data used in the view)
+        $daysInMonth = now()->setYear($year)->setMonth($month)->daysInMonth;
+        $departments = \App\Models\Department::all();
+        $reportData = [];
+        $rowTotals = [];
+        $dailyTotals = array_fill(1, $daysInMonth, 0);
+
+        foreach ($departments as $department) {
+            $row = [];
+            $total = 0;
+            for ($day = 1; $day <= $daysInMonth; $day++) {
+                $count = \App\Models\PatronLogin::whereYear('login_at', $year)
+                    ->whereMonth('login_at', $month)
+                    ->whereDay('login_at', $day)
+                    ->whereHas('patron', function ($query) use ($department) {
+                        $query->where('department_id', $department->department_id);
+                    })
+                    ->count();
+                $row[$day] = $count;
+                $total += $count;
+                $dailyTotals[$day] += $count;
+            }
+            $reportData[$department->departmentAcronym] = $row;
+            $rowTotals[$department->departmentAcronym] = $total;
+        }
+
+        $grandTotal = array_sum($rowTotals);
+
+        // Export the data
+        return Excel::download(
+            new LoginStatisticsExport($reportData, $rowTotals, $dailyTotals, $grandTotal, $year, $month, $daysInMonth),
+            "login_statistics_{$year}_{$month}.xlsx"
+        );
     }
 }

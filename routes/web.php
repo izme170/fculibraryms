@@ -131,6 +131,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/reports/export/top-library-users', 'exportTopLibraryUsers')->name('export.topLibraryUsers');
         Route::post('/reports/export/top-marketers', 'exportTopMarketers')->name('export.topMarketers');
         Route::post('/reports/export/top-departments', 'exportTopDepartments')->name('export.topDepartments');
+        Route::get('/reports/login-statistics/export', [ReportController::class, 'exportLoginStatistics'])->name('reports.login_statistics.export');
+
     });
 
     Route::controller(BorrowMaterialController::class)->group(function () {
