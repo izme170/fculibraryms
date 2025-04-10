@@ -7,6 +7,10 @@
 
     <div class="bg-white p-3 rounded" style="min-width: fit-content">
         <h3 class="mb-3">Most Borrowed Materials</h3>
+        <button class="btn-simple mb-3"
+            onclick='exportChart("Most Borrowed Materials", @json($materials->pluck('title')->toArray()), @json($borrowed_counts), "mostBorrowedMaterialsChart")'>
+            Export
+        </button>
         <div class="chart-container mt-4" style="position: relative; width:600px; margin: 0 auto;">
             <canvas id="mostBorrowedMaterialsChart"></canvas>
         </div>
@@ -30,6 +34,10 @@
         </table>
 
         <h3 class="mt-4">Most Frequently Borrowed Categories</h3>
+        <button class="btn-simple mb-3"
+            onclick='exportChart("Most Frequently Borrowed Categories", @json($categoryNames), @json($categoryCounts), "mostBorrowedCategoriesChart")'>
+            Export
+        </button>
         <div class="chart-container mt-4" style="position: relative; width:800px; margin: 0 auto;">
             <canvas id="mostBorrowedCategoriesChart"></canvas>
         </div>
@@ -53,6 +61,10 @@
         </table>
 
         <h3 class="mt-4">Top Borrowing Departments</h3>
+        <button class="btn-simple mb-3"
+            onclick='exportChart("Top Borrowing Departments", @json($departmentNames), @json($departmentCounts), "topBorrowerDepartmentsChart")'>
+            Export
+        </button>
         <div class="chart-container mt-4" style="position: relative; width:800px; margin: 0 auto;">
             <canvas id="topBorrowerDepartmentsChart"></canvas>
         </div>
@@ -76,6 +88,10 @@
         </table>
 
         <h3 class="mt-4">Top Borrowing Patrons</h3>
+        <button class="btn-simple mb-3"
+            onclick='exportChart("Top Borrowing Patrons", @json($patronNames), @json($patronBorrowCounts), "topPatronBorrowersChart")'>
+            Export
+        </button>
         <div class="chart-container mt-4" style="position: relative; width:800px; margin: 0 auto;">
             <canvas id="topPatronBorrowersChart"></canvas>
         </div>
@@ -99,6 +115,10 @@
         </table>
 
         <h3 class="mt-4">Most Borrowed Material Types</h3>
+        <button class="btn-simple mb-3"
+            onclick='exportChart("Most Borrowed Material Types", @json($typeNames), @json($typeCounts), "mostBorrowedTypesChart")'>
+            Export
+        </button>
         <div class="chart-container mt-4" style="position: relative; width:800px; margin: 0 auto;">
             <canvas id="mostBorrowedTypesChart"></canvas>
         </div>
@@ -319,5 +339,33 @@
                 }
             });
         });
+    </script>
+
+    <script>
+        function exportChart(title, labels, values, chartId) {
+            const chartElement = Chart.getChart(chartId); // Get the Chart.js instance
+            if (!chartElement) {
+                console.error(`Chart with id "${chartId}" not found.`);
+                return;
+            }
+
+            const chartImage = chartElement.toBase64Image(); // Get the base64-encoded image
+
+            // Send the chart image and table data to the server
+            const formData = new FormData();
+            formData.append('title', title)
+            formData.append('labels', JSON.stringify(labels));
+            formData.append('values', JSON.stringify(values));
+            formData.append('chartImage', chartImage);
+
+            fetch(`{{ route('reports.borrowed_materials.export') }}`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token for security
+                    },
+                })
+                .catch((error) => console.error('Error exporting chart and table:', error));
+        }
     </script>
 @endsection

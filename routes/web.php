@@ -132,7 +132,10 @@ Route::middleware('auth')->group(function () {
         Route::post('/reports/export/top-marketers', 'exportTopMarketers')->name('export.topMarketers');
         Route::post('/reports/export/top-departments', 'exportTopDepartments')->name('export.topDepartments');
         Route::get('/reports/login-statistics/export', [ReportController::class, 'exportLoginStatistics'])->name('reports.login_statistics.export');
-
+        Route::get('/reports/login-statistics-data/export', [ReportController::class, 'exportLoginStatisticsData'])->name('reports.login_statistics_data.export');
+        Route::get('/reports/monthly-login-statistics/export', [ReportController::class, 'exportMonthlyLoginStatistics'])->name('reports.monthly_login_statistics.export');
+        Route::get('/reports/unreturned-materials/export', [ReportController::class, 'exportUnreturnedMaterials'])->name('reports.unreturned_materials.export');
+        Route::post('/reports/borrowed-materials/export', [ReportController::class, 'exportBorrowedMaterials'])->name('reports.borrowed_materials.export');
     });
 
     Route::controller(BorrowMaterialController::class)->group(function () {

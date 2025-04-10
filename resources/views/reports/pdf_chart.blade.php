@@ -41,7 +41,7 @@
             <tr>
                 <th>#</th>
                 <th>Name</th>
-                <th>Logins</th>
+                <th>Count</th>
             </tr>
         </thead>
         <tbody>

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\LoginStatisticsDataExport;
 use App\Exports\LoginStatisticsExport;
+use App\Exports\MonthlyLoginStatisticsExport;
+use App\Exports\UnreturnedMaterialsExport;
 use App\Models\BorrowedMaterial;
 use App\Models\Department;
 use App\Models\Material;
-use App\Models\MaterialCopy;
 use App\Models\PatronLogin;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -397,7 +399,7 @@ class ReportController extends Controller
         $year = (int) $request->input('year', now()->year);
         $month = (int) $request->input('month', now()->month);
 
-        // Fetch the data (this should match the data used in the view)
+        // Fetch the data
         $daysInMonth = now()->setYear($year)->setMonth($month)->daysInMonth;
         $departments = \App\Models\Department::all();
         $reportData = [];
@@ -430,5 +432,80 @@ class ReportController extends Controller
             new LoginStatisticsExport($reportData, $rowTotals, $dailyTotals, $grandTotal, $year, $month, $daysInMonth),
             "login_statistics_{$year}_{$month}.xlsx"
         );
+    }
+
+    public function exportLoginStatisticsData(Request $request)
+    {
+        $year = (int) $request->input('year', now()->year);
+        $month = (int) $request->input('month', now()->month);
+
+        return Excel::download(new LoginStatisticsDataExport($year, $month), "patron_logins_{$year}_{$month}.xlsx");
+    }
+
+    public function exportMonthlyLoginStatistics(Request $request)
+    {
+        $year = (int) $request->input('year', now()->year);
+
+        // Fetch the data
+        $departments = \App\Models\Department::all();
+        $reportData = [];
+        $monthlyTotals = array_fill(1, 12, 0);
+        $rowTotals = [];
+
+        foreach ($departments as $department) {
+            $row = [];
+            $rowTotal = 0;
+
+            for ($month = 1; $month <= 12; $month++) {
+                $count = \App\Models\PatronLogin::whereYear('login_at', $year)
+                    ->whereMonth('login_at', $month)
+                    ->whereHas('patron', function ($q) use ($department) {
+                        $q->where('type_id', 1) // Student only
+                            ->where('department_id', $department->department_id);
+                    })->count();
+
+                $row[$month] = $count;
+                $monthlyTotals[$month] += $count;
+                $rowTotal += $count;
+            }
+
+            $reportData[$department->department] = $row;
+            $rowTotals[$department->department] = $rowTotal;
+        }
+
+        $grandTotal = array_sum($rowTotals);
+
+        // Export the data
+        return Excel::download(
+            new MonthlyLoginStatisticsExport($reportData, $rowTotals, $monthlyTotals, $grandTotal, $year),
+            "monthly_login_statistics_{$year}.xlsx"
+        );
+    }
+
+    public function exportUnreturnedMaterials()
+    {
+        $unreturnedMaterials = \App\Models\BorrowedMaterial::whereNull('returned')
+            ->with(['patron.type', 'patron.department', 'materialCopy.material.materialType'])
+            ->get();
+
+        return Excel::download(new UnreturnedMaterialsExport($unreturnedMaterials), 'unreturned_materials.xlsx');
+    }
+
+    public function exportBorrowedMaterials(Request $request)
+    {
+        $title = $request->input('title', 'Most Borrowed Materials');
+        $labels = json_decode($request->input('labels', '[]'), true); // Decode JSON to array
+        $values = json_decode($request->input('values', '[]'), true); // Decode JSON to array
+        $chartImage = $request->input('chartImage'); // Base64 chart image
+
+        $data = [
+            'labels' => $labels,
+            'values' => $values,
+            'title' => $title,
+            'chartImage' => $chartImage, // Pass chart image to the view
+        ];
+
+        $pdf = Pdf::loadView('reports.pdf_chart', $data);
+        return $pdf->download('borrowed_materials.pdf');
     }
 }

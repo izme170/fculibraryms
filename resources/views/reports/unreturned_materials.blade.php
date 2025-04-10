@@ -4,6 +4,8 @@
     @include('include.topbar')
     @include('include.report_tabs')
     <div class="container">
+        <h3 class="mb-3">Unreturned Materials</h3>
+        <a href="{{ route('reports.unreturned_materials.export') }}" class="btn-simple mb-3">Export</a>
         <table class="table table-bordered table-hover">
             <thead class="table-dark">
                 <tr>

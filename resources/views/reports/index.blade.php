@@ -132,22 +132,6 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}', // Include CSRF token for security
                     },
                 })
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.blob();
-                })
-                .then((blob) => {
-                    // Download the PDF
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `${routeName}.pdf`;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                })
                 .catch((error) => console.error('Error exporting chart and table:', error));
         }
 

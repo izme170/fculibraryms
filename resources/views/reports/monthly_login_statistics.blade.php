@@ -6,7 +6,6 @@
 
     <div class="container">
         <h5 class="mb-3">Monthly Login Statistics – {{ $year }}</h5>
-
         <form method="GET">
             <div class="d-flex gap-3" style="width: 300px">
                 <select name="year">
@@ -17,6 +16,9 @@
                 <button type="submit" class="btn-simple">Apply</button>
             </div>
         </form>
+        <a href="{{ route('reports.monthly_login_statistics.export', ['year' => $year]) }}" class="btn-simple mb-3">
+            Export
+        </a>
 
         @php
             $monthColors = ['#e3f2fd', '#e8f5e9', '#fff8e1', '#fce4ec', '#ede7f6']; // Color per month group
