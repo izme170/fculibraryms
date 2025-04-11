@@ -8,7 +8,7 @@
             <div class="d-flex flex-column justify-content-between align-items-end">
                 <!-- user search -->
                 <form method="GET" action="/users" class="d-flex flex-row align-items-center" id="filterForm">
-                    <input type="text" name="search" class="form-control" placeholder="Search user..."
+                    <input type="text" name="search" placeholder="Search user..."
                         value="{{ $search }}">
                     <button type="submit" class="btn-rectangle">Search</button>
                 </form>

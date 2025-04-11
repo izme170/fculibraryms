@@ -12,9 +12,8 @@
             </div>
             <!-- Form to search -->
             <form method="GET" class="d-flex flex-row align-items-center" id="filterForm">
-                <input type="text" name="search" class="form-control" placeholder="Search by title or author"
+                <input type="text" name="search" placeholder="Search by title or author"
                     value="{{ $search }}">
-                <button type="submit" class="btn-rectangle">Search</button>
             </form>
             <a href="/patron-logins" type="submit" class="btn">Show All</a>
         </div>

@@ -32,7 +32,7 @@ body {
 }
 
 .user-page {
-    padding: 0 0px 0px 370px;
+    padding: 0 10px 0 370px;
     min-width: fit-content;
 }
 
@@ -122,7 +122,6 @@ select, textarea {
     border-radius: 0;
     border: 0;
     border-bottom: 2px solid #ccc;
-    border-radius: 5px;
     transition: 0.5s;
 }
 
@@ -130,7 +129,7 @@ input:focus:not([type="checkbox"], [type="radio"]),
 select:focus, textarea:focus {
     border-left: 10px solid var(--primary);
     border-bottom: 2px solid var(--primary);
-    outline: 0;
+    outline: none;
 }
 
 #rfid_input {

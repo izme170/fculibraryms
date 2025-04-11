@@ -59,7 +59,7 @@
                 <div class="d-flex flex-column justify-content-between align-items-end">
                     <!-- Patrons search -->
                     <form method="GET" action="/patrons" class="d-flex flex-row align-items-center gap-2" id="filterForm">
-                        <input type="text" name="search" class="form-control" placeholder="Search patron..."
+                        <input type="text" name="search" placeholder="Search patron..."
                             value="{{ $search }}">
                     </form>
                 </div>

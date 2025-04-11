@@ -1,42 +1,76 @@
 @extends('layout.main')
 @include('include.sidenav')
 @section('user-content')
-@include('include.topbar')
-    <div class="row">
-        <div class="col">
-            <div class="widget-container">
-                <div class="widget">
-                    <a class="btn-simple" href="/borrow-material">Borrow Material</a>
-                    <a class="btn-simple" href="/return-material">Return Material</a>
-                </div>
-                <a class="shortcut" href="/materials">
-                    Go to Material List
-                </a>
+    @include('include.topbar')
+    <div class="col p-3">
+        <div class="row mb-3">
+            <div>
+                <a class="btn-simple" href="/borrow-material">Borrow Material</a>
+                <a class="btn-simple" href="/return-material">Return Material</a>
             </div>
+        </div>
+        <div class="row mb-3">
+            <div class="d-flex gap-3">
+                @if (auth()->user()->role_id == 1)
+                    <a href="{{ route('users.index') }}"
+                        class="card w-25 shadow-sm rounded-3 bg-info-subtle border-0 text-decoration-none">
+                        <div class="card-body d-flex align-items-center">
+                            <x-fas-user-tie class="text-info me-3" width="50" />
+                            <div>
+                                <div class="fs-5 fw-bold text-info">Users</div>
+                                <div class="fs-5 text-info"> {{ $user_count }} </div>
+                            </div>
+                        </div>
+                    </a>
+                @endif
+                @if (auth()->user()->role->patrons_access)
+                    <a href="{{ route('patrons.index') }}"
+                        class="card w-25 shadow-sm rounded-3 bg-primary-subtle border-0 text-decoration-none">
+                        <div class="card-body d-flex align-items-center">
+                            <x-fas-user class="text-primary me-3" width="50" />
+                            <div>
+                                <div class="fs-5 fw-bold text-primary">Patrons</div>
+                                <div class="fs-5 text-primary"> {{ $patron_count }} </div>
+                            </div>
+                        </div>
+                    </a>
+                @endif
+                @if (auth()->user()->role->materials_access)
+                    <a href="{{ route('materials.index') }}"
+                        class="card w-25 shadow-sm rounded-3 bg-success-subtle border-0 text-decoration-none">
+                        <div class="card-body d-flex align-items-center">
+                            <x-fas-book class="text-success me-3" width="50" />
+                            <div>
+                                <div class="fs-5 fw-bold text-success">Materials</div>
+                                <div class="fs-5 text-success"> {{ $material_count }} </div>
+                            </div>
+                        </div>
+                    </a>
+                @endif
+            </div>
+        </div>
+        <div class="row">
             <div class="widget-container">
                 <div class="widget">
-                    <div class="w-text small">
-                        Total visits today: {{ $visits_today }}
+                    <div class="w-text small d-flex align-items-center gap-2">
+                        <x-fas-user width="20" />
+                        Visits today: {{ $visits_today }}
                     </div>
                     <div class="chart-container" style="position: relative; width:600px">
                         <canvas id="dailyVisitChart"></canvas>
                     </div>
                 </div>
-                <a class="shortcut" href="/patron-logins">Go to Access Log</a>
-            </div>
-        </div>
-        <div class="col">
-            <div class="widget">
-                <div class="w-text small" id="datetime"></div>
+                <a class="shortcut" href="/patron-logins">Go to Patron Attendance</a>
             </div>
             <div class="widget-container">
                 <div class="widget">
                     <div class="w-text small">
-                        <span>Unreturned Materials: {{ count($unreturnedMaterials) }}</span>
+                        <span>{{ count($unreturnedMaterials) }} Unreturned Materials</span>
                     </div>
                     <ol>
                         @foreach ($unreturnedMaterials as $borrowedMaterial)
-                            <li><a href="/material/show/{{ $borrowedMaterial->materialCopy->copy_id }}" class="shortcut-link">{{ $borrowedMaterial->materialCopy->material->title }}</a></li>
+                            <li><a href="/material/show/{{ $borrowedMaterial->materialCopy->copy_id }}"
+                                    class="shortcut-link">{{ $borrowedMaterial->materialCopy->material->title }}</a></li>
                         @endforeach
                     </ol>
                 </div>
@@ -69,7 +103,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Visits of the Week',
+                            text: 'Visits this week',
                             color: 'rgb(14, 17, 51)',
                             font: {
                                 size: 25
@@ -91,27 +125,5 @@
                 }
             });
         });
-
-        //Date and time
-        function updateDateTime() {
-            const now = new Date(); // Get the current date and time
-
-            // Format the date and time
-            const options = {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true
-            };
-            const currentDateTime = now.toLocaleString('en-US', options); // Use locale for formatting
-
-            // Display date and time in the div
-            document.getElementById('datetime').textContent = currentDateTime;
-        }
-
-        setInterval(updateDateTime, 1000); // Update every second
-        updateDateTime(); // Initial call to display date and time right away
     </script>
 @endsection

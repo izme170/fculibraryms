@@ -10,12 +10,12 @@
                     <div class="row mb-3">
                         <div class="col">
                             <label for="startDate">Start</label>
-                            <input type="date" name="startDate" id="startDate" class="form-control"
+                            <input type="date" name="startDate" id="startDate"
                                 value="{{ $startDate }}">
                         </div>
                         <div class="col">
                             <label for="endDate">End</label>
-                            <input type="date" name="endDate" id="endDate" class="form-control"
+                            <input type="date" name="endDate" id="endDate"
                                 value="{{ $endDate }}">
                         </div>
                     </div>

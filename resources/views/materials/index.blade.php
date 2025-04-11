@@ -5,59 +5,59 @@
     @include('include.topbar')
     @include('include.material_tabs')
     <div class="bg-white p-3" style="min-width: fit-content">
-        <div class="d-flex flex-row flex-wrap justify-content-around gap-2">
+        <div class="d-flex flex-row flex-wrap justify-content-start gap-2 mb-3">
             <div>
                 <a class="btn-simple" href="/material/create">Add material</a>
                 <a class="btn-simple" href="/borrow-material">Borrow Material</a>
                 <a class="btn-simple" href="/return-material">Return Material</a>
-                <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#importMaterials">Import</button>
+                <button class="btn-simple" type="button" data-bs-toggle="modal"
+                    data-bs-target="#importMaterials">Import</button>
                 <a class="btn-simple" href="/materials/export">Export</a>
             </div>
-            <div>
-                <div class="d-flex flex-column justify-content-between align-items-end mb-3">
-                    <!-- Form to filter materials -->
-                    <form method="GET" action="/materials" class="d-flex flex-row align-items-center gap-2"
-                        id="filterForm">
+        </div>
+        <div>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <!-- Form to filter materials -->
+                <div>
+                    <form method="GET" action="/materials" class="d-flex flex-row align-items-center gap-2" id="filterForm">
                         <input type="text" name="search" placeholder="Search by title or author"
                             value="{{ $search }}">
-
+    
                         <!-- Category filter -->
                         <select name="category">
                             <option value="all" {{ $category === 'all' ? 'selected' : '' }}>All Categories</option>
                             @foreach ($categories as $cat)
-                                <option value="{{ $cat->category_id }}"
-                                    {{ $category == $cat->category_id ? 'selected' : '' }}>
+                                <option value="{{ $cat->category_id }}" {{ $category == $cat->category_id ? 'selected' : '' }}>
                                     {{ $cat->category }}
                                 </option>
                             @endforeach
                         </select>
                     </form>
+                </div>
 
-                    <!-- Status filter/legend -->
-                    <div class="d-flex flex-row align-items-center gap-2">
-                        @foreach (['all', 'available', 'borrowed', 'overdue'] as $item)
-                            <a href="?status={{ $item }}"
-                                class="legend-btn {{ $status === $item ? 'active' : '' }}">
-                                {{ ucfirst($item) }}
-                            </a>
-                        @endforeach
-                        <div class="dropdown">
-                            <button class="btn text-white dropdown-toggle" style="background-color: #0E1133" type="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
-                                Sort
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li>
-                                    <a class="dropdown-item"
-                                        href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'direction' => $direction === 'asc' && $sort === 'title' ? 'desc' : 'asc']) }}">
-                                        Title
-                                        @if ($sort === 'title')
-                                            <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
-                                        @endif
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
+                <!-- Status filter/legend -->
+                <div class="d-flex flex-row align-items-center gap-2">
+                    @foreach (['all', 'available', 'borrowed', 'overdue'] as $item)
+                        <a href="?status={{ $item }}" class="legend-btn {{ $status === $item ? 'active' : '' }}">
+                            {{ ucfirst($item) }}
+                        </a>
+                    @endforeach
+                    <div class="dropdown">
+                        <button class="btn text-white dropdown-toggle" style="background-color: #0E1133" type="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item"
+                                    href="{{ request()->fullUrlWithQuery(['sort' => 'title', 'direction' => $direction === 'asc' && $sort === 'title' ? 'desc' : 'asc']) }}">
+                                    Title
+                                    @if ($sort === 'title')
+                                        <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
+                                    @endif
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
