@@ -6,8 +6,8 @@
     <div class="col p-3">
         <div class="row mb-3">
             <div>
-                <a class="btn-simple" href="/borrow-material">Borrow Material</a>
-                <a class="btn-simple" href="/return-material">Return Material</a>
+                <a class="btn-simple d-inline-flex align-items-center gap-1" href="/borrow-material"><x-fas-plus width="12" /> Borrow Material</a>
+                <a class="btn-simple d-inline-flex align-items-center gap-1" href="/return-material"><x-fas-arrow-right width="12" /> Return Material</a>
             </div>
         </div>
         <div class="row mb-3">
@@ -127,7 +127,13 @@
                     datasets: [{
                         data: data,
                         backgroundColor: [
-                            'rgb(14, 17, 51)',
+                            'rgb(0, 173, 181)',
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 206, 86)',
+                            'rgb(75, 192, 192)',
+                            'rgb(153, 102, 255)',
+                            'rgb(255, 159, 64)',
                         ],
                         borderRadius: 5
                     }]
