@@ -2,6 +2,7 @@
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
+    @vite('resources/js/app.js')
     <div class="col p-3">
         <div class="row mb-3">
             <div>
@@ -77,7 +78,42 @@
                 <a href="/borrowed-materials" class="shortcut">Go to Borrowed Materials List</a>
             </div>
         </div>
+        <div class="row">
+            <div class="widget-container">
+                <div class="widget">
+                    <div class="w-text small">
+                        <span>Today's Visits</span>
+                    </div>
+                    <ol id="patron-logins">
+                        @foreach ($patron_logins as $patron_login)
+                            <li><a href="/material/show/{{ $patron_login->patron->patron_id }}"
+                                    class="shortcut-link">{{ $patron_login->patron->fullname }}</a></li>
+                        @endforeach
+                    </ol>
+                </div>
+                <a href="/borrowed-materials" class="shortcut">Patron Attendance</a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        window.onload = function() {
+            Echo.channel('patron.logged.in')
+                .listen('PatronLoggedIn', (e) => {
+                    console.log(e);
+                    var patron = e.patron;
+                    var patronName = patron.first_name + ' ' + patron.last_name;
+                    var patronId = patron.patron_id;
+
+                    // Create a new list item
+                    var li = document.createElement('li');
+                    li.innerHTML = `<a href="/material/show/${patronId}" class="shortcut-link">${patronName}</a>`;
+
+                    // Append the new list item to the list
+                    document.querySelector('#patron-logins').appendChild(li);
+                })
+        }
+    </script>
 
     <script>
         var data = @json($visits);

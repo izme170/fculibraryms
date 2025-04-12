@@ -9,14 +9,25 @@
     }
 </style>
 
-<div class="topbar rounded p-1 d-flex justify-content-between align-items-center gap-3">
+<div class="topbar rounded p-2 d-flex justify-content-between align-items-center gap-3">
+    <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-1">
+            <x-fas-calendar-day width="13"/>
+            <div id="date"></div>
+        </div>
+        <div class="d-flex align-items-center gap-1">
+            <x-fas-clock width="13"/>
+            <div id="time"></div>
+        </div>
+    </div>
+
     {{-- User dropdown --}}
     <div class="dropdown rounded p-1">
         <a class="text-decoration-none d-flex gap-1 align-items-center" href="#" role="button"
             data-bs-toggle="dropdown" aria-expanded="false" style="color: #0E1133;">
-            <img src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('img/default-user-image.png') }}"
-                alt="User Image" class="object-fit-cover rounded-circle me-2" width="40" height="40">
             <span style="font-size: 15px">{{ Auth::user()->first_name }} {{ Auth::user()->last_name }}</span>
+            <img src="{{ Auth::user()->user_image ? asset('storage/' . Auth::user()->user_image) : asset('img/default-user-image.png') }}"
+                alt="User Image" class="object-fit-cover rounded-circle ms-2" width="40" height="40">
         </a>
         <ul class="dropdown-menu">
             <li>
@@ -33,7 +44,6 @@
                     data-bs-target="#changeUserPassword">Change Password</a></li>
         </ul>
     </div>
-    <div id="datetime"></div>
 </div>
 
 <script>
@@ -42,18 +52,24 @@
         const now = new Date(); // Get the current date and time
 
         // Format the date and time
-        const options = {
+        const date = {
             year: 'numeric',
             month: 'long',
             day: 'numeric',
+        };
+        const time = {
             hour: '2-digit',
             minute: '2-digit',
             hour12: true
         };
-        const currentDateTime = now.toLocaleString('en-US', options); // Use locale for formatting
+
+        const currentDate = now.toLocaleString('en-US', date); // Use locale for formatting
+        const currentTime = now.toLocaleString('en-US', time);
 
         // Display date and time in the div
-        document.getElementById('datetime').textContent = currentDateTime;
+        document.getElementById('date').textContent = currentDate;
+        document.getElementById('time').textContent = currentTime;
+        
     }
 
     setInterval(updateDateTime, 1000); // Update every second

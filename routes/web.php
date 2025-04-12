@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\PatronLoggedIn;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\MaterialController;
 use App\Http\Controllers\MaterialCopyController;

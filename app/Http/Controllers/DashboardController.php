@@ -44,6 +44,8 @@ class DashboardController extends Controller
         ->whereNull('returned')
         ->get();
 
-        return view('users.dashboard', compact('visits', 'visits_today', 'unreturnedMaterials', 'user_count', 'patron_count', 'material_count'));
+        $patron_logins = PatronLogin::whereDate('login_at', Carbon::today())->get();
+
+        return view('users.dashboard', compact('visits', 'visits_today', 'unreturnedMaterials', 'user_count', 'patron_count', 'material_count', 'patron_logins'));
     }
 }

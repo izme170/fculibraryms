@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PatronLoggedIn;
 use App\Exports\PatronLoginsExport;
 use App\Models\Marketer;
 use App\Models\Patron;
@@ -74,6 +75,7 @@ class PatronLoginController extends Controller
                     'patron_id' => $patron->patron_id,
                     'login_at' => now()
                 ]);
+                broadcast(new PatronLoggedIn($patron));
                 return response()->json([
                     'success' => true,
                     // 'patron_name' => $patron->first_name . ' ' . $patron->last_name,
