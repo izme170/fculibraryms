@@ -15,7 +15,7 @@
             <div><span class="fw-bold">Price: </span>{{ $copy->price ?? "None" }}</div>
         </div>
         <div class="col">
-            <div><span class="fw-bold">Vendor: </span>{{ $copy->vendor->name }}</div>
+            <div><span class="fw-bold">Vendor: </span>{{ $copy->vendor->name ?? "None" }}</div>
             <div><span class="fw-bold">Funding Source: </span>{{ $copy->fund->name ?? "None" }}</div>
             <div><span class="fw-bold">Acquisition Date: </span>{{ $copy->date_acquired ? $copy->date_acquired->format('M d, Y') : "None"}}</div>
             <div><span class="fw-bold">RFID: </span>{{ $copy->rfid }}</div>

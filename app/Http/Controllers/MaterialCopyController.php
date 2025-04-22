@@ -67,7 +67,7 @@ class MaterialCopyController extends Controller
             'call_number' => 'nullable',
             'accession_number' => 'nullable',
             'vendor_id' => 'nullable',
-            'fun_id' => 'nullable',
+            'fund_id' => 'nullable',
             'price' => 'nullable',
             'date_acquired' => 'nullable',
         ]);

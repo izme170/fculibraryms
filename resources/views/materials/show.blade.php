@@ -183,7 +183,7 @@
                             <td>{{ $copy->call_number }}</td>
                             <td>{{ $copy->accession_number }}</td>
                             <td>{{ $copy->rfid }}</td>
-                            <td>{{ $copy->condition->name }}</td>
+                            <td>{{ $copy->condition->name ?? 'Not specified' }}</td>
                             @if ($copy->status == 'Available')
                                 <td><span class="badge bg-success">Available</span></td>
                             @elseif ($copy->status == 'Borrowed')
@@ -200,9 +200,7 @@
     @include('modals.material.edit')
     @include('modals.material.archive')
     {{-- @include('modals.material.new_rfid') --}}
-@endsection
 
-@section('script')
     <script>
         function previewImage(event) {
             const reader = new FileReader();
@@ -217,3 +215,4 @@
             document.getElementById('submit-button').click();
         }
     </script>
+@endsection

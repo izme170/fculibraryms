@@ -7,7 +7,7 @@
     <div class="bg-white rounded p-3" style="min-width: fit-content">
         <div class="d-flex flex-row flex-wrap justify-content-between gap-2">
             <div>
-                <a class="btn-simple" href="{{ route('patrons.import') }}">Add Patron</a>
+                <a class="btn-simple" href="{{ route('patrons.create') }}">Add Patron</a>
                 <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#importPatrons">Import</button>
                 <a class="btn-simple" href="/patrons/export">Export</a>
             </div>
