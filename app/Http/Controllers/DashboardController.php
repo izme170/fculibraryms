@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\BorrowedMaterial;
 use App\Models\Material;
+use App\Models\MaterialCopy;
 use App\Models\Patron;
 use App\Models\PatronLogin;
 use App\Models\User;
@@ -16,6 +17,7 @@ class DashboardController extends Controller
         $user_count = User::where('is_active', true)->count();
         $patron_count = Patron::whereNot('is_archived')->count();
         $material_count = Material::whereNot('is_archived')->count();
+        $copy_count = MaterialCopy::whereNot('is_archived')->count();
 
         // Get the current week range
         $startOfWeek = Carbon::now()->startOfWeek();
@@ -44,8 +46,8 @@ class DashboardController extends Controller
         ->whereNull('returned')
         ->get();
 
-        $patron_logins = PatronLogin::whereDate('login_at', Carbon::today())->get();
+        $patron_logins = PatronLogin::whereDate('login_at', Carbon::today())->orderBy('login_at', 'desc')->get();
 
-        return view('users.dashboard', compact('visits', 'visits_today', 'unreturnedMaterials', 'user_count', 'patron_count', 'material_count', 'patron_logins'));
+        return view('users.dashboard', compact('visits', 'visits_today', 'unreturnedMaterials', 'user_count', 'patron_count', 'material_count', 'copy_count', 'patron_logins'));
     }
 }

@@ -4,12 +4,18 @@
     @include('include.topbar')
     @vite('resources/js/app.js')
     <div class="col p-3">
+
+        {{-- Buttons --}}
         <div class="row mb-3">
             <div>
-                <a class="btn-simple d-inline-flex align-items-center gap-1" href="/borrow-material"><x-fas-plus width="12" /> Borrow Material</a>
-                <a class="btn-simple d-inline-flex align-items-center gap-1" href="/return-material"><x-fas-arrow-right width="12" /> Return Material</a>
+                <a class="btn-simple d-inline-flex align-items-center gap-1" href="/borrow-material"><x-fas-plus
+                        width="12" /> Borrow Material</a>
+                <a class="btn-simple d-inline-flex align-items-center gap-1" href="/return-material"><x-fas-arrow-right
+                        width="12" /> Return Material</a>
             </div>
         </div>
+
+        {{-- Counts --}}
         <div class="row mb-3">
             <div class="d-flex gap-3">
                 @if (auth()->user()->role_id == 1)
@@ -48,50 +54,84 @@
                         </div>
                     </a>
                 @endif
+                @if (auth()->user()->role->materials_access)
+                    <a href="{{ route('material-copies.index') }}"
+                        class="card w-25 shadow-sm rounded-3 bg-warning-subtle border-0 text-decoration-none">
+                        <div class="card-body d-flex align-items-center">
+                            <x-fas-copy class="text-warning me-3" width="50" />
+                            <div>
+                                <div class="fs-5 fw-bold text-warning">Copies</div>
+                                <div class="fs-5 text-warning"> {{ $copy_count }} </div>
+                            </div>
+                        </div>
+                    </a>
+                @endif
             </div>
         </div>
-        <div class="row">
-            <div class="widget-container">
-                <div class="widget">
+
+        {{-- Widgets --}}
+        <div class="d-flex flex-wrap gap-3 mb-3">
+
+            {{-- Chart --}}
+            <div class="card border-0" style="width: fit-content;">
+                <div class="card-body">
                     <div class="w-text small d-flex align-items-center gap-2">
                         <x-fas-user width="20" />
                         Visits today: {{ $visits_today }}
                     </div>
-                    <div class="chart-container" style="position: relative; width:600px">
+                    <div class="chart-container mb-3" style="position: relative; width:500px">
                         <canvas id="dailyVisitChart"></canvas>
                     </div>
+                    <a href="/patron-logins"
+                        class="btn-simple d-inline-flex align-items-center gap-1"><x-fas-arrow-up-right-from-square
+                            width="12" />Patron Attendance</a>
                 </div>
-                <a class="shortcut" href="/patron-logins">Go to Patron Attendance</a>
             </div>
-            <div class="widget-container">
-                <div class="widget">
-                    <div class="w-text small">
-                        <span>{{ count($unreturnedMaterials) }} Unreturned Materials</span>
-                    </div>
-                    <ol>
+
+            {{-- Unreturned materials --}}
+            <div class="card border-0 w-50">
+                <div class="card-header">
+                        <p class="fw-bold fs-5 text-center">{{ $unreturnedMaterials->count() }} Borrowed Materials</p>
+                </div>
+                <div class="card-body overflow-auto">
+                    <div class="col">
                         @foreach ($unreturnedMaterials as $borrowedMaterial)
-                            <li><a href="/material/show/{{ $borrowedMaterial->materialCopy->copy_id }}"
-                                    class="shortcut-link">{{ $borrowedMaterial->materialCopy->material->title }}</a></li>
+                            <div class="row p-1 border-bottom">
+                                <div class="col fw-semibold">{{ $borrowedMaterial->materialCopy->material->title }}</div>
+                                <div class="col d-flex flex-row align-items-center gap-2">
+                                    <img src="{{ $borrowedMaterial->patron->patron_image ? asset('storage/' . $borrowedMaterial->patron->patron_image) : asset('img/default-patron-image.png') }}"
+                                        alt="Patron Image" style="width: 30px;object-fit: cover; border-radius: 100%;">
+                                    <div class="d-flex flex-column">
+                                        <div>{{ $borrowedMaterial->patron->fullname }}</div>
+                                        <div>{{ $borrowedMaterial->created_at->format('m/d/y') }}</div>
+                                    </div>
+                                </div>
+                            </div>
                         @endforeach
-                    </ol>
-                </div>
-                <a href="/borrowed-materials" class="shortcut">Go to Borrowed Materials List</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="widget-container">
-                <div class="widget">
-                    <div class="w-text small">
-                        <span>Today's Visits</span>
                     </div>
-                    <ol id="patron-logins">
-                        @foreach ($patron_logins as $patron_login)
-                            <li><a href="/material/show/{{ $patron_login->patron->patron_id }}"
-                                    class="shortcut-link">{{ $patron_login->patron->fullname }}</a></li>
-                        @endforeach
-                    </ol>
+                    <a href="{{ route('borrowed-materials.index') }}"
+                        class="btn-simple d-inline-flex align-items-center gap-1 mt-3"><x-fas-arrow-up-right-from-square
+                            width="12" />Borrowed Materials</a>
                 </div>
-                <a href="/borrowed-materials" class="shortcut">Patron Attendance</a>
+            </div>
+
+            {{-- List of today's visits --}}
+            <div class="card border-0 w-50">
+                <div class="card-header">
+                    <p class="fw-bold fs-5 text-center">Today's login</p>
+                </div>
+                <div class="card-body overflow-auto" id="patron-logins" style="height:300px">
+                    @foreach ($patron_logins as $patron_login)
+                        <div class="row align-items-center p-1 border-bottom">
+                            <div class="col d-flex align-items-center justify-content-start gap-1">
+                                <img src="{{ $patron_login->patron->patron_image ? asset('storage/' . $patron_login->patron->patron_image) : asset('img/default-patron-image.png') }}"
+                                    alt="Patron Image" style="width: 50px; object-fit: cover; border-radius: 100%;">
+                                <div class="fw-semibold">{{ $patron_login->patron->fullname }}</div>
+                            </div>
+                            <div class="col">{{ $patron_login->login_at->format('g:i a') }}</div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
@@ -102,16 +142,26 @@
                 .listen('PatronLoggedIn', (e) => {
                     console.log(e);
                     var patron = e.patron;
-                    var patronName = patron.first_name + ' ' + patron.last_name;
-                    var patronId = patron.patron_id;
+                    var patronName = patron.name; // already full name
+                    var patronId = patron.id;
+                    var patronImage = patron.image;
+                    var patronLoginAt = patron.login_at;
 
-                    // Create a new list item
-                    var li = document.createElement('li');
-                    li.innerHTML = `<a href="/material/show/${patronId}" class="shortcut-link">${patronName}</a>`;
+                    // Create a new entry item
+                    var entry = document.createElement('div');
+                    entry.className = 'row p-1 border-bottom align-items-center'
+                    entry.innerHTML = `
+                    <div class="col d-flex align-items-center justify-content-start gap-1">
+                        <img src="${patronImage}" alt="Patron Image"
+                            style="width: 50px; object-fit: cover; border-radius: 100%;">
+                        <div class="fw-semibold">${patronName}</div>
+                    </div>
+                    <div class="col">${patronLoginAt}</div>
+            `;
 
-                    // Append the new list item to the list
-                    document.querySelector('#patron-logins').appendChild(li);
-                })
+                    // Append the new entry to the list
+                    document.querySelector('#patron-logins').prepend(entry);
+                });
         }
     </script>
 
@@ -135,7 +185,7 @@
                             'rgb(153, 102, 255)',
                             'rgb(255, 159, 64)',
                         ],
-                        borderRadius: 5
+                        borderRadius: 5,
                     }]
                 },
                 options: {

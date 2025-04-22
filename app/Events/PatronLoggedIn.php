@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use Carbon\Carbon;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -31,6 +32,20 @@ class PatronLoggedIn implements ShouldBroadcastNow
     {
         return [
             new channel('patron.logged.in'),
+        ];
+    }
+
+    public function broadcastWith(): array
+    {
+        return [
+            'patron' => [
+                'id' => $this->patron->patron_id,
+                'name' => $this->patron->first_name . ' ' . $this->patron->last_name,
+                'image' => $this->patron->patron_image
+                    ? asset('storage/' . $this->patron->patron_image)
+                    : asset('img/default-patron-image.png'),
+                'login_at' => Carbon::now()->setTimezone('Asia/Manila')->format('g:i a')
+            ]
         ];
     }
 }

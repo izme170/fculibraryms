@@ -5,10 +5,10 @@
         <h1 class="text-white">Library Patron Logout</h1>
     </div>
     <div class="container">
+        <h2>Please, scan your RFID to Logout</h2>
         <form id="rfid_form">
             @csrf
             <div class="mb-3">
-                <h2>Please, scan your RFID to Logout</h2>
                 <input type="text" id="rfid_input" name="library_id" placeholder="Scan RFID to Logout">
                 <h1 id="message"></h1>
             </div>

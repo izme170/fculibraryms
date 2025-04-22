@@ -6,11 +6,11 @@
     </div>
 
     <div class="container">
-        <input type="text" id="rfid_input" name="library_id" placeholder="Scan RFID here">
-        <input type="hidden" id="patron_id" name="patron_id">
         <div class="mb-3">
             <h2 id="message">Please Scan Your RFID</h2>
         </div>
+        <input type="text" id="rfid_input" name="library_id" placeholder="Scan RFID here">
+        <input type="hidden" id="patron_id" name="patron_id">
         <div id="patron_details" style="display:none;">
             <img id="patron_image" src="" alt="Patron Photo" width="150">
             <div class="mb-3">
