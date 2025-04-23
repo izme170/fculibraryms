@@ -148,7 +148,7 @@
                 <div class="row"><span>{{ $material->description ?? 'None' }}</span></div>
             </div>
         </div>
-        <div class="row">
+        <div class="row border-bottom mb-3">
             <div class="d-flex gap-1 mb-3">
                 <button class="btn-simple" type="button" data-bs-toggle="modal"
                     data-bs-target="#editMaterial">Update</button>
@@ -165,8 +165,8 @@
         </div>
         <div class="row">
             <span class="fs-4 fw-bold">Copies: {{ $material->materialCopies->count() }}</span>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
+            <table class="table table-hover">
+                <thead>
                     <tr>
                         <th scope="col">Copy No.</th>
                         <th scope="col">Call No.</th>

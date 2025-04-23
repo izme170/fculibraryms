@@ -26,12 +26,12 @@
 
             <a href="{{ route('borrowed-materials.index') }}" type="submit" class="btn">Show All</a>
         </div>
-        <table class="table table-bordered">
-            <thead class="table-dark">
+        <table class="table">
+            <thead>
                 <tr>
                     <th scope="col">
                         <a href="?sort=created_at&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
-                            class="text-decoration-none text-white d-block">
+                            class="text-decoration-none text-black d-block">
                             Date
                             @if ($sort === 'created_at')
                                 <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
@@ -40,7 +40,7 @@
                     </th>
                     <th scope="col">
                         <a href="?sort=title&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
-                            class="text-decoration-none text-white d-block">
+                            class="text-decoration-none text-black d-block">
                             Material
                             @if ($sort === 'title')
                                 <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
@@ -49,7 +49,7 @@
                     </th>
                     <th scope="col">
                         <a href="?sort=patrons_name&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
-                            class="text-decoration-none text-white d-block">
+                            class="text-decoration-none text-black d-block">
                             Patron
                             @if ($sort === 'patrons_name')
                                 <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
@@ -58,7 +58,7 @@
                     </th>
                     <th scope="col">
                         <a href="?sort=users_name&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
-                            class="text-decoration-none text-white d-block">
+                            class="text-decoration-none text-black d-block">
                             Librarian on Duty
                             @if ($sort === 'users_name')
                                 <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>
@@ -67,7 +67,7 @@
                     </th>
                     <th scope="col">
                         <a href="?sort=fine&direction={{ $direction === 'asc' ? 'desc' : 'asc' }}"
-                            class="text-decoration-none text-white d-block">
+                            class="text-decoration-none text-black d-block">
                             Fine
                             @if ($sort === 'fine')
                                 <span>{{ $direction === 'asc' ? '▲' : '▼' }}</span>

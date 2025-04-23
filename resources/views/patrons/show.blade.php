@@ -66,7 +66,7 @@
                 </div>
             </div>
         </div>
-        <div class="mb-3">
+        <div>
             <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#editPatron">Update</button>
             @if (!$patron->is_archived)
                 <button class="btn-simple" type="button" data-bs-toggle="modal"
@@ -77,10 +77,10 @@
             <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#newPatronRFID">Assign new
                 RFID</button>
         </div>
-        <div>
+        <div class="border-top pt-3">
             <h5>Materials borrowed</h5>
-            <table class="table table-bordered table-hover">
-                <thead class="table-dark">
+            <table class="table table-hover">
+                <thead>
                     <tr>
                         <th scope="col">Date</th>
                         <th scope="col">Material</th>

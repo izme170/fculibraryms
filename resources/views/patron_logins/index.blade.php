@@ -17,8 +17,8 @@
             </form>
             <a href="/patron-logins" type="submit" class="btn">Show All</a>
         </div>
-        <table class="table table-bordered">
-            <thead class="table-dark">
+        <table class="table">
+            <thead>
                 <tr>
                     <th scope="col">Date</th>
                     <th scope="col">Patron</th>
@@ -33,7 +33,8 @@
                     <tr>
                         <td>{{ $patron_login->login_at->format('d/m/y') }}</td>
                         <td><a class="shortcut-link"
-                                href="/patron/show/{{ $patron_login->patron_id }}">{{ $patron_login->patron->first_name . ' ' . $patron_login->patron->last_name }}</a>
+                                href="/patron/show/{{ $patron_login->patron_id }}"><img class="me-1" src="{{ $patron_login->patron->patron_image ? asset('storage/' . $borrowedMaterial->patron->patron_image) : asset('img/default-patron-image.png') }}"
+                                alt="Patron Image" style="width: 30px;object-fit: cover; border-radius: 100%;">{{ $patron_login->patron->first_name . ' ' . $patron_login->patron->last_name }}</a>
                         </td>
                         <td>{{ $patron_login->purpose->purpose ?? 'Not specified' }}</td>
                         <td>{{ $patron_login->marketer->marketer ?? 'Not specified' }}</td>

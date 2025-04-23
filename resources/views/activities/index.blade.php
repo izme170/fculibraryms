@@ -16,8 +16,8 @@
             </form>
             <a href="/activities" type="submit" class="btn">Show All</a>
         </div>
-        <table class="table table-bordered">
-            <thead class="table-dark">
+        <table class="table">
+            <thead>
                 <tr>
                     <th scope="col">Action</th>
                     <th scope="col">Entity</th>
