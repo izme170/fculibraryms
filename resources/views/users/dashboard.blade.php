@@ -84,7 +84,7 @@
                     </div>
                     <a href="/patron-logins"
                         class="btn-simple d-inline-flex align-items-center gap-1"><x-fas-arrow-up-right-from-square
-                            width="12" />Patron Attendance</a>
+                            width="12" />Access Log</a>
                 </div>
             </div>
 
@@ -97,12 +97,12 @@
                     <div class="col">
                         @foreach ($unreturnedMaterials as $borrowedMaterial)
                             <div class="row p-1 border-bottom">
-                                <div class="col fw-semibold">{{ $borrowedMaterial->materialCopy->material->title }}</div>
+                                <a href="/copy/show/{{ $borrowedMaterial->materialCopy->copy_id }}" class="col fw-semibold shortcut-link">{{ $borrowedMaterial->materialCopy->material->title }}</a>
                                 <div class="col d-flex flex-row align-items-center gap-2">
                                     <img src="{{ $borrowedMaterial->patron->patron_image ? asset('storage/' . $borrowedMaterial->patron->patron_image) : asset('img/default-patron-image.png') }}"
                                         alt="Patron Image" style="width: 30px;object-fit: cover; border-radius: 100%;">
                                     <div class="d-flex flex-column">
-                                        <div>{{ $borrowedMaterial->patron->fullname }}</div>
+                                        <a href="/patron/show/{{ $borrowedMaterial->patron->patron_id }}" class="shortcut-link">{{ $borrowedMaterial->patron->fullname }}</a>
                                         <div>{{ $borrowedMaterial->created_at->format('m/d/y') }}</div>
                                     </div>
                                 </div>
@@ -122,14 +122,14 @@
                 </div>
                 <div class="card-body overflow-auto" id="patron-logins" style="height:300px">
                     @foreach ($patron_logins as $patron_login)
-                        <div class="row align-items-center p-1 border-bottom">
+                        <a href="/patron/show/{{ $patron_login->patron->patron_id }}" class="row align-items-center p-1 border-bottom shortcut-link">
                             <div class="col d-flex align-items-center justify-content-start gap-1">
                                 <img src="{{ $patron_login->patron->patron_image ? asset('storage/' . $patron_login->patron->patron_image) : asset('img/default-patron-image.png') }}"
                                     alt="Patron Image" style="width: 50px; object-fit: cover; border-radius: 100%;">
                                 <div class="fw-semibold">{{ $patron_login->patron->fullname }}</div>
                             </div>
                             <div class="col">{{ $patron_login->login_at->format('g:i a') }}</div>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -148,8 +148,9 @@
                     var patronLoginAt = patron.login_at;
 
                     // Create a new entry item
-                    var entry = document.createElement('div');
-                    entry.className = 'row p-1 border-bottom align-items-center'
+                    var entry = document.createElement('a');
+                    entry.className = 'row p-1 border-bottom align-items-center shortcut-link'
+                    entry.href = "/patron/show/" + patronId;
                     entry.innerHTML = `
                     <div class="col d-flex align-items-center justify-content-start gap-1">
                         <img src="${patronImage}" alt="Patron Image"

@@ -54,7 +54,7 @@
         @if ($user->role->patrons_access)
             <a href="/patron-logins" class="nav-link {{ request()->routeIs('patron-logins.*') ? 'active' : '' }}">
                 <x-lucide-logs class="nav-link-icon" />
-                <span>Patron Attendance</span>
+                <span>Access Log</span>
             </a>
         @endif
 

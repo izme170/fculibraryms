@@ -211,7 +211,6 @@ select:focus, textarea:focus {
 }
 
 .shortcut-link:hover{
-    text-decoration: underline;
     color: #3a49ed;
 }
 
