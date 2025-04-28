@@ -1,37 +1,89 @@
 @extends('layout.main')
 @section('patron-content')
-    <div class="mb-3 p-3 d-flex flex-row justify-content-start align-items-center gap-3" style="background-color: #0e1133">
-        <img src="{{ asset('img/fcu-logo.png') }}" alt="fcu-logo" width="100">
-        <h1 class="text-white">Library Patron Login</h1>
-    </div>
+    <style>
+        .login-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            min-width: 300px;
+        }
 
-    <div class="container">
-        <div class="mb-3">
-            <h2 id="message">Please Scan Your RFID</h2>
-        </div>
-        <input type="text" id="rfid_input" name="library_id" placeholder="Scan RFID here">
-        <input type="hidden" id="patron_id" name="patron_id">
-        <div id="patron_details" style="display:none;">
-            <img id="patron_image" src="" alt="Patron Photo" width="150">
-            <div class="mb-3">
-                <label for="purpose_id">Purpose</label>
-                <select id="purpose_id" name="purpose_id">
-                    <option value="">Select Purpose</option>
-                    @foreach ($purposes as $purpose)
-                        <option value="{{ $purpose->purpose_id }}">{{ $purpose->purpose }}</option>
-                    @endforeach
-                </select>
+        .rfid-icon {
+            width: 60px;
+            height: 60px;
+            margin: 20px auto;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.7;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #ccc;
+        }
+    </style>
+
+    <div class="fixed-top p-3 d-flex flex-row justify-content-start align-items-center gap-3"
+        style="background-color: #0e1133">
+        <img src="{{ asset('img/fcu-logo.png') }}" alt="fcu-logo" width="30">
+        <h4 class="text-white mb-0">Patron Login</h4>
+    </div>
+    <div class="login-page">
+        <div class="login-card">
+            <div>
+                <h2 id="message">Please Scan Your RFID</h2>
             </div>
-            <div class="mb-3">
-                <label for="marketer_id">Marketer</label>
-                <select id="marketer_id" name="marketer_id">
-                    <option value="">Select Marketer</option>
-                    @foreach ($marketers as $marketer)
-                        <option value="{{ $marketer->marketer_id }}">{{ $marketer->marketer }}</option>
-                    @endforeach
-                </select>
+            <input type="text" id="rfid_input" name="library_id" placeholder="Scan RFID here">
+            <input type="hidden" id="patron_id" name="patron_id">
+            <div id="patron_details" style="display:none;">
+                <div class="d-flex gap-3">
+                    <img id="patron_image" src="" alt="Patron Photo" width="150">
+                    <div>
+                        <div class="mb-3">
+                            <label class="text-white" for="purpose_id">Purpose</label>
+                            <select id="purpose_id" name="purpose_id">
+                                <option value="">Select Purpose</option>
+                                @foreach ($purposes as $purpose)
+                                    <option value="{{ $purpose->purpose_id }}">{{ $purpose->purpose }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="text-white" for="marketer_id">Marketer</label>
+                            <select id="marketer_id" name="marketer_id">
+                                <option value="">Select Marketer</option>
+                                @foreach ($marketers as $marketer)
+                                    <option value="{{ $marketer->marketer_id }}">{{ $marketer->marketer }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <button id="submit_login" class="btn-simple mb-3">Submit</button>
             </div>
-            <button id="submit_login" class="btn-simple mb-3">Submit</button>
+            <div class="rfid-icon"><x-lucide-radio /></div>
+            <div class="footer">Filamer Christian University Library</div>
         </div>
     </div>
 
@@ -131,10 +183,9 @@
                     clearTimeout(reloadTimer);
                 }
 
-                // Set a new timer for 10 seconds
                 reloadTimer = setTimeout(() => {
-                    location.reload(); // Reload after 10 seconds
-                }, 20000); // 20 seconds
+                    location.reload(); // Reload after 60 seconds
+                }, 60000); // 60 seconds
             }
         });
     </script>

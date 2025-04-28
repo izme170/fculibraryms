@@ -11,6 +11,7 @@ use App\Http\Controllers\PatronController;
 use App\Http\Controllers\PatronLoginController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Models\MaterialCopy;
@@ -152,5 +153,9 @@ Route::middleware('auth')->group(function () {
     Route::controller(PatronLoginController::class)->group(function () {
         Route::get('/patron-logins', 'index')->name('patron-logins.index');
         Route::get('/patron-logins/export', 'export')->name('patron-logins.export');
+    });
+
+    Route::controller(SettingController::class)->group(function () {
+        Route::put('/setting/update/fine', 'setFine')->name('setting.updateFine');
     });
 });

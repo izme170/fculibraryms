@@ -1,5 +1,6 @@
 @extends('layout.main')
 @extends('modals.filter_date')
+@extends('modals.setting.fine.update')
 @include('include.sidenav')
 @section('user-content')
     @include('include.topbar')
@@ -10,6 +11,7 @@
                 <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#filterDate">Filter
                     Date</button>
                 <a class="btn-simple" href="{{ route('borrowed-materials.export', request()->query()) }}">Export</a>
+                <button class="btn-simple" type="button" data-bs-toggle="modal" data-bs-target="#updateFine">Fine</button>
             </div>
 
             <form method="GET" action="/borrowed-materials" id="filterForm" class="m-0">

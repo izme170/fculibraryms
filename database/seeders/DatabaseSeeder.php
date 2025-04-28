@@ -28,6 +28,7 @@ use App\Models\Marketer;
 use App\Models\PatronLogin;
 use App\Models\Publisher;
 use App\Models\Purpose;
+use App\Models\Setting;
 use App\Models\Subject;
 use App\Models\Translator;
 use App\Models\Vendor;
@@ -40,6 +41,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        Setting::updateOrCreate(
+            ['key' => 'fine'],
+            ['value' => 5.00]
+        );
+
         // Seed Roles
         Role::create([
             'role' => 'Admin',

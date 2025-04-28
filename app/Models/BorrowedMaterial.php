@@ -32,6 +32,7 @@ class BorrowedMaterial extends Model
 
     public function getFineAttribute()
     {
+        $fine = (float) Setting::where('key', 'fine')->first()->value ?? 5.00;
         if (!is_null($this->attributes['fine'] ?? null)) {
             return $this->attributes['fine'];
         }
@@ -41,7 +42,7 @@ class BorrowedMaterial extends Model
 
         if ($now->greaterThan($dueDate)) {
             $hoursLate = $dueDate->diffInHours($now, false);
-            return (int)$hoursLate * 5; // 5 units per hour
+            return (int)$hoursLate * $fine;
         }
 
         return 0;

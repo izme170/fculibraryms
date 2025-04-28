@@ -8,6 +8,7 @@ use App\Models\BorrowedMaterial;
 use App\Models\Condition;
 use App\Models\MaterialCopy;
 use App\Models\Patron;
+use App\Models\Setting;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,13 @@ use function PHPUnit\Framework\isNull;
 
 class BorrowMaterialController extends Controller
 {
-    private $finePerHour = 5;
+    private $finePerHour;
+
+    public function __construct()
+    {
+        $this->finePerHour = (float) Setting::where('key', 'fine')->first()->value ?? 5.00;
+    }
+
     public function index(Request $request)
     {
         $status = $request->query('status', 'all');
@@ -60,8 +67,10 @@ class BorrowMaterialController extends Controller
             }
         }
 
+        $fine = $this->finePerHour;
+
         $borrowed_materials = $query->orderBy($sort, $direction)->paginate(10)->appends(['search', 'status', 'sort', 'direction', 'startDate', 'endDate']);
-        return view('borrow_materials.index', compact(['borrowed_materials', 'search', 'status', 'sort', 'direction', 'startDate', 'endDate']));
+        return view('borrow_materials.index', compact(['borrowed_materials', 'search', 'status', 'sort', 'direction', 'startDate', 'endDate', 'fine']));
     }
 
     public function show($id)

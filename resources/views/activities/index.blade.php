@@ -11,7 +11,7 @@
             </form>
             <!-- Form to search -->
             <form method="GET" action="/activities" class="d-flex flex-row align-items-center" id="filterForm">
-                <input type="text" name="search" placeholder="Search by title or author"
+                <input type="text" name="search" placeholder="Search name..."
                     value="{{ $search }}">
             </form>
             <a href="/activities" type="submit" class="btn">Show All</a>
