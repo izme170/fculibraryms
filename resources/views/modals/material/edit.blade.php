@@ -6,7 +6,8 @@
                 <h1 class="modal-title fs-5" id="staticBackdropLabel">Update Material</h1>
             </div>
             <div class="modal-body">
-                <form action="/material/store" method="post" enctype="multipart/form-data" id="material-form">
+                <form action="/material/update/{{ $material->material_id }}" method="post" enctype="multipart/form-data" id="material-form">
+                    @method("PUT")
                     @csrf
                     <div class="col">
                         <div class="row">

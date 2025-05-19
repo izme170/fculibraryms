@@ -11,7 +11,7 @@
     <div class="mb-3 p-3 d-flex flex-row justify-content-start align-items-center gap-3"
         style="background-color: #0e1133">
         <img src="{{ asset('img/fcu-logo.png') }}" alt="fcu-logo" width="100">
-        <h1 class="text-white">FCU Open Access Catalog</h1>
+        <h1 class="text-white">FCU Library Catalog</h1>
     </div>
 
     <div class="d-flex flex-row justify-content-evenly mb-3 pt-3 sticky-top">

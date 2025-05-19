@@ -30,7 +30,7 @@ Route::controller(PatronController::class)->group(function () {
     Route::get('/get-patron/{rfid}', 'getPatron')->name('patron.getPatron');
 });
 
-Route::get('/opac', [MaterialController::class, 'opac']);
+Route::get('/catalog', [MaterialController::class, 'catalog']);
 
 Route::controller(PatronLoginController::class)->group(function () {
     Route::get('/patrons/login', 'create')->name('patrons.create');

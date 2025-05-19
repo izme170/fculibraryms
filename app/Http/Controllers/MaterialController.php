@@ -485,7 +485,7 @@ class MaterialController extends Controller
         return view('materials.archives', compact('materials', 'search'));
     }
 
-    public function opac(Request $request){
+    public function catalog(Request $request){
         $status = $request->query('status', 'all');
         $category = $request->query('category', 'all');
         $search = $request->query('search', '');
@@ -590,6 +590,6 @@ class MaterialController extends Controller
             }
         });
 
-        return view('OPAC.index', compact('materials', 'categories', 'status', 'category', 'search', 'sort', 'direction'));
+        return view('catalog.index', compact('materials', 'categories', 'status', 'category', 'search', 'sort', 'direction'));
     }
 }
